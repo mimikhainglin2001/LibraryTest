@@ -1,4 +1,6 @@
-<?php require_once APPROOT . '/views/inc/sidebar.php'; ?>
+<?php require_once APPROOT . '/views/inc/sidebar.php'; 
+// var_dump($data);die();
+?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -34,49 +36,56 @@
                         <th class="border px-4 py-2">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <?php foreach ($data['booklist'] as $book): ?>
-                        <tr>
-                            <td class="table-cell book-id border px-4 py-2"><?= htmlspecialchars($book['id']) ?></td>
-                            <td class="table-cell book-isbn border px-4 py-2"><?= htmlspecialchars($book['isbn']) ?></td>
-                            <td class="table-cell book-title border px-4 py-2"><?= htmlspecialchars($book['title']) ?></td>
-                            <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars($book['author_name']) ?></td>
-                            <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars((string) $book['total_quantity']) ?></td>
-                            <td class="table-cell book-quantity border px-4 py-2"><?= htmlspecialchars($book['available_quantity'] ?? '') ?></td>
-                            <td class="table-cell book-status border px-4 py-2">
-                                <?php
-                                $statusText = isset($book['status_description']) ? trim(strtolower($book['status_description'])) : '';
-                                $statusClass = $statusText === 'available' ? 'text-green-600' : 'text-red-600';
-                                ?>
-                                <span class="status <?= $statusClass ?>">
-                                    <?= $statusText ? htmlspecialchars(ucfirst($statusText)) : 'Unknown' ?>
-                                </span>
-                            </td>
-                            <td class="table-cell border px-4 py-2">
-                                <div class="flex space-x-2">
-                                    <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
-                                        data-id="<?= $book['id'] ?>"
-                                        data-title="<?= htmlspecialchars($book['title']) ?>"
-                                        data-author="<?= htmlspecialchars($book['author_name']) ?>"
-                                        data-isbn="<?= htmlspecialchars($book['isbn']) ?>"
-                                        data-quantity="<?= htmlspecialchars($book['total_quantity']) ?>"
-                                        data-status="<?= htmlspecialchars($book['status_description']) ?>">
-                                        Details
-                                    </button>
-                                    <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
-                                        data-id="<?= $book['id'] ?>"
-                                        data-title="<?= htmlspecialchars($book['title']) ?>"
-                                        data-author="<?= htmlspecialchars($book['author_name']) ?>"
-                                        data-isbn="<?= htmlspecialchars($book['isbn']) ?>"
-                                        data-quantity="<?= htmlspecialchars($book['total_quantity']) ?>"
-                                        data-status="<?= htmlspecialchars($book['status_description']) ?>">
-                                        Edit
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
+                <tbody class="bg-white divide-y divide-gray-200">  
+    <?php if (!empty($data['booklist'])): ?>
+        <?php foreach ($data['booklist'] as $book): ?>
+            <tr>
+                <td class="table-cell book-id border px-4 py-2"><?= htmlspecialchars($book['id'] ?? '') ?></td>
+                <td class="table-cell book-isbn border px-4 py-2"><?= htmlspecialchars($book['isbn'] ?? '') ?></td>
+                <td class="table-cell book-title border px-4 py-2"><?= htmlspecialchars($book['title'] ?? '') ?></td>
+                <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars($book['author_name'] ?? '') ?></td>
+                <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars((string)($book['total_quantity'] ?? '')) ?></td>
+                <td class="table-cell book-quantity border px-4 py-2"><?= htmlspecialchars($book['available_quantity'] ?? '') ?></td>
+                <td class="table-cell book-status border px-4 py-2">
+                    <?php
+                    $statusText = isset($book['status_description']) ? trim(strtolower($book['status_description'])) : '';
+                    $statusClass = $statusText === 'available' ? 'text-green-600' : 'text-red-600';
+                    ?>
+                    <span class="status <?= $statusClass ?>">
+                        <?= $statusText ? htmlspecialchars(ucfirst($statusText)) : 'Unknown' ?>
+                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="<?= $book['id'] ?>"
+                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="<?= $book['id'] ?>"
+                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="8" class="text-center py-4 text-gray-500">No books found.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
             </table>
         </div>
         

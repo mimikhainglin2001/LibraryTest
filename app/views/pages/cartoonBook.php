@@ -661,7 +661,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
                                     data-book-title="<?= htmlspecialchars($book['title']) ?>"
                                     data-book-author="<?= htmlspecialchars($book['author_name']) ?>"
                                     data-borrow-url="<?= URLROOT; ?>/BorrowBook/borrow?id=<?= htmlspecialchars($book['id']) ?>"
-                                    data-reserve-url="<?= URLROOT; ?>/BorrowBook/reserve?id=<?= htmlspecialchars($book['id']) ?>"
+                                    data-reserve-url="<?= URLROOT; ?>/Reservation/reserve?id=<?= htmlspecialchars($book['id']) ?>"
                                     data-is-borrowed="<?= $isBorrowedByUser ? 'true' : 'false' ?>"
                                     <?= $buttonDisabled ?>>
                                 <?= $buttonText ?>

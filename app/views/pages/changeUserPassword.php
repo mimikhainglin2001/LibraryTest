@@ -5,7 +5,7 @@
 
     <div style="background: white; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
         <form 
-            action="<?php echo URLROOT; ?>/auth/changeUserPassword/<?php echo isset($data['loginuser']['id']) ? $data['loginuser']['id'] : ''; ?>" 
+            action="<?php echo URLROOT; ?>/user/changeUserPassword/<?php echo isset($data['loginuser']['id']) ? $data['loginuser']['id'] : ''; ?>" 
             method="POST"
         >
 

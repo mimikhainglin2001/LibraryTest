@@ -32,12 +32,12 @@ $currentUrl = $_SERVER['REQUEST_URI'];
             </div>
             <nav>
                 <ul class="nav">
-                    <li><a href="<?php echo URLROOT; ?>/pages/home">Home</a></li>
+                    <li><a href="<?php echo URLROOT; ?>/pages/category">Home</a></li>
                     <li><a href="<?php echo URLROOT; ?>/pages/contact">Contact</a></li>
-                    <li><a href="<?php echo URLROOT; ?>/pages/history">History</a></li>
+                    <li><a href="<?php echo URLROOT; ?>/user/history">History</a></li>
                     <li><a href="<?php echo URLROOT; ?>/auth/logout">logout</a></li>
                     <div class="flex items-center space-x-4">
-                    <a href="<?php echo URLROOT; ?>/pages/userProfile" class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
+                    <a href="<?php echo URLROOT; ?>/user/userProfile" class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
                         <i class="fas fa-user-circle text-2xl"></i>
                         <span class="font-medium"><?= htmlspecialchars($name['name']) ?></span>
                     </a>

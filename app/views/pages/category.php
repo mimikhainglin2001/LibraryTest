@@ -368,7 +368,7 @@
             <div class="books-grid">
                 <!-- Literary Fiction -->
                 <div class="book-category">
-                    <a href="/pages/literarybook">
+                    <a href="/user/literarybook">
                         <img src="/images/literary.avif" alt="Literary Fiction Cover">
                     </a>
                     <p>Literary Fiction</p>
@@ -376,7 +376,7 @@
 
                 <!-- Historical Fiction -->
                 <div class="book-category">
-                    <a href="/pages/historicalbook">
+                    <a href="/user/historicalbook">
                         <img src="/images/historical.avif" alt="Historical Fiction Cover">
                     </a>
                     <p>Historical Fiction</p>
@@ -384,7 +384,7 @@
 
                 <!-- Education/References -->
                 <div class="book-category">
-                    <a href="/pages/educationBook">
+                    <a href="/user/educationBook">
                         <img src="/images/education.avif" alt="Education Book Cover">
                     </a>
                     <p>Education/References</p>
@@ -392,7 +392,7 @@
 
                 <!-- Romance -->
                 <div class="book-category">
-                    <a href="/pages/romancebook">
+                    <a href="/user/romancebook">
                         <img src="/images/romance.avif" alt="Romance Book Cover">
                     </a>
                     <p>Romance</p>
@@ -400,7 +400,7 @@
 
                 <!-- Horror -->
                 <div class="book-category">
-                    <a href="/pages/horrorbook">
+                    <a href="/user/horrorbook">
                         <img src="/images/horror.avif" alt="Horror Book Cover">
                     </a>
                     <p>Horror</p>
@@ -408,7 +408,7 @@
 
                 <!-- Cartoon -->
                 <div class="book-category">
-                    <a href="/pages/cartoonbook">
+                    <a href="/user/cartoonbook">
                         <img src="/images/cartoon.jpg" alt="Cartoon Book Cover">
                     </a>
                     <p>Cartoon</p>

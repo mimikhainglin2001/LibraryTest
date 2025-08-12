@@ -26,17 +26,17 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-    <?php foreach ($data['reservedBookList'] as $book):
+            <?php foreach ($data['reservedBookList'] as $book):
 
-        if ($book['available_quantity'] > 0) {
-            $status = "available";
-        } elseif ($book['available_quantity'] == 0) {
-            $status = "pending";
-        } else {
-            $status = "unknown";
-        }
+                if ($book['available_quantity'] > 0) {
+                    $status = "available";
+                } elseif ($book['available_quantity'] == 0) {
+                    $status = "pending";
+                } else {
+                    $status = "unknown";
+                }
 
-    ?>
+            ?>
         <tr class="hover:bg-blue-50">
             <td class="border px-4 py-2"><?= htmlspecialchars($book['user_name']) ?></td>
             <td class="border px-4 py-2"><?= htmlspecialchars($book['book_title']) ?></td>
@@ -51,12 +51,12 @@
             </td>
             <td class="border px-4 py-2 space-x-2">
     <?php if ($book['available_quantity'] > 0): ?>
-        <a href="<?= URLROOT ?>/BorrowBook/confirmreservation?user_id=<?= $book['user_id'] ?>&book_id=<?= $book['book_id'] ?>&available_quantity=<?= $book['available_quantity'] ?>" 
+        <a href="<?= URLROOT ?>/ConfirmReservation/confirmreservation?user_id=<?= $book['user_id'] ?>&book_id=<?= $book['book_id'] ?>&available_quantity=<?= $book['available_quantity'] ?>" 
            class="bg-green-500 hover:bg-green-600 text-white px-4 py-1 rounded-full text-sm transition duration-200 inline-block">
             Confirm
         </a>
 
-        <a href="<?= URLROOT ?>/borrow/cancel?user_id=<?= $book['user_id'] ?>&book_id=<?= $book['book_id'] ?>" 
+        <a href="<?= URLROOT ?>/ConfirmReservation/cancel?user_id=<?= $book['user_id'] ?>&book_id=<?= $book['book_id'] ?>" 
            class="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full text-sm transition duration-200 inline-block">
             Cancel
         </a>

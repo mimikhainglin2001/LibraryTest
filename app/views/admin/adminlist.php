@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">Admin List</h2>
         <div class="flex items-center space-x-4">
-           
+
             <a href="<?php echo URLROOT; ?>/admin/profile"
                 class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
                 <i class="fas fa-user-circle text-2xl"></i>

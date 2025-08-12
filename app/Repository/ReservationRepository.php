@@ -1,38 +1,34 @@
 <?php
-require_once APPROOT . '/Interfaces/IReservationRepository.php';
+require_once APPROOT . '/Interfaces/ReservationRepositoryInterface.php';
 
-class ReservationRepository implements IReservationRepository
+require_once APPROOT . '/config/DBConnection.php';
+class ReservationRepository extends DBconnection implements ReservationRepositoryInterface
 {
-    private $db;
-
     public function __construct()
     {
-        $this->db = new Database();
+        parent::__construct();
     }
-
-    public function hasPendingReservation(int $userId, int $bookId): bool
+    public function getPendingReservationsByUserAndBook(int $userId, int $bookId): array
     {
-        return $this->db->hasPendingReservation($userId, $bookId);
+        $allReservations = $this->getDB()->readAll('reservations');
+        return array_filter($allReservations, function ($reservation) use ($userId, $bookId) {
+            return $reservation['user_id'] == $userId
+                && $reservation['book_id'] == $bookId
+                && $reservation['status'] === 'pending';
+        });
     }
-
 
     public function createReservation(array $data): bool
     {
-        return $this->db->create('reservations', $data);
+        return $this->getDB()->create('reservations', $data);
     }
 
-    public function getReservationByBookId(int $bookId): ?array
+    public function deleteReservation(int $id): bool
     {
-        return $this->db->columnFilter('reservations', 'book_id', $bookId);
+        return $this->getDB()->delete('reservations', $id);
     }
-
-    public function updateReservation(int $reservationId, array $data): bool
+    public function getAll(): array
     {
-        return $this->db->update('reservations', $reservationId, $data);
-    }
-
-    public function deleteReservation(int $reservationId): bool
-    {
-        return $this->db->delete('reservations', $reservationId);
+        return $this->getDB()->readAll('borrowBook');
     }
 }

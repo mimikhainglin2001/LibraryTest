@@ -1,116 +1,151 @@
 <?php
-require_once APPROOT . '/Interfaces/IBorrowBookService.php';
+require_once APPROOT . '/Interfaces/BorrowBookServiceInterface.php';
+
 require_once APPROOT . '/Repository/BorrowBookRepository.php';
 
-class BorrowBookService implements IBorrowBookService
+class BorrowBookService implements BorrowBookServiceInterface
 {
-    private IBorrowBookRepository $repository;
+    private BorrowBookRepositoryInterface $borrowRepo;
 
-    public function __construct(IBorrowBookRepository $repository)
+    public function __construct(BorrowBookRepositoryInterface $borrowRepo)
     {
-        $this->repository = $repository;
-        date_default_timezone_set('Asia/Yangon');
+        $this->borrowRepo = $borrowRepo;
     }
 
-    public function borrowBook(int $userId, int $bookId): array
+    // Borrow Book
+    public function borrowBook(int $bookId, array $user): bool
     {
-        $book = $this->repository->getBookById($bookId);
+        if (!isset($user['id'])) {
+            throw new Exception("User ID not provided.");
+        }
+
+        // Fetch book info
+        $book = $this->borrowRepo->getBookById($bookId);
         if (!$book) {
-            return ['success' => false, 'message' => 'Book not found.'];
+            throw new Exception("Book not found.");
         }
 
+        // Fetch active borrowed books for user
+        $borrowedBooks = $this->borrowRepo->getBorrowedBooksByUser($user['id']);
+
+        // Check borrow limit (max 2)
+        if (count($borrowedBooks) >= 2) {
+            throw new Exception("You can only borrow up to 2 books at the same time.");
+        }
+
+        // Prevent borrowing the same book twice
+        foreach ($borrowedBooks as $borrow) {
+            if ($borrow['book_id'] == $bookId) {
+                throw new Exception("You already borrowed this book.");
+            }
+        }
+
+        // Check book availability
         if ((int)$book['available_quantity'] <= 0) {
-            return ['success' => false, 'message' => 'Book currently not available.'];
+            throw new Exception("Book is not available.");
         }
 
-        $borrowCount = $this->repository->getBorrowCountByUser($userId);
-        if ($borrowCount >= 2) {
-            return ['success' => false, 'message' => 'You have already borrowed 2 books.'];
-        }
-
-        if ($this->repository->hasUserBorrowedBook($userId, $bookId)) {
-            return ['success' => false, 'message' => 'You have already borrowed this book.'];
-        }
-
+        // Prepare new borrow record
         $now = date('Y-m-d H:i:s');
         $dueDate = date('Y-m-d H:i:s', strtotime('+7 days'));
 
         $borrowData = [
             'book_id' => $bookId,
-            'user_id' => $userId,
+            'user_id' => $user['id'],
             'borrow_date' => $now,
             'due_date' => $dueDate,
             'return_date' => null,
             'renew_date' => null,
             'status' => 'borrowed',
-            'renew_count' => 0
+            'renew_count' => 0,
         ];
 
-        if ($this->repository->createBorrowRecord($borrowData)) {
-            return ['success' => true, 'message' => 'Book borrowed successfully.'];
+        // Create borrow record in DB
+        $created = $this->borrowRepo->create($borrowData);
+
+        if ($created) {
+            // Decrement available quantity
+            $newAvailable = max(0, (int)$book['available_quantity'] - 1);
+            $statusDesc = $newAvailable > 0 ? 'Available' : 'Not Available';
+
+            $this->borrowRepo->updateBookAvailability($bookId, $newAvailable, $statusDesc);
         }
 
-        return ['success' => false, 'message' => 'Failed to borrow book. Please try again later.'];
+        return $created;
     }
 
+
+
+    // Return Book
     public function returnBook(int $borrowId): bool
     {
-        $borrow = $this->repository->getBorrowRecordById($borrowId);
-        if (!$borrow) return false;
-
-        $updateSuccess = $this->repository->updateBorrowRecord($borrowId, [
-            'return_date' => date('Y-m-d H:i:s'),
-            'status' => 'returned'
-        ]);
-
-        if (!$updateSuccess) return false;
-
-        // Additional logic to update book availability etc. can be added here or in a dedicated BookService
-
-        return true;
-    }
-
-    public function renewBook(int $borrowId): array
-    {
-        $record = $this->repository->getBorrowRecordById($borrowId);
-        if (!$record || empty($record['due_date'])) {
-            return ['success' => false, 'message' => 'Due date not found.'];
+        $borrowRecord = $this->borrowRepo->getById($borrowId);
+        if (!$borrowRecord || $borrowRecord['status'] === 'returned') {
+            throw new Exception("Invalid borrow record or already returned.");
         }
 
-        $renewCount = ((int)($record['renew_count'] ?? 0)) + 1;
-        if ($renewCount > 3) {
-            return ['success' => false, 'message' => 'Maximum number of renewals reached.'];
-        }
+        $returnDate = date('Y-m-d H:i:s');
 
-        $baseDate = $record['renew_date'] ?? $record['due_date'];
-        $renewDate = date('Y-m-d H:i:s', strtotime("$baseDate +7 days"));
-
-        $updated = $this->repository->updateBorrowRecord($borrowId, [
-            'renew_date' => $renewDate,
-            'renew_count' => $renewCount,
-            'status' => 'renewed',
+        $updated = $this->borrowRepo->update($borrowId, [
+            'return_date' => $returnDate,
+            'status'      => 'returned',
         ]);
 
         if ($updated) {
-            return ['success' => true, 'message' => 'Book renewed successfully.'];
+            $this->borrowRepo->incrementReservationQuantity($borrowRecord['book_id']);
+            $this->borrowRepo->incrementBookAvailability($borrowRecord['book_id']);
         }
 
-        return ['success' => false, 'message' => 'Failed to renew book.'];
+        return $updated;
     }
 
+    // Renew Book
+    public function renewBook(int $borrowId): bool
+    {
+        $borrowRecord = $this->borrowRepo->getById($borrowId);
+        if (!$borrowRecord || $borrowRecord['status'] === 'returned') {
+            throw new Exception("Cannot renew a returned or invalid borrow.");
+        }
+
+        $renewCount = (int)($borrowRecord['renew_count'] ?? 0) + 1;
+        if ($renewCount > 3) {
+            throw new Exception("Maximum renewals reached.");
+        }
+
+        $originalDate = $borrowRecord['renew_date'] ?? $borrowRecord['due_date'];
+        $newRenewDate = date('Y-m-d H:i:s', strtotime("$originalDate +7 days"));
+
+        return $this->borrowRepo->update($borrowId, [
+            'renew_date'  => $newRenewDate,
+            'renew_count' => $renewCount,
+            'status'      => 'renewed',
+        ]);
+    }
+
+    // Check Overdue Books
     public function checkOverdueBooks(): void
     {
-        $now = date('Y-m-d');
-        $allRecords = $this->repository->getAllBorrowRecords();
+        $today = date('Y-m-d');
+        $borrowRecords = $this->borrowRepo->getAll();
 
-        foreach ($allRecords as $record) {
+        foreach ($borrowRecords as $record) {
             if (!in_array($record['status'], ['borrowed', 'renewed'])) {
                 continue;
             }
-            $compareDate = $record['renew_date'] ?: $record['due_date'];
-            if ($compareDate && strtotime($compareDate) < strtotime($now)) {
-                $this->repository->updateBorrowRecord($record['id'], ['status' => 'overdue']);
+
+            $dueDate = $record['renew_date'] ?: $record['due_date'];
+            if (!$dueDate) {
+                continue;
+            }
+
+            if (strtotime($dueDate) < strtotime($today)) {
+                $this->borrowRepo->update($record['id'], ['status' => 'overdue']);
             }
         }
+    }
+    // In BorrowBookService.php
+    public function getAllBorrowedBooks(): array
+    {
+        return $this->borrowRepo->getAll(); // Or whatever method fetches all borrow records
     }
 }
