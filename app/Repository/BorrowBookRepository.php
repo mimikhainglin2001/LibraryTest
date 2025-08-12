@@ -1,47 +1,116 @@
 <?php
-require_once APPROOT . '/Interfaces/IBorrowBookRepository.php';
 
-class BorrowBookRepository implements IBorrowBookRepository
+require_once APPROOT . '/Interfaces/BorrowBookRepositoryInterface.php';
+
+require_once APPROOT . '/config/DBConnection.php';
+
+class BorrowBookRepository extends DBconnection implements BorrowBookRepositoryInterface
 {
-    private $db;
-
     public function __construct()
     {
-        $this->db = new Database();
+        parent::__construct();
     }
 
+    public function getById(int $id): ?array
+    {
+        return $this->getDB()->getById('borrowBook', $id);
+    }
+
+    public function create(array $data): bool
+    {
+        return $this->getDB()->create('borrowBook', $data);
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        return $this->getDB()->update('borrowBook', $id, $data);
+    }
+
+    public function getBorrowedBooksByUser(int $userId): array
+    {
+        $allRecords = $this->getDB()->readAll('borrowBook');
+
+        if (!is_array($allRecords) || empty($allRecords)) {
+            return [];
+        }
+        $filtered = array_values(array_filter($allRecords, function ($record) use ($userId) {
+            return isset($record['user_id'], $record['status'])
+                && $record['user_id'] == $userId
+                && in_array($record['status'], ['borrowed', 'renewed']);
+        }));
+        return $filtered;
+    }
+
+    public function getBorrowRecordByBookId(int $bookId): ?array
+    {
+        $records = $this->getDB()->columnFilter('borrowBook', 'book_id', $bookId);
+
+        if (is_array($records) && !empty($records)) {
+            //return $records[0]; // safe now
+        }
+
+        return null; // no record found
+    }
+
+    public function getAll(): array
+    {
+        return $this->getDB()->readAll('borrowBook');
+    }
+
+    // Book-related
     public function getBookById(int $bookId): ?array
     {
-        return $this->db->getById('books', $bookId);
+        return $this->getDB()->getById('books', $bookId);
     }
 
-    public function getBorrowCountByUser(int $userId): int
+    public function incrementBookAvailability(int $bookId): void
     {
-        return $this->db->getBorrowCountByUser($userId);
+        $book = $this->getBookById($bookId);
+        if (!$book) {
+            return;
+        }
+
+        $newAvailable = max(0, (int)$book['available_quantity'] + 1);
+        $statusDesc   = $newAvailable > 0 ? 'Available' : 'Not Available';
+
+        $this->getDB()->update('books', $bookId, [
+            'available_quantity' => $newAvailable,
+            'status_description' => $statusDesc
+        ]);
     }
 
-    public function hasUserBorrowedBook(int $userId, int $bookId): bool
+    // Reservation-related
+    public function incrementReservationQuantity(int $bookId): void
     {
-        return $this->db->hasUserBorrowedBook($userId, $bookId);
-    }
+        $reservation = $this->getDB()->columnFilter('reservations', 'book_id', $bookId);
+        if (!$reservation) {
+            return;
+        }
 
-    public function createBorrowRecord(array $data): bool
-    {
-        return $this->db->create('borrowBook', $data);
+        $newQuantity = max(0, (int)$reservation['available_quantity'] + 1);
+        $this->getDB()->update('reservations', $reservation['id'], ['available_quantity' => $newQuantity]);
     }
-
-    public function getBorrowRecordById(int $borrowId): ?array
+    // Add this new method for decrementing available quantity
+    public function decrementBookAvailability(int $bookId): void
     {
-        return $this->db->getById('borrowBook', $borrowId);
+        $book = $this->getBookById($bookId);
+        if (!$book) {
+            return;
+        }
+
+        $newAvailable = max(0, (int)$book['available_quantity'] - 1);
+        $statusDesc   = $newAvailable > 0 ? 'Available' : 'Not Available';
+
+        $this->getDB()->update('books', $bookId, [
+            'available_quantity' => $newAvailable,
+            'status_description' => $statusDesc
+        ]);
     }
-
-    public function updateBorrowRecord(int $borrowId, array $data): bool
+    public function updateBookAvailability(int $bookId, int $availableQuantity, string $statusDescription): bool
     {
-        return $this->db->update('borrowBook', $borrowId, $data);
-    }
-
-    public function getAllBorrowRecords(): array
-    {
-        return $this->db->readAll('borrowBook');
+        return $this->getDB()->update('books', $bookId, [
+            'available_quantity' => $availableQuantity,
+            'status_description' => $statusDescription,
+        ]);
     }
 }

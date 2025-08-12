@@ -1,132 +1,101 @@
 <?php
 require_once APPROOT . '/middleware/authmiddleware.php';
 
-require_once APPROOT . '/Interfaces/IBorrowBookRepository.php';
-require_once APPROOT . '/Interfaces/IBorrowBookService.php';
-require_once APPROOT . '/Interfaces/IReservationRepository.php';
-require_once APPROOT . '/Interfaces/IReservationService.php';
+// require_once APPROOT . '/Interfaces/BorrowBookRepositoryInterface.php';
+// require_once APPROOT . '/Interfaces/BorrowBookServiceInterface.php';
 
-require_once APPROOT . '/Repository/BorrowBookRepository.php';
-require_once APPROOT . '/Repository/ReservationRepository.php';
-
+// require_once APPROOT . '/Repository/BorrowBookRepository.php';
 require_once APPROOT . '/Services/BorrowBookService.php';
-require_once APPROOT . '/Services/ReservationService.php';
 
 class BorrowBook extends Controller
 {
-    private IBorrowBookService $borrowBookService;
-    private IReservationService $reservationService;
+    private BorrowBookServiceInterface $borrowService;
 
-    public function __construct()
+    public function __construct(?BorrowBookServiceInterface $borrowService = null)
     {
         AuthMiddleware::userOnly();
-
-        $borrowBookRepository = new BorrowBookRepository();
-        $reservationRepository = new ReservationRepository();
-
-        $this->borrowBookService = new BorrowBookService($borrowBookRepository);
-        $this->reservationService = new ReservationService($reservationRepository);
+        if ($borrowService === null) {
+            $borrowRepo = new BorrowBookRepository();
+            $borrowService = new BorrowBookService($borrowRepo);
+        }
+        $this->borrowService = $borrowService;
     }
 
+    // Borrow Book
     public function borrow()
     {
-        $user = $_SESSION['session_loginuser'] ?? null;
-        $bookId = $_GET['id'] ?? null;
+        try {
+            $user = $_SESSION['session_loginuser'] ?? null;
+            $bookId = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
-        if (!$user || !$bookId) {
-            return $this->failRedirect('Invalid user or book.', 'pages/category');
-        }
+            if (!$user || !$bookId) {
+                return $this->failRedirect('Invalid user or book.', 'pages/category');
+            }
 
-        $result = $this->borrowBookService->borrowBook($user['id'], (int)$bookId);
-
-        if ($result['success']) {
-            return $this->successRedirect($result['message'], 'pages/history');
-        } else {
-            return $this->failRedirect($result['message'], 'pages/category');
+            $this->borrowService->borrowBook($bookId, $user);
+            return $this->successRedirect('Book borrowed successfully.', 'user/history');
+        } catch (Exception $e) {
+            return $this->failRedirect($e->getMessage(), 'pages/category');
         }
     }
 
+    // Return Book
     public function returnBook()
     {
-        $borrowId = $_GET['id'] ?? null;
-        if (!$borrowId) {
-            return $this->failRedirect('Invalid borrow record.', 'pages/history');
-        }
+        try {
 
-        $success = $this->borrowBookService->returnBook((int)$borrowId);
-        if ($success) {
-            return $this->successRedirect('Book returned successfully.', 'pages/history');
+
+            $borrowId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+            if (!$borrowId) {
+                return $this->failRedirect('Invalid request', 'user/history');
+            }
+
+            $this->borrowService->returnBook($borrowId);
+            return $this->successRedirect('Book returned successfully', 'user/history');
+        } catch (Exception $e) {
+            return $this->failRedirect($e->getMessage(), 'user/history');
         }
-        return $this->failRedirect('Failed to return book.', 'pages/history');
     }
 
+    // Renew Book
     public function renew()
     {
-        $borrowId = $_GET['id'] ?? null;
-        if (!$borrowId) {
-            return $this->failRedirect('Invalid request.', 'pages/history');
-        }
+        try {
 
-        $result = $this->borrowBookService->renewBook((int)$borrowId);
 
-        if ($result['success']) {
-            return $this->successRedirect($result['message'], 'pages/history');
-        } else {
-            return $this->failRedirect($result['message'], 'pages/history');
+            $borrowId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+            if (!$borrowId) {
+                return $this->failRedirect('Invalid request', 'user/history');
+            }
+
+            $this->borrowService->renewBook($borrowId);
+            return $this->successRedirect('Book renewed successfully', 'user/history');
+        } catch (Exception $e) {
+            return $this->failRedirect($e->getMessage(), 'user/history');
         }
     }
 
-    public function reserve()
-    {
-        $user = $_SESSION['session_loginuser'] ?? null;
-        $bookId = $_GET['id'] ?? null;
-
-        if (!$user || !$bookId) {
-            return $this->failRedirect('Invalid user or book.', 'pages/category');
-        }
-
-        $result = $this->reservationService->reserveBook($user['id'], (int)$bookId);
-        if ($result['success']) {
-            return $this->successRedirect($result['message'], 'pages/history');
-        }
-        return $this->failRedirect($result['message'], 'pages/category');
-    }
-
-    public function cancelReservation()
-    {
-        $reservationId = $_GET['id'] ?? null;
-        if (!$reservationId) {
-            return $this->failRedirect('Invalid reservation id.', 'pages/history');
-        }
-
-        $success = $this->reservationService->cancelReservation((int)$reservationId);
-        if ($success) {
-            return $this->successRedirect('Reservation canceled successfully.', 'pages/history');
-        }
-        return $this->failRedirect('Failed to cancel reservation.', 'pages/history');
-    }
-
+    // Check Overdue Book
     public function checkOverdue()
     {
-        AuthMiddleware::adminOnly();
-        $this->borrowBookService->checkOverdueBooks();
-        $this->successRedirect('Checked overdue books.', 'admin/overdueList');
+        try {
+
+
+            $this->borrowService->checkOverdueBooks();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
     }
 
-    // Helper Methods
     private function failRedirect(string $message, string $location, string $type = 'error')
     {
         setMessage($type, $message);
         redirect($location);
-        return;
     }
 
     private function successRedirect(string $message, string $location)
     {
         setMessage('success', $message);
         redirect($location);
-        return;
     }
-
-    // mi mi 
 }

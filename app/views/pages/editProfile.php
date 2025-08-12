@@ -3,7 +3,7 @@
 
     <h2 style="text-align: center; color: #1f2937; margin-bottom: 24px;">Edit Profile</h2>
 
-    <form method="POST" action="<?php echo URLROOT; ?>/auth/editProfile/<?php echo $data['loginuser']['id']; ?>">
+    <form method="POST" action="<?php echo URLROOT; ?>/user/editProfile/<?php echo $data['loginuser']['id']; ?>">
 
         <div>
             <label style="display: block; margin-bottom: 6px; font-weight: bold; color: #374151;">Name</label>

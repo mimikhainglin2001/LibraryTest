@@ -4,11 +4,8 @@ class Pages extends Controller
 {
 
     private $db;
-    private $user;
     public function __construct()
     {
-        $this->user = $_SESSION['session_loginuser'] ?? null;
-
         $this->db = new Database();
     }
 
@@ -16,96 +13,23 @@ class Pages extends Controller
     {
         $this->view('pages/welcome');
     }
-
     public function home()
     {
         $this->view('pages/home');
     }
-
     public function login()
     {
         $this->view('pages/login');
     }
-
     public function register()
     {
         $this->view('pages/register');
     }
-
     public function category()
     {
         AuthMiddleware::userOnly();
 
         $this->view('pages/category');
-    }
-
-    public function literarybook()
-    {
-        AuthMiddleware::userOnly();
-
-        $literaryBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Literary Book');
-
-        $data = [
-            'literaryBooks' => $literaryBooks
-        ];
-
-        $this->view('pages/literarybook', $data);
-    }
-    public function historicalbook()
-    {
-        AuthMiddleware::userOnly();
-        $historicalBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Historical Book');
-        $data = [
-            'historicalBooks' => $historicalBooks
-        ];
-        foreach ($data['historicalBooks'] as &$book) {
-            $available = (int)($book['available_quantity'] ?? 0);
-            //$total = (int)($book['total_quantity'] ?? 0);
-
-            if ($available === 0) {
-                $book['status_description'] = 'Not Available';
-            } else {
-                $book['status_description'] = 'Available';
-            }
-        }
-        $this->view('pages/historicalbook', $data);
-    }
-    public function educationbook()
-    {
-        AuthMiddleware::userOnly();
-        $educationBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Education/References Book');
-        $data = [
-            'educationBooks' => $educationBooks
-        ];
-        $this->view('pages/educationbook', $data);
-    }
-    public function romancebook()
-    {
-        AuthMiddleware::userOnly();
-        $romanceBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Romance Book');
-        $data = [
-            'romanceBooks' => $romanceBooks
-        ];
-        $this->view('pages/romancebook', $data);
-    }
-    public function horrorbook()
-    {
-
-        AuthMiddleware::userOnly();
-        $horrorBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Horror Book');
-        $data = [
-            'horrorBooks' => $horrorBooks
-        ];
-        $this->view('pages/horrorbook', $data);
-    }
-    public function cartoonbook()
-    {
-        AuthMiddleware::userOnly();
-        $cartoonBooks = $this->db->getbookcategory('book_details', 'category_name', $categoryName = 'Cartoon Book');
-        $data = [
-            'cartoonBooks' => $cartoonBooks
-        ];
-        $this->view('pages/cartoonbook', $data);
     }
     public function contact()
     {
@@ -128,46 +52,33 @@ class Pages extends Controller
     {
         $this->view('pages/login');
     }
-    //      public function profile()
-    // {
-    //     $this->view('pages/profile');
-    // }
-    public function history()
+    public function changeUserPassword()
     {
-        AuthMiddleware::userOnly();
-        $name = $this->user;
-        $isid = $this->db->getBorrowBook('borrow_full_view', $name['name']);
-        $reserved = $this->db->getReservationBook('reservation_view', $name['name']);
-        $data = [
-            'borrowedBooks' => $isid,
-            'reservedBooks' => $reserved
-        ];
-
-        $this->view('pages/history', $data);
-    }
-    public function userProfile()
-    {
-        AuthMiddleware::userOnly();
-        $id = is_array($_SESSION['session_loginuser']) ? $_SESSION['session_loginuser']['id'] : $_SESSION['session_loginuser'];
-        $loginuser = $this->db->getUserWithRoleById($id);
-        $data = [
-            'loginuser' => $loginuser
-        ];
-
-        $this->view('pages/userProfile', $data);
+        $this->view('pages/changeUserPassword');
     }
     public function editProfile()
     {
         AuthMiddleware::userOnly();
-        $id = is_array($_SESSION['session_loginuser']) ? $_SESSION['session_loginuser']['id'] : $_SESSION['session_loginuser'];
-        $loginuser = $this->db->getUserWithRoleById($id);
+
+        // Get logged-in user ID
+        $id = is_array($_SESSION['session_loginuser'])
+            ? $_SESSION['session_loginuser']['id']
+            : $_SESSION['session_loginuser'];
+
+        // Fetch user from database
+        $loginuser = $this->db->getById('users', $id);
+
+        // Negative condition: user not found
+        if (!$loginuser) {
+            setMessage('error', 'User not found');
+            redirect('user/userProfile');
+            return;
+        }
+
+        // Pass data to view
         $data = [
             'loginuser' => $loginuser
         ];
         $this->view('pages/editProfile', $data);
-    }
-    public function changeUserPassword()
-    {
-        $this->view('pages/changeUserPassword');
     }
 }

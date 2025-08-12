@@ -1,3 +1,5 @@
+<?php
+?>
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -242,7 +244,7 @@
                                     <td><span class="status reserved">Reserved</span></td>
                                     <td>
                                         <button class="action-btn return">
-                                            <a href="/BorrowBook/cancelReservation?id=<?= $book['id'] ?>" style="text-decoration: none; color: inherit;">Cancel Reservation</a>
+                                            <a href="/Reservation/cancelReservation?id=<?= $book['id'] ?>" style="text-decoration: none; color: inherit;">Cancel Reservation</a>
                                         </button>
                                     </td>
                                 </tr>
@@ -290,5 +292,4 @@
         statusFilter.addEventListener('change', filterRows);
     </script>
 </body>
-
 </html>

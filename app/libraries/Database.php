@@ -33,36 +33,6 @@ class Database
         }
     }
 
-    // public function create($table, $data)
-    // {
-    //     // print_r($data);  
-    //     // exit;
-    //     try {
-    //         $column = array_keys($data);
-    //         $columnSql = implode(', ', $column);
-    //         $bindingSql = ':' . implode(',:', $column);
-    //         //echo $bindingSql;
-    //         $sql = "INSERT INTO $table ($columnSql) VALUES ($bindingSql)";
-    //         // echo $sql;
-    //         // exit;
-    //         $stm = $this->pdo->prepare($sql);  
-    //         // print_r($stm);
-    //         // exit;
-    //         foreach ($data as $key => $value) {
-    //             // echo $key . ' => ' . $value . '<br>';
-    //             // echo ':' . $key . ' => ' . $value . '<br>';
-
-    //             $stm->bindValue(':' . $key, $value);
-    //         }
-    //         // print_r($stm);
-    //         $status = $stm->execute();
-    //         // echo $status;
-    //         return ($status) ? $this->pdo->lastInsertId() : false;
-    //     } catch (PDOException $e) {
-    //         echo $e;
-    //     }
-    // }
-
     public function create($table, $data)
     {
         try {
@@ -131,68 +101,6 @@ class Database
         }
     }
 
-    public function updateByBookId($table, $book_id, $data)
-    {
-        // Remove 'book_id' from data array if it exists (to avoid overwriting key)
-        if (isset($data['book_id'])) {
-            unset($data['book_id']);
-        }
-
-        try {
-            $columns = array_keys($data);
-
-            $columns = array_map(function ($item) {
-                return $item . '=:' . $item;
-            }, $columns);
-
-            $bindingSql = implode(',', $columns);
-
-            $sql = 'UPDATE ' . $table . ' SET ' . $bindingSql . ' WHERE `book_id` = :book_id';
-            $stm = $this->pdo->prepare($sql);
-
-            // Add book_id to data for binding
-            $data['book_id'] = $book_id;
-
-            foreach ($data as $key => $value) {
-                $stm->bindValue(':' . $key, $value);
-            }
-
-            return $stm->execute();
-        } catch (PDOException $e) {
-            echo $e;
-            return false;
-        }
-    }
-
-
-    //     public function updateWhere($table, $where, $data)
-    // {
-    //     $set = '';
-    //     foreach ($data as $key => $value) {
-    //         $set .= "$key = :set_$key, ";
-    //     }
-    //     $set = rtrim($set, ', ');
-
-    //     $conditions = '';
-    //     foreach ($where as $key => $value) {
-    //         $conditions .= "$key = :where_$key AND ";
-    //     }
-    //     $conditions = rtrim($conditions, 'AND ');
-
-    //     $sql = "UPDATE $table SET $set WHERE $conditions";
-    //     $stmt = $this->pdo->prepare($sql);
-
-    //     foreach ($data as $key => $value) {
-    //         $stmt->bindValue(":set_$key", $value);
-    //     }
-
-    //     foreach ($where as $key => $value) {
-    //         $stmt->bindValue(":where_$key", $value);
-    //     }
-
-    //     return $stmt->execute();
-    // }
-
 
     public function delete($table, $id)
     {
@@ -213,31 +121,6 @@ class Database
         $row = $stm->fetch(PDO::FETCH_ASSOC);
         return ($success) ? $row : [];
     }
-
-
-    public function getReservation($user_id, $book_id)
-    {
-        $sql = "SELECT * FROM reservations WHERE user_id = :user_id AND book_id = :book_id";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':user_id', $user_id);
-        $stmt->bindValue(':book_id', $book_id);
-        $success = $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-    public function getbookcategory($table, $column, $value)
-    {
-        // $sql = 'SELECT * FROM ' . $table . ' WHERE `' . $column . '` = :value';
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `' . str_replace('`', '', $column) . '` = :value';
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindValue(':value', $value);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-
 
     public function loginCheck($email, $password)
     {
@@ -309,10 +192,9 @@ class Database
         $row = $stm->fetchAll(PDO::FETCH_ASSOC);
         return ($success) ? $row : [];
     }
-
     public function getById($table, $id)
     {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `id` =:id';
+        $sql = 'SELECT * FROM ' . $table . ' WHERE `id` =:id for update';
         // print_r($sql);
         $stm = $this->pdo->prepare($sql);
         $stm->bindValue(':id', $id);
@@ -320,117 +202,7 @@ class Database
         $row = $stm->fetch(PDO::FETCH_ASSOC);
         return ($success) ? $row : [];
     }
-    public function getUserWithRoleById($id)
-    {
-        $sql = "SELECT u.*, r.role_name AS role_name
-            FROM users u
-            LEFT JOIN roles r ON u.role_id = r.id
-            WHERE u.id = :id";
-
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindValue(':id', $id);
-        $success = $stm->execute();
-        $row = $stm->fetch(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-
-
-    public function getAllMembers($table, $role_id)
-    {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `role_id` = :role_id';
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindParam(':role_id', $role_id, PDO::PARAM_INT); // <-- binding added
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-    public function getAllAdmins($table, $role_id)
-    {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `role_id` = :role_id';
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindParam(':role_id', $role_id, PDO::PARAM_INT); // <-- binding added
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-    public function getBorrowBook($table, $user_name)
-    {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `name` =:name';
-        // print_r($sql);
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindValue(':name', $user_name);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-    public function getReservationBook($table, $user_name)
-    {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `user_name` =:name';
-        // print_r($sql);
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindValue(':name', $user_name);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-    public function getBookList($table)
-    {
-        $sql = 'SELECT * FROM ' . $table;
-        $stm = $this->pdo->prepare($sql);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-    public function getBorrowBookList($table)
-    {
-        $sql = 'SELECT * FROM ' . $table;
-        $stm = $this->pdo->prepare($sql);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-    public function getReturnBookList($table)
-    {
-        $sql = 'SELECT * FROM ' . $table;
-        $stm = $this->pdo->prepare($sql);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-    public function getReservedBookList($table)
-    {
-        $sql = 'SELECT * FROM ' . $table;
-        $stm = $this->pdo->prepare($sql);
-        $success = $stm->execute();
-        $row = $stm->fetchAll(PDO::FETCH_ASSOC);
-        return ($success) ? $row : [];
-    }
-
-    // Fetch the book_id using isbn
-    public function getBookIdByISBN($isbn)
-    {
-        $sql = 'SELECT id FROM books WHERE isbn = :isbn';
-        $stm = $this->pdo->prepare($sql);
-        $stm->bindValue(':isbn', $isbn);
-        $stm->execute();
-        return $stm->fetch(PDO::FETCH_ASSOC);
-    }
-
-
-    public function getByCategoryId($table, $column)
-    {
-        $stm = $this->pdo->prepare('SELECT * FROM ' . $table . ' WHERE name =:column');
-        $stm->bindValue(':column', $column);
-        $success = $stm->execute();
-        $row = $stm->fetch(PDO::FETCH_ASSOC);
-        //  print_r($row);
-        return ($success) ? $row : [];
-    }
-    
+   
     ////--------------------STORE PROCEDURE --------------------------------------//
     // public function InsertBook($title, $image, $isbn, $category_id, $author_id, $total_quantity, $available_quantity, $status_id, $status_description)
     // {
@@ -456,33 +228,5 @@ class Database
         $stm = $this->pdo->prepare($sql);
         $stm->execute(array_values($params));
         return true;
-    }
-
-    // Method to get borrow count by user
-    public function getBorrowCountByUser(int $userId): int
-    {
-        $sql = "SELECT COUNT(*) as count FROM borrowBook WHERE user_id = :uid AND status = 'borrowed'";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['uid' => $userId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (int)($result['count'] ?? 0);
-    }
-
-    // Method to check if user borrowed a specific book
-    public function hasUserBorrowedBook(int $userId, int $bookId): bool
-    {
-        $sql = "SELECT 1 FROM borrowBook WHERE user_id = :uid AND book_id = :bid AND status = 'borrowed' LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['uid' => $userId, 'bid' => $bookId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return !empty($result);
-    }
-    public function hasPendingReservation(int $userId, int $bookId): bool
-    {
-        $sql = "SELECT 1 FROM reservations WHERE user_id = :user_id AND book_id = :book_id AND status = 'pending' LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['user_id' => $userId, 'book_id' => $bookId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return !empty($result);
     }
 }
