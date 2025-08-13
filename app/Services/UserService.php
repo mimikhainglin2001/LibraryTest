@@ -34,9 +34,17 @@ class UserService implements UserServiceInterface
 
 
     public function getUserProfile($id)
-    {
-        return $this->userRepository->getUserById($id);
+{
+    $user = $this->userRepository->getUserById($id);
+
+    // Ensure role_name is set
+    if (!isset($user['role_name'])) {
+        $user['role_name'] = 'User'; // default
     }
+
+    return $user;
+}
+
 
     public function updateUserProfile($id, array $data): bool
     {

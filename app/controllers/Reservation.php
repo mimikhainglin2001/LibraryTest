@@ -2,75 +2,64 @@
 require_once APPROOT . '/middleware/authmiddleware.php';
 
 require_once APPROOT . '/Services/ReservationService.php';
-
 class Reservation extends Controller
 {
-    private $reservationService;
+    private ReservationServiceInterface $reservationService;
 
-    public function __construct()
+    public function __construct(ReservationServiceInterface $reservationService)
     {
         AuthMiddleware::userOnly();
-        $reservationRepo = new ReservationRepository;
-        $this->reservationService = new ReservationService($reservationRepo);
+        $this->reservationService = $reservationService;
     }
 
-
-    public function reserve()
+    public function reserve(): void
     {
-        $user = $_SESSION['session_loginuser'] ?? null;
-        $bookId = $_GET['id'] ?? null;
+        $user   = $_SESSION['session_loginuser'] ?? null;
+        $bookId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-        if (!$user || !$bookId) {
-            $this->redirectWithMessage('Invalid user or book.', 'pages/category', 'error');
+        if (!$user || $bookId <= 0) {
+            setMessage('error', 'Invalid user or book.');
+            redirect('pages/category');
             return;
         }
 
         try {
-            $reserved = $this->reservationService->reserveBook($user['id'], (int)$bookId);
+            $ok = $this->reservationService->reserveBook((int)$user['id'], $bookId);
 
-            if ($reserved) {
-                $this->redirectWithMessage('Book reserved successfully.', 'user/history', 'success');
+            if ($ok) {
+                setMessage('success', 'Book reserved successfully.');
             } else {
-                $this->redirectWithMessage('You have already reserved this book.', 'user/history', 'error');
+                setMessage('error', 'You have already reserved this book.');
             }
         } catch (Exception $e) {
-            $this->redirectWithMessage('An error occurred: ' . $e->getMessage(), 'user/history', 'error');
+            setMessage('error', 'An error occurred: ' . $e->getMessage());
         }
+
+        redirect('user/history');
     }
 
-    public function cancelreservation()
+    public function cancelreservation(): void
     {
-        $reservationId = $_GET['id'] ?? null;
+        $reservationId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-        if (!$reservationId) {
+        if ($reservationId <= 0) {
             setMessage('error', 'Reservation not found');
             redirect('user/history');
             return;
         }
 
         try {
-            $deleted = $this->reservationService->cancelReservation((int)$reservationId);
+            $deleted = $this->reservationService->cancelReservation($reservationId);
 
             if ($deleted) {
                 setMessage('success', 'Successfully deleted reservation');
             } else {
                 setMessage('error', 'Failed to delete reservation');
             }
-
-            redirect('user/history');
         } catch (Exception $e) {
             setMessage('error', 'An error occurred: ' . $e->getMessage());
-            redirect('user/history');
         }
-    }
 
-    private function redirectWithMessage(string $message, string $location, string $type = 'error')
-    {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-        $_SESSION['flash_message'] = ['type' => $type, 'message' => $message];
-        header("Location: /$location");
-        exit();
+        redirect('user/history');
     }
 }

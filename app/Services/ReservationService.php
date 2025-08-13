@@ -1,43 +1,35 @@
 <?php
 
-// require_once APPROOT . '/Interfaces/ReservationRepositoryInterface.php';
+require_once APPROOT . '/Interfaces/ReservationServiceInterface.php';
 require_once APPROOT . '/Repository/ReservationRepository.php';
-class ReservationService
+class ReservationService implements ReservationServiceInterface
 {
-    private $reservationRepo;
+    private ReservationRepositoryInterface $reservationRepository;
 
-    public function __construct(ReservationRepositoryInterface $reservationRepo)
+    public function __construct(ReservationRepositoryInterface $reservationRepository)
     {
-        $this->reservationRepo = $reservationRepo;
+        $this->reservationRepository = $reservationRepository;
     }
 
     public function reserveBook(int $userId, int $bookId): bool
     {
-        $existingReservations = $this->reservationRepo->getPendingReservationsByUserAndBook($userId, $bookId);
+        $existing = $this->reservationRepository
+                         ->getPendingReservationsByUserAndBook($userId, $bookId);
 
-        if (!empty($existingReservations)) {
-            return false; // Already reserved
+        if (!empty($existing)) {
+            return false; // already reserved
         }
 
-        date_default_timezone_set('Asia/Yangon');
-        $reservationData = [
-            'book_id'            => $bookId,
-            'available_quantity' => 0,
-            'user_id'            => $userId,
-            'reserved_at'        => date('Y-m-d H:i:s'),
-            'status'             => 'pending',
-        ];
-
-        return $this->reservationRepo->createReservation($reservationData);
+        return $this->reservationRepository->createReservation([
+            'user_id' => $userId,
+            'book_id' => $bookId,
+            'status'  => 'pending',
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     public function cancelReservation(int $reservationId): bool
     {
-        return $this->reservationRepo->deleteReservation($reservationId);
-    }
-    // In ReservationService.php
-    public function getAllReservations(): array
-    {
-        return $this->reservationRepo->getAll(); // Or whatever method fetches all reservation records
+        return $this->reservationRepository->deleteReservation($reservationId);
     }
 }

@@ -11,13 +11,9 @@ class BorrowBook extends Controller
 {
     private BorrowBookServiceInterface $borrowService;
 
-    public function __construct(?BorrowBookServiceInterface $borrowService = null)
+    public function __construct(BorrowBookServiceInterface $borrowService)
     {
         AuthMiddleware::userOnly();
-        if ($borrowService === null) {
-            $borrowRepo = new BorrowBookRepository();
-            $borrowService = new BorrowBookService($borrowRepo);
-        }
         $this->borrowService = $borrowService;
     }
 

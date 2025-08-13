@@ -1,0 +1,7 @@
+<?php
+interface BookServiceInterface
+{
+    public function registerBook (array $data, array $file): bool;
+    public function editBook (int $id, array $data): bool;
+}
+?>

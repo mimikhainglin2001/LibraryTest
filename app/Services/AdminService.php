@@ -41,13 +41,21 @@ class AdminService implements AdminServiceInterface
 
     public function getUserProfile(int $id): ?array
     {
-        return $this->userRepo->getUserById($id);
+        $user = $this->userRepo->getUserById($id);
+
+        // Ensure role_name is set
+        if (!isset($user['role_name'])) {
+            $user['role_name'] = 'Admin'; // default
+        }
+
+        return $user;
     }
 
     public function updateUserProfile(int $id, array $data): bool
     {
         return $this->userRepo->updateUser($id, $data);
     }
+
 
     public function changePassword(int $id, string $newPassword): bool
     {
@@ -73,6 +81,4 @@ class AdminService implements AdminServiceInterface
     {
         return $this->userRepo->getAllReservations();
     }
-    
 }
-

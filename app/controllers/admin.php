@@ -9,12 +9,10 @@ class Admin extends Controller
 {
     private AdminServiceInterface $adminService;
 
-    public function __construct(?AdminServiceInterface $adminService = null)
+    public function __construct(AdminServiceInterface $adminService )
     {
         AuthMiddleware::adminOnly();
-
-        $userRepo = new AdminRepository();
-        $this->adminService = new AdminService($userRepo);
+        $this->adminService = $adminService;
     }
 
     public function index()
@@ -24,11 +22,18 @@ class Admin extends Controller
 
     public function adminDashboard()
     {
-        $this->view('admin/adminDashboard');
+        $books = $this->adminService->getBookList();
+        $borrowbook = $this->adminService->getBorrowedBooks();
+        $allbook = [
+            'book' => $books,
+            'borrowbook' => $borrowbook
+        ];
+        $this->view('admin/adminDashboard' , $allbook);
     }
 
     public function adminregister()
     {
+
         $this->view('admin/adminregister');
     }
 

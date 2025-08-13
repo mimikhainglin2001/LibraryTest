@@ -8,15 +8,9 @@ class User extends Controller
     private UserServiceInterface $userService;
     private $user;
 
-    public function __construct(?UserServiceInterface $userService = null)
+    public function __construct(UserServiceInterface $userService )
     {
         AuthMiddleware::userOnly();
-
-        if ($userService === null) {
-            $userRepository = new UserRepository();
-            $userService = new UserService($userRepository);
-        }
-
         $this->userService = $userService;
         $this->user = $_SESSION['session_loginuser'] ?? null;
     }

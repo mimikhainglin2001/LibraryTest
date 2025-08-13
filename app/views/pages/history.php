@@ -1,5 +1,3 @@
-<?php
-?>
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,6 +76,11 @@
     .status.renewed {
         background-color: #f7ec88ff;
         color: #fff;
+    }
+
+    .date-overdue {
+        color: red;
+        font-weight: bold;
     }
 </style>
 
@@ -186,10 +189,26 @@
                                             ISBN: <?= htmlspecialchars($book['isbn']) ?>
                                         </div>
                                     </td>
-                                    <td><?= htmlspecialchars($book['borrow_date']) ?></td>
-                                    <td><?= htmlspecialchars($book['due_date']) ?></td>
-                                    <td><?= htmlspecialchars($book['return_date'] ?? '-') ?></td>
-                                    <td><?= htmlspecialchars($book['renew_date'] ?? '-') ?></td>
+                                    <td>
+                                        <?= $book['borrow_date'] 
+                                            ? (new DateTime($book['borrow_date']))->format('F, j, Y') 
+                                            : '-' ?>
+                                    </td>
+                                    <td class="<?= ($book['status'] === 'overdue') ? 'date-overdue' : '' ?>">
+                                        <?= $book['due_date'] 
+                                            ? (new DateTime($book['due_date']))->format('F, j, Y') 
+                                            : '-' ?>
+                                    </td>
+                                    <td>
+                                        <?= $book['return_date'] 
+                                            ? (new DateTime($book['return_date']))->format('F, j, Y') 
+                                            : '-' ?>
+                                    </td>
+                                    <td>
+                                        <?= $book['renew_date'] 
+                                            ? (new DateTime($book['renew_date']))->format('F, j, Y') 
+                                            : '-' ?>
+                                    </td>
                                     <td><?= htmlspecialchars($book['renew_count'] ?? '0') ?></td>
                                     <td>
                                         <?php if ($book['status'] === 'overdue'): ?>
@@ -220,10 +239,6 @@
                                             </button>
                                         <?php endif; ?>
                                     </td>
-
-
-
-
                                 </tr>
                             <?php endforeach; ?>
 

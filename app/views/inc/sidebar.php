@@ -63,25 +63,25 @@ $name = $_SESSION['session_loginuser'] ?? 'Admin'; ?>
                             Manage Members
                         </a>
                     </li>
-                    <li  class="<?php echo (strpos($currentUrl, '/user/customer') !== false) ? 'active' : ''; ?> ">
+                    <li  class="<?php echo (strpos($currentUrl, '/admin/manageBook') !== false) ? 'active' : ''; ?> ">
                         <a href="<?php echo URLROOT;?>/admin/manageBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
                             <i class="fas fa-book mr-3"></i>
                             Manage Books
                         </a>
                     </li>
-                    <li  class="<?php echo (strpos($currentUrl, '/user/customer') !== false) ? 'active' : ''; ?>">
+                    <li  class="<?php echo (strpos($currentUrl, '/admin/issueBook') !== false) ? 'active' : ''; ?>">
                         <a href="<?php echo URLROOT;?>/admin/issueBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
                             <i class="fas fa-plus-circle mr-3"></i>
                             Borrow List
                         </a>
                     </li>
-                    <li  class="<?php echo (strpos($currentUrl, '/user/customer') !== false) ? 'active' : ''; ?>">
+                    <li  class="<?php echo (strpos($currentUrl, '/admin/returnBook') !== false) ? 'active' : ''; ?>">
                         <a href="<?php echo URLROOT;?>/admin/returnBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
                             <i class="fas fa-undo-alt mr-3"></i>
                             Return
                         </a>
                     </li>
-                    <li class="<?php echo (strpos($currentUrl, '/user/customer') !== false) ? 'active' : ''; ?>">
+                    <li class="<?php echo (strpos($currentUrl, '/admin/reservation') !== false) ? 'active' : ''; ?>">
                         <a href="<?php echo URLROOT;?>/admin/reservation" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
                             <i class="fas fa-clipboard-list mr-3"></i>
                             Reservations
