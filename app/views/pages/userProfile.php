@@ -446,7 +446,7 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                 </div>
-                
+
                 <!-- User Details -->
                 <div class="user-details">
                     <h3 class="user-name">
@@ -479,7 +479,7 @@
                 <i class="fas fa-info-circle"></i>
                 Personal Information
             </h4>
-            
+
             <div class="info-grid">
                 <!-- Name Card -->
                 <div class="info-card name">
@@ -532,7 +532,7 @@
                         <i class="fas fa-calendar-alt info-icon year"></i>
                     </div>
                     <div class="info-value">
-                         <?php echo htmlspecialchars($data['loginuser']['year']); ?>
+                        <?php echo htmlspecialchars($data['loginuser']['year']); ?>
                     </div>
                 </div>
 
@@ -555,16 +555,16 @@
                     <span class="hide-mobile">Quick Actions</span>
                     <span class="show-mobile">Actions</span>
                 </h4>
-                
+
                 <div class="actions-grid">
-                    <a href="<?php echo URLROOT; ?>/pages/editProfile/<?php echo $data['loginuser']['id']; ?>" 
-                       class="action-btn btn-edit">
+                    <a href="<?php echo URLROOT; ?>/pages/editProfile/<?php echo $data['loginuser']['id']; ?>"
+                        class="action-btn btn-edit">
                         <i class="fas fa-edit"></i>
                         Edit Profile
                     </a>
-                    
-                    <a href="<?php echo URLROOT; ?>/pages/changeUserPassword/<?php echo $data['loginuser']['id']; ?>" 
-                       class="action-btn btn-password">
+
+                    <a href="<?php echo URLROOT; ?>/pages/changeUserPassword/<?php echo $data['loginuser']['id']; ?>"
+                        class="action-btn btn-password">
                         <i class="fas fa-key"></i>
                         <span class="hide-mobile">Change Password</span>
                         <span class="show-mobile">Change Pass</span>

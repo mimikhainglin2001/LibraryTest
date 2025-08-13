@@ -1,5 +1,4 @@
 <?php
-// interfaces/IUserRepository.php
 interface AdminRepositoryInterface
 {
     public function getAllUsers(): array;
