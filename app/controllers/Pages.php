@@ -52,6 +52,7 @@ class Pages extends Controller
     {
         $this->view('pages/login');
     }
+    
     public function changeUserPassword()
     {
         $this->view('pages/changeUserPassword');

@@ -37,6 +37,7 @@
                 <p class="hero-description">Where knowledge meets curiosity and stories come alive. Discover, learn, and explore in our sanctuary of books and digital resources.</p>
                 <div class="hero-actions">
                     <a href="<?php echo URLROOT;?>/pages/home"><button class="btn btn-primary">Get Knowledge</button></a>
+                    <a href="<?php echo URLROOT;?>/pages/login"><button class="btn btn-primary">Login</button></a>
                 </div>
             </div>
             <div class="hero-visual">

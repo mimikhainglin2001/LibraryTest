@@ -9,7 +9,7 @@ class Admin extends Controller
 {
     private AdminServiceInterface $adminService;
 
-    public function __construct(AdminServiceInterface $adminService )
+    public function __construct(AdminServiceInterface $adminService)
     {
         AuthMiddleware::adminOnly();
         $this->adminService = $adminService;
@@ -28,7 +28,7 @@ class Admin extends Controller
             'book' => $books,
             'borrowbook' => $borrowbook
         ];
-        $this->view('admin/adminDashboard' , $allbook);
+        $this->view('admin/adminDashboard', $allbook);
     }
 
     public function adminregister()
@@ -45,16 +45,34 @@ class Admin extends Controller
 
     public function manageMember()
     {
+        // Start session if not started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Generate CSRF token if it doesn't exist
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         $members = $this->adminService->getMembers();
-        $this->view('admin/manageMember', ['members' => $members]);
+
+        $this->view('admin/manageMember', [
+            'members' => $members,
+        ]);
     }
+
 
     public function manageBook()
     {
-        
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         $booklist = $this->adminService->getBookList();
         $data = [
-            'booklist' => $booklist
+            'booklist' => $booklist,
+            'csrf_token' => $_SESSION['csrf_token'] // Pass token to view
         ];
         $this->view('admin/manageBook', $data);
     }
@@ -72,7 +90,14 @@ class Admin extends Controller
 
     public function returnBook()
     {
-        $returnBookList = $this->adminService->getBorrowedBooks();
+        $allBorrowedBooks = $this->adminService->getBorrowedBooks();
+
+        $returnBookList = array_filter($allBorrowedBooks, function ($book) {
+            return !empty($book['return_date']);
+        });
+
+
+
         $this->view('admin/returnBook', ['returnBookList' => $returnBookList]);
     }
 
@@ -95,6 +120,7 @@ class Admin extends Controller
 
         $this->view('admin/profile', ['loginuser' => $loginuser]);
     }
+
 
     public function editAdminProfile()
     {
@@ -127,49 +153,50 @@ class Admin extends Controller
         }
     }
 
+
+
     public function editMemberList($id)
-    {
-        $user = $this->adminService->getUserProfile($id);
-
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            // You can load edit view with user data here if needed
-            return;
-        }
-
-        $updatedData = [
-            'name' => $_POST['name'] ?? $user['name'],
-            'year' => $_POST['year'] ?? $user['year'],
-            // Avoid updating 'id' as primary key
-        ];
-
-        if (!$this->adminService->updateUserProfile($id, $updatedData)) {
-            setMessage('error', 'Failed to update member list');
-            // Optionally redirect or show error view
-            return;
-        }
-
-        setMessage('success', 'Member list updated successfully');
-        redirect('admin/manageMember');
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+    $data = [
+        'name' => $_POST['name'],
+        'year' => $_POST['year'],
+        'is_active' => ($_POST['status'] === 'Active') ? 1 : 0
+    ];
+
+    $updated = $this->adminService->updateUserProfile((int)$id, $data);
+    if ($updated) {
+        header('Location: ' . URLROOT . '/admin/manageMember');
+        exit;
+    } else {
+        echo "Error updating member.";
+    }
+}
+
+
+
 
     public function deleteMemberList($id)
-    {
-        $user = $this->adminService->getUserProfile($id);
-
-        if (!$user) {
-            setMessage('error', 'User not found');
-            redirect('admin/manageMember');
-            return;
-        }
-
-        if ($this->adminService->deleteUser($id)) {
-            setMessage('success', 'Member deleted successfully');
-        } else {
-            setMessage('error', 'Failed to delete member');
-        }
-
-        redirect('admin/manageMember');
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    // Check token
+
+
+    // Continue if valid
+    $deleted = $this->adminService->deleteUser((int)$id);
+    if ($deleted) {
+        header('Location: ' . URLROOT . '/admin/manageMember');
+        exit;
+    } else {
+        echo "Error deleting member.";
+    }
+}
+
 
     public function changeAdminPassword()
     {
@@ -254,5 +281,3 @@ class Admin extends Controller
         redirect('admin/adminlist');
     }
 }
-
-

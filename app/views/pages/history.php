@@ -4,6 +4,7 @@
 
 <head>
     <link rel="stylesheet" href="/librarycss/history.css?v=2">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <style>
     .action-btn {
@@ -190,23 +191,23 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <?= $book['borrow_date'] 
-                                            ? (new DateTime($book['borrow_date']))->format('F, j, Y') 
+                                        <?= $book['borrow_date']
+                                            ? (new DateTime($book['borrow_date']))->format('F, j, Y')
                                             : '-' ?>
                                     </td>
                                     <td class="<?= ($book['status'] === 'overdue') ? 'date-overdue' : '' ?>">
-                                        <?= $book['due_date'] 
-                                            ? (new DateTime($book['due_date']))->format('F, j, Y') 
+                                        <?= $book['due_date']
+                                            ? (new DateTime($book['due_date']))->format('F, j, Y')
                                             : '-' ?>
                                     </td>
                                     <td>
-                                        <?= $book['return_date'] 
-                                            ? (new DateTime($book['return_date']))->format('F, j, Y') 
+                                        <?= $book['return_date']
+                                            ? (new DateTime($book['return_date']))->format('F, j, Y')
                                             : '-' ?>
                                     </td>
                                     <td>
-                                        <?= $book['renew_date'] 
-                                            ? (new DateTime($book['renew_date']))->format('F, j, Y') 
+                                        <?= $book['renew_date']
+                                            ? (new DateTime($book['renew_date']))->format('F, j, Y')
                                             : '-' ?>
                                     </td>
                                     <td><?= htmlspecialchars($book['renew_count'] ?? '0') ?></td>
@@ -270,7 +271,7 @@
             </div>
 
             <div class="navigation">
-                <a href="<?= URLROOT ?>/pages/category" class="back-btn">&larr; Back</a>
+                <a href="<?= URLROOT; ?>/pages/category" class="back-btn">Back</a>
             </div>
 
         </div>
@@ -307,4 +308,5 @@
         statusFilter.addEventListener('change', filterRows);
     </script>
 </body>
+
 </html>
