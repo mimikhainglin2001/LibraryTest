@@ -123,8 +123,10 @@ class Auth extends Controller
             $params = [
                 $name,
                 $email,
+                null,
                 $department,
                 $gender,
+                null,
                 $encodedPassword,
                 0,
                 0,
@@ -195,6 +197,7 @@ class Auth extends Controller
                 $name,
                 $email,
                 $roll,
+                null,
                 $gender,
                 $year,
                 $encodedPassword,

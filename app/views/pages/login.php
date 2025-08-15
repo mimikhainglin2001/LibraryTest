@@ -562,7 +562,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <div class="form-section">
             <div class="hero-section">
                 
-            <h5 class="image-title">Welcome Back</h5>
+            <h5 class="image-title">Login</h5>
                 <h3>Enter Your Email And Password To Continue</h3>
             </div>
 

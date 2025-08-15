@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">User List</h2>
         <div class="flex items-center space-x-4">
-          
+
             <a href="<?php echo URLROOT; ?>/admin/profile"
                 class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
                 <i class="fas fa-user-circle text-2xl"></i>
@@ -36,7 +36,7 @@
                             <td class="border px-4 py-2"><?= htmlspecialchars($member['email']) ?></td>
                             <td class="border px-4 py-2"><?= htmlspecialchars($member['rollno'] ?? '') ?></td>
                             <td class="border px-4 py-2"><?= htmlspecialchars($member['gender']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['year'] ?? '')?></td>
+                            <td class="border px-4 py-2"><?= htmlspecialchars($member['year'] ?? '') ?></td>
                             <td class="border px-4 py-2">
                                 <span class="<?= $member['is_active'] ? 'text-green-600' : 'text-red-600' ?>">
                                     <?= $member['is_active'] ? 'Active' : 'Inactive' ?>
@@ -102,7 +102,7 @@
         </h3>
         <form id="editForm" method="POST" class="space-y-4">
             <input type="hidden" id="editId" name="id">
-
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
             <div>
                 <label for="editName" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" id="editName" name="name" required
@@ -142,13 +142,17 @@
 <!-- Delete Modal -->
 <div id="deleteModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
     <div class="modal-content">
-        <form id="deleteForm" method="POST">
-            <input type="hidden" id="deleteInputId" name="id">
-            <h3 id="deleteModalTitle">Confirm Deletion</h3>
-            <p>Are you sure you want to delete this member?</p>
-            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
-            <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-        </form>
+        <!-- Inside your view (e.g., manageMember.php) -->
+<form id="deleteForm" method="POST" action="<?= URLROOT ?>/admin/deleteMemberList">
+    <input type="hidden" id="deleteInputId" name="id">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+    
+    <h3 id="deleteModalTitle">Confirm Deletion</h3>
+    <p>Are you sure you want to delete this member?</p>
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+    <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+</form>
+
     </div>
 </div>
 

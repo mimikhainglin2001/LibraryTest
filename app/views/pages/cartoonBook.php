@@ -14,6 +14,7 @@ unset($_SESSION['modal']); // Clear it immediately after reading
 $modalType = $modalData['type'] ?? 'none';    // 'success' or 'error'
 $modalMessage = $modalData['message'] ?? ''; // The actual message text
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
     * {
@@ -338,43 +339,45 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
 
     /* Navigation */
     .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding: 30px 20px;
-            border-top: 2px solid #e9ecef;
-        }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding: 30px 20px;
+        border-top: 2px solid #e9ecef;
+    }
 
-        .back-btn {
-            background: linear-gradient(135deg, #6c757d, #5a6268);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
-        }
+    .back-btn,
+    .see-more-btn {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
 
-        .back-btn:hover {
-            background: linear-gradient(135deg, #5a6268, #495057);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
-        }
+    .back-btn:hover,
+    .see-more-btn:hover {
+        background: linear-gradient(135deg, #5a6268, #495057);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+    }
 
-        .back-btn::before {
-            content: '\f060';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-        }
+    .back-btn::before {
+        content: '\f060';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+    }
 
     .see-more-btn {
         background: linear-gradient(135deg, #17a2b8, #138496);
@@ -677,7 +680,8 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         </div>
         
       <div class="navigation">
-            <a href="<?php echo URLROOT;?>/pages/category" class="back-btn">Back</a>
+            <a href="<?= URLROOT; ?>/pages/category" class="back-btn">Back</a>
+            <button class="see-more-btn" id="seeMoreBtn">See More Books</button>
         </div>
     </section>
 </main>

@@ -14,6 +14,7 @@ unset($_SESSION['modal']); // Clear it immediately after reading
 $modalType = $modalData['type'] ?? 'none';    // 'success' or 'error'
 $modalMessage = $modalData['message'] ?? ''; // The actual message text
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
     * {
@@ -679,7 +680,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         </div>
         
       <div class="navigation">
-            <a href="<?= URLROOT; ?>/pages/category" class="back-btn">← Back to Categories</a>
+            <a href="<?= URLROOT; ?>/pages/category" class="back-btn">Back</a>
             <button class="see-more-btn" id="seeMoreBtn">See More Books</button>
         </div>
     </section>

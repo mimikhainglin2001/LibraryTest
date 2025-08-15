@@ -1,0 +1,1635 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Library</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Link to external CSS file (assuming admin.css handles responsive adjustments for sidebar/main content) -->
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/adminDashboard.css?v=2">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/manageMember.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/manageBook.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/issueBook.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/addnewBook.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3 authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+</head>
+<style>
+.active{
+    background-color: #1D4ED8;
+    border-radius: 8px;
+
+}
+
+</style>
+<body class="bg-gray-100">
+
+    <!-- Main Content Area with Sidebar -->
+    <div class="body-flex-container">
+        <aside class="sidebar-container bg-blue-900 text-white flex flex-col shadow-lg w-70">
+            <div class="p-6 text-2xl font-bold border-b border-blue-800 hidden sm:block">
+                ADMIN DASHBOARD
+            </div>
+            <nav class="flex-1 mt-6 mr-6 w-50">
+                <ul class="space-y-2">
+                    <li class="">
+                        <a href="http://localhost:8000/admin/adminDashboard" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                     <li class="">
+                        <a href="http://localhost:8000/admin/adminlist" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Manage Admin
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="http://localhost:8000/admin/manageMember" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Manage Members
+                        </a>
+                    </li>
+                    <li  class="active ">
+                        <a href="http://localhost:8000/admin/manageBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-book mr-3"></i>
+                            Manage Books
+                        </a>
+                    </li>
+                    <li  class="">
+                        <a href="http://localhost:8000/admin/issueBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-plus-circle mr-3"></i>
+                            Borrow List
+                        </a>
+                    </li>
+                    <li  class="">
+                        <a href="http://localhost:8000/admin/returnBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-undo-alt mr-3"></i>
+                            Return
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="http://localhost:8000/admin/reservation" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-clipboard-list mr-3"></i>
+                            Reservations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8000/auth/logout" id="logoutButton" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    Logout
+                </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- <div class="mt-auto p-6 border-t border-blue-800">
+                
+            </div> -->
+        </aside>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<main class="main-content-area bg-blue-100 shadow-md">
+    <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800">Book List</h2>
+        <div class="flex items-center space-x-4">
+            <a href="http://localhost:8000/admin/profile" class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="font-medium">Paing Kyaw Moe</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex justify-end mb-4">
+            <a href="http://localhost:8000/admin/addNewBook" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
+                Add New Book 📚
+            </a>
+        </div>
+        
+        <div class="table-scroll-container">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="border px-4 py-2">Book ID</th>
+                        <th class="border px-4 py-2">ISBN</th>
+                        <th class="border px-4 py-2">Title</th>
+                        <th class="border px-4 py-2">Author Name</th>
+                        <th class="border px-4 py-2">Total Quantity</th>
+                        <th class="border px-4 py-2">Available Quantity</th>
+                        <th class="border px-4 py-2">Status Description</th>
+                        <th class="border px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">  
+                        <tr>
+                <td class="table-cell book-id border px-4 py-2">1</td>
+                <td class="table-cell book-isbn border px-4 py-2">0001</td>
+                <td class="table-cell book-title border px-4 py-2">အမှတ်တရ</td>
+                <td class="table-cell book-author border px-4 py-2">ဂျူး</td>
+                <td class="table-cell book-author border px-4 py-2">6</td>
+                <td class="table-cell book-quantity border px-4 py-2">6</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="1"
+                            data-title="အမှတ်တရ"
+                            data-author="ဂျူး"
+                            data-isbn="0001"
+                            data-quantity="6"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="1"
+                            data-title="အမှတ်တရ"
+                            data-author="ဂျူး"
+                            data-isbn="0001"
+                            data-quantity="6"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">2</td>
+                <td class="table-cell book-isbn border px-4 py-2">0002</td>
+                <td class="table-cell book-title border px-4 py-2">လက်ကျန်လရောင်</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="2"
+                            data-title="လက်ကျန်လရောင်"
+                            data-author="ပုညခင်"
+                            data-isbn="0002"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="2"
+                            data-title="လက်ကျန်လရောင်"
+                            data-author="ပုညခင်"
+                            data-isbn="0002"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">3</td>
+                <td class="table-cell book-isbn border px-4 py-2">0003</td>
+                <td class="table-cell book-title border px-4 py-2">မောင်ရင်မောင် မမယ်မ</td>
+                <td class="table-cell book-author border px-4 py-2">James Hla Gyaw</td>
+                <td class="table-cell book-author border px-4 py-2">5</td>
+                <td class="table-cell book-quantity border px-4 py-2">5</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="3"
+                            data-title="မောင်ရင်မောင် မမယ်မ"
+                            data-author="James Hla Gyaw"
+                            data-isbn="0003"
+                            data-quantity="5"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="3"
+                            data-title="မောင်ရင်မောင် မမယ်မ"
+                            data-author="James Hla Gyaw"
+                            data-isbn="0003"
+                            data-quantity="5"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">4</td>
+                <td class="table-cell book-isbn border px-4 py-2">0004</td>
+                <td class="table-cell book-title border px-4 py-2">ဒေါင်းယာဉ်ပျံဘုံနံဘေးမှာ စာရေးလို့ထားချင်တယ်</td>
+                <td class="table-cell book-author border px-4 py-2">နွမ်ဂျာသိုင်း</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="4"
+                            data-title="ဒေါင်းယာဉ်ပျံဘုံနံဘေးမှာ စာရေးလို့ထားချင်တယ်"
+                            data-author="နွမ်ဂျာသိုင်း"
+                            data-isbn="0004"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="4"
+                            data-title="ဒေါင်းယာဉ်ပျံဘုံနံဘေးမှာ စာရေးလို့ထားချင်တယ်"
+                            data-author="နွမ်ဂျာသိုင်း"
+                            data-isbn="0004"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">5</td>
+                <td class="table-cell book-isbn border px-4 py-2">0005</td>
+                <td class="table-cell book-title border px-4 py-2">အချစ်ဆုံးသူရဲ့အတ္ထုပ္ပတ္တိ</td>
+                <td class="table-cell book-author border px-4 py-2">နွမ်ဂျာသိုင်း</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="5"
+                            data-title="အချစ်ဆုံးသူရဲ့အတ္ထုပ္ပတ္တိ"
+                            data-author="နွမ်ဂျာသိုင်း"
+                            data-isbn="0005"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="5"
+                            data-title="အချစ်ဆုံးသူရဲ့အတ္ထုပ္ပတ္တိ"
+                            data-author="နွမ်ဂျာသိုင်း"
+                            data-isbn="0005"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">6</td>
+                <td class="table-cell book-isbn border px-4 py-2">0006</td>
+                <td class="table-cell book-title border px-4 py-2">နောက်ဆုံးနက္ခတ်</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="6"
+                            data-title="နောက်ဆုံးနက္ခတ်"
+                            data-author="ပုညခင်"
+                            data-isbn="0006"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="6"
+                            data-title="နောက်ဆုံးနက္ခတ်"
+                            data-author="ပုညခင်"
+                            data-isbn="0006"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">8</td>
+                <td class="table-cell book-isbn border px-4 py-2">0007</td>
+                <td class="table-cell book-title border px-4 py-2">အိပ်မက်ဆက်ကြိုး</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="8"
+                            data-title="အိပ်မက်ဆက်ကြိုး"
+                            data-author="ပုညခင်"
+                            data-isbn="0007"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="8"
+                            data-title="အိပ်မက်ဆက်ကြိုး"
+                            data-author="ပုညခင်"
+                            data-isbn="0007"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">9</td>
+                <td class="table-cell book-isbn border px-4 py-2">0008</td>
+                <td class="table-cell book-title border px-4 py-2">Database System and Concepts</td>
+                <td class="table-cell book-author border px-4 py-2">Abraham Silberschatz, Henry F. Korth, S. Sudarshan</td>
+                <td class="table-cell book-author border px-4 py-2">11</td>
+                <td class="table-cell book-quantity border px-4 py-2">11</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="9"
+                            data-title="Database System and Concepts"
+                            data-author="Abraham Silberschatz, Henry F. Korth, S. Sudarshan"
+                            data-isbn="0008"
+                            data-quantity="11"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="9"
+                            data-title="Database System and Concepts"
+                            data-author="Abraham Silberschatz, Henry F. Korth, S. Sudarshan"
+                            data-isbn="0008"
+                            data-quantity="11"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">10</td>
+                <td class="table-cell book-isbn border px-4 py-2">0009</td>
+                <td class="table-cell book-title border px-4 py-2"> Deterministic Artificial Intelligence</td>
+                <td class="table-cell book-author border px-4 py-2">Timothy Sands</td>
+                <td class="table-cell book-author border px-4 py-2">5</td>
+                <td class="table-cell book-quantity border px-4 py-2">5</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="10"
+                            data-title=" Deterministic Artificial Intelligence"
+                            data-author="Timothy Sands"
+                            data-isbn="0009"
+                            data-quantity="5"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="10"
+                            data-title=" Deterministic Artificial Intelligence"
+                            data-author="Timothy Sands"
+                            data-isbn="0009"
+                            data-quantity="5"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">11</td>
+                <td class="table-cell book-isbn border px-4 py-2">0010</td>
+                <td class="table-cell book-title border px-4 py-2">Cambridge Grammar for IELTS Student&#039;s Book with Answers and Audio CD</td>
+                <td class="table-cell book-author border px-4 py-2">Diana Hopkins, Pauline Cullen</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="11"
+                            data-title="Cambridge Grammar for IELTS Student&#039;s Book with Answers and Audio CD"
+                            data-author="Diana Hopkins, Pauline Cullen"
+                            data-isbn="0010"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="11"
+                            data-title="Cambridge Grammar for IELTS Student&#039;s Book with Answers and Audio CD"
+                            data-author="Diana Hopkins, Pauline Cullen"
+                            data-isbn="0010"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">12</td>
+                <td class="table-cell book-isbn border px-4 py-2">0011</td>
+                <td class="table-cell book-title border px-4 py-2"> Cloud Computing</td>
+                <td class="table-cell book-author border px-4 py-2">Lee Gillam</td>
+                <td class="table-cell book-author border px-4 py-2">7</td>
+                <td class="table-cell book-quantity border px-4 py-2">7</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="12"
+                            data-title=" Cloud Computing"
+                            data-author="Lee Gillam"
+                            data-isbn="0011"
+                            data-quantity="7"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="12"
+                            data-title=" Cloud Computing"
+                            data-author="Lee Gillam"
+                            data-isbn="0011"
+                            data-quantity="7"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">13</td>
+                <td class="table-cell book-isbn border px-4 py-2">0012</td>
+                <td class="table-cell book-title border px-4 py-2">Enterprise Resource Planning Systems</td>
+                <td class="table-cell book-author border px-4 py-2">Daniel E. O&#039;Leary</td>
+                <td class="table-cell book-author border px-4 py-2">6</td>
+                <td class="table-cell book-quantity border px-4 py-2">6</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="13"
+                            data-title="Enterprise Resource Planning Systems"
+                            data-author="Daniel E. O&#039;Leary"
+                            data-isbn="0012"
+                            data-quantity="6"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="13"
+                            data-title="Enterprise Resource Planning Systems"
+                            data-author="Daniel E. O&#039;Leary"
+                            data-isbn="0012"
+                            data-quantity="6"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">14</td>
+                <td class="table-cell book-isbn border px-4 py-2">0013</td>
+                <td class="table-cell book-title border px-4 py-2">Software Engineering</td>
+                <td class="table-cell book-author border px-4 py-2">Ian Sommerville</td>
+                <td class="table-cell book-author border px-4 py-2">10</td>
+                <td class="table-cell book-quantity border px-4 py-2">10</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="14"
+                            data-title="Software Engineering"
+                            data-author="Ian Sommerville"
+                            data-isbn="0013"
+                            data-quantity="10"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="14"
+                            data-title="Software Engineering"
+                            data-author="Ian Sommerville"
+                            data-isbn="0013"
+                            data-quantity="10"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">16</td>
+                <td class="table-cell book-isbn border px-4 py-2">0014</td>
+                <td class="table-cell book-title border px-4 py-2">မအိမ်ကံ</td>
+                <td class="table-cell book-author border px-4 py-2">ခင်ခင်ထူး</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="16"
+                            data-title="မအိမ်ကံ"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0014"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="16"
+                            data-title="မအိမ်ကံ"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0014"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">17</td>
+                <td class="table-cell book-isbn border px-4 py-2">0015</td>
+                <td class="table-cell book-title border px-4 py-2">တာတေစနေသား</td>
+                <td class="table-cell book-author border px-4 py-2">ဦးနု</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="17"
+                            data-title="တာတေစနေသား"
+                            data-author="ဦးနု"
+                            data-isbn="0015"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="17"
+                            data-title="တာတေစနေသား"
+                            data-author="ဦးနု"
+                            data-isbn="0015"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">18</td>
+                <td class="table-cell book-isbn border px-4 py-2">0016</td>
+                <td class="table-cell book-title border px-4 py-2">On Sundays She Picked Flowers</td>
+                <td class="table-cell book-author border px-4 py-2">Yah-Yah-Scholfield</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="18"
+                            data-title="On Sundays She Picked Flowers"
+                            data-author="Yah-Yah-Scholfield"
+                            data-isbn="0016"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="18"
+                            data-title="On Sundays She Picked Flowers"
+                            data-author="Yah-Yah-Scholfield"
+                            data-isbn="0016"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">19</td>
+                <td class="table-cell book-isbn border px-4 py-2">0017</td>
+                <td class="table-cell book-title border px-4 py-2">The Locked Door</td>
+                <td class="table-cell book-author border px-4 py-2">Ferida Mcfadden</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="19"
+                            data-title="The Locked Door"
+                            data-author="Ferida Mcfadden"
+                            data-isbn="0017"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="19"
+                            data-title="The Locked Door"
+                            data-author="Ferida Mcfadden"
+                            data-isbn="0017"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">20</td>
+                <td class="table-cell book-isbn border px-4 py-2">0018</td>
+                <td class="table-cell book-title border px-4 py-2">That&#039;s Not My Name</td>
+                <td class="table-cell book-author border px-4 py-2">Megan Lally</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="20"
+                            data-title="That&#039;s Not My Name"
+                            data-author="Megan Lally"
+                            data-isbn="0018"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="20"
+                            data-title="That&#039;s Not My Name"
+                            data-author="Megan Lally"
+                            data-isbn="0018"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">22</td>
+                <td class="table-cell book-isbn border px-4 py-2">0019</td>
+                <td class="table-cell book-title border px-4 py-2">The Indispensable Calvin and Hobbes</td>
+                <td class="table-cell book-author border px-4 py-2">Bill Watterson</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="22"
+                            data-title="The Indispensable Calvin and Hobbes"
+                            data-author="Bill Watterson"
+                            data-isbn="0019"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="22"
+                            data-title="The Indispensable Calvin and Hobbes"
+                            data-author="Bill Watterson"
+                            data-isbn="0019"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">23</td>
+                <td class="table-cell book-isbn border px-4 py-2">0020</td>
+                <td class="table-cell book-title border px-4 py-2">အကြင်သူသည်</td>
+                <td class="table-cell book-author border px-4 py-2">သိုးဆောင်း</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="23"
+                            data-title="အကြင်သူသည်"
+                            data-author="သိုးဆောင်း"
+                            data-isbn="0020"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="23"
+                            data-title="အကြင်သူသည်"
+                            data-author="သိုးဆောင်း"
+                            data-isbn="0020"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">24</td>
+                <td class="table-cell book-isbn border px-4 py-2">0021</td>
+                <td class="table-cell book-title border px-4 py-2">ပန်းကြာဝတ်မှုန်</td>
+                <td class="table-cell book-author border px-4 py-2">ခင်ခင်ထူး</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="24"
+                            data-title="ပန်းကြာဝတ်မှုန်"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0021"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="24"
+                            data-title="ပန်းကြာဝတ်မှုန်"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0021"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">25</td>
+                <td class="table-cell book-isbn border px-4 py-2">0022</td>
+                <td class="table-cell book-title border px-4 py-2">သူငယ်ချင်းလို့ပဲဆက်၍ခေါ်မည်ခိုင်</td>
+                <td class="table-cell book-author border px-4 py-2">တက္ကသိုလ်ဘုန်းနိုင်</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="25"
+                            data-title="သူငယ်ချင်းလို့ပဲဆက်၍ခေါ်မည်ခိုင်"
+                            data-author="တက္ကသိုလ်ဘုန်းနိုင်"
+                            data-isbn="0022"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="25"
+                            data-title="သူငယ်ချင်းလို့ပဲဆက်၍ခေါ်မည်ခိုင်"
+                            data-author="တက္ကသိုလ်ဘုန်းနိုင်"
+                            data-isbn="0022"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">26</td>
+                <td class="table-cell book-isbn border px-4 py-2">0023</td>
+                <td class="table-cell book-title border px-4 py-2">မိန်းမတစ်ယောက်ရဲ့ဖွင့်ဟဝန်ခံချက်</td>
+                <td class="table-cell book-author border px-4 py-2">ဂျူး</td>
+                <td class="table-cell book-author border px-4 py-2">4</td>
+                <td class="table-cell book-quantity border px-4 py-2">4</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="26"
+                            data-title="မိန်းမတစ်ယောက်ရဲ့ဖွင့်ဟဝန်ခံချက်"
+                            data-author="ဂျူး"
+                            data-isbn="0023"
+                            data-quantity="4"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="26"
+                            data-title="မိန်းမတစ်ယောက်ရဲ့ဖွင့်ဟဝန်ခံချက်"
+                            data-author="ဂျူး"
+                            data-isbn="0023"
+                            data-quantity="4"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">27</td>
+                <td class="table-cell book-isbn border px-4 py-2">0024</td>
+                <td class="table-cell book-title border px-4 py-2">ပန်းတွေပွင့်ဖို့စောင့်ရချိန်</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="27"
+                            data-title="ပန်းတွေပွင့်ဖို့စောင့်ရချိန်"
+                            data-author="ပုညခင်"
+                            data-isbn="0024"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="27"
+                            data-title="ပန်းတွေပွင့်ဖို့စောင့်ရချိန်"
+                            data-author="ပုညခင်"
+                            data-isbn="0024"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">28</td>
+                <td class="table-cell book-isbn border px-4 py-2">0025</td>
+                <td class="table-cell book-title border px-4 py-2">မကြွေပါနဲ့ဆာကူရာ</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">4</td>
+                <td class="table-cell book-quantity border px-4 py-2">4</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="28"
+                            data-title="မကြွေပါနဲ့ဆာကူရာ"
+                            data-author="ပုညခင်"
+                            data-isbn="0025"
+                            data-quantity="4"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="28"
+                            data-title="မကြွေပါနဲ့ဆာကူရာ"
+                            data-author="ပုညခင်"
+                            data-isbn="0025"
+                            data-quantity="4"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">29</td>
+                <td class="table-cell book-isbn border px-4 py-2">0026</td>
+                <td class="table-cell book-title border px-4 py-2">ချစ်သူသာပန်းတစ်ပွင့်ဖြစ်ခဲ့လျှင်</td>
+                <td class="table-cell book-author border px-4 py-2">ပုညခင်</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="29"
+                            data-title="ချစ်သူသာပန်းတစ်ပွင့်ဖြစ်ခဲ့လျှင်"
+                            data-author="ပုညခင်"
+                            data-isbn="0026"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="29"
+                            data-title="ချစ်သူသာပန်းတစ်ပွင့်ဖြစ်ခဲ့လျှင်"
+                            data-author="ပုညခင်"
+                            data-isbn="0026"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">30</td>
+                <td class="table-cell book-isbn border px-4 py-2">0027</td>
+                <td class="table-cell book-title border px-4 py-2">လင်္ကာဒီပချစ်သူ</td>
+                <td class="table-cell book-author border px-4 py-2">ချစ်ဦးညို</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="30"
+                            data-title="လင်္ကာဒီပချစ်သူ"
+                            data-author="ချစ်ဦးညို"
+                            data-isbn="0027"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="30"
+                            data-title="လင်္ကာဒီပချစ်သူ"
+                            data-author="ချစ်ဦးညို"
+                            data-isbn="0027"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">32</td>
+                <td class="table-cell book-isbn border px-4 py-2">0028</td>
+                <td class="table-cell book-title border px-4 py-2">ရွှေတိုက်စိုး</td>
+                <td class="table-cell book-author border px-4 py-2">ချစ်ဦးညို</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="32"
+                            data-title="ရွှေတိုက်စိုး"
+                            data-author="ချစ်ဦးညို"
+                            data-isbn="0028"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="32"
+                            data-title="ရွှေတိုက်စိုး"
+                            data-author="ချစ်ဦးညို"
+                            data-isbn="0028"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">34</td>
+                <td class="table-cell book-isbn border px-4 py-2">0029</td>
+                <td class="table-cell book-title border px-4 py-2">လျှို့ဝှက်ဥယျာဉ်</td>
+                <td class="table-cell book-author border px-4 py-2">နိုင်းနိုင်းစနေ</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">0</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-red-600">
+                        Not available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="34"
+                            data-title="လျှို့ဝှက်ဥယျာဉ်"
+                            data-author="နိုင်းနိုင်းစနေ"
+                            data-isbn="0029"
+                            data-quantity="1"
+                            data-status="Not Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="34"
+                            data-title="လျှို့ဝှက်ဥယျာဉ်"
+                            data-author="နိုင်းနိုင်းစနေ"
+                            data-isbn="0029"
+                            data-quantity="1"
+                            data-status="Not Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">35</td>
+                <td class="table-cell book-isbn border px-4 py-2">0030</td>
+                <td class="table-cell book-title border px-4 py-2">မြိုင်ရာဇာတွတ်ပီ (ကျွန်ုပ်နှင့် ဘဝမှတ်တမ်း)</td>
+                <td class="table-cell book-author border px-4 py-2">ဆွေမင်းဓနုဖြူ</td>
+                <td class="table-cell book-author border px-4 py-2">5</td>
+                <td class="table-cell book-quantity border px-4 py-2">5</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="35"
+                            data-title="မြိုင်ရာဇာတွတ်ပီ (ကျွန်ုပ်နှင့် ဘဝမှတ်တမ်း)"
+                            data-author="ဆွေမင်းဓနုဖြူ"
+                            data-isbn="0030"
+                            data-quantity="5"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="35"
+                            data-title="မြိုင်ရာဇာတွတ်ပီ (ကျွန်ုပ်နှင့် ဘဝမှတ်တမ်း)"
+                            data-author="ဆွေမင်းဓနုဖြူ"
+                            data-isbn="0030"
+                            data-quantity="5"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">37</td>
+                <td class="table-cell book-isbn border px-4 py-2">0031</td>
+                <td class="table-cell book-title border px-4 py-2">My First Library Fruits And Vegetables</td>
+                <td class="table-cell book-author border px-4 py-2">ပြည်ကျော်ကျော်</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="37"
+                            data-title="My First Library Fruits And Vegetables"
+                            data-author="ပြည်ကျော်ကျော်"
+                            data-isbn="0031"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="37"
+                            data-title="My First Library Fruits And Vegetables"
+                            data-author="ပြည်ကျော်ကျော်"
+                            data-isbn="0031"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">38</td>
+                <td class="table-cell book-isbn border px-4 py-2">0032</td>
+                <td class="table-cell book-title border px-4 py-2">သူ့လိုမိန်းမ</td>
+                <td class="table-cell book-author border px-4 py-2">ဂျာနယ်ကျော်မမလေး</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="38"
+                            data-title="သူ့လိုမိန်းမ"
+                            data-author="ဂျာနယ်ကျော်မမလေး"
+                            data-isbn="0032"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="38"
+                            data-title="သူ့လိုမိန်းမ"
+                            data-author="ဂျာနယ်ကျော်မမလေး"
+                            data-isbn="0032"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">42</td>
+                <td class="table-cell book-isbn border px-4 py-2">0033</td>
+                <td class="table-cell book-title border px-4 py-2">The Haunting Of Hill House</td>
+                <td class="table-cell book-author border px-4 py-2">Jackson</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="42"
+                            data-title="The Haunting Of Hill House"
+                            data-author="Jackson"
+                            data-isbn="0033"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="42"
+                            data-title="The Haunting Of Hill House"
+                            data-author="Jackson"
+                            data-isbn="0033"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">44</td>
+                <td class="table-cell book-isbn border px-4 py-2">0034</td>
+                <td class="table-cell book-title border px-4 py-2">IT</td>
+                <td class="table-cell book-author border px-4 py-2">Stephen King</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="44"
+                            data-title="IT"
+                            data-author="Stephen King"
+                            data-isbn="0034"
+                            data-quantity="2"
+                            data-status=" Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="44"
+                            data-title="IT"
+                            data-author="Stephen King"
+                            data-isbn="0034"
+                            data-quantity="2"
+                            data-status=" Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">45</td>
+                <td class="table-cell book-isbn border px-4 py-2">0035</td>
+                <td class="table-cell book-title border px-4 py-2">ဘယ်သူလာကူပါ့မယ်</td>
+                <td class="table-cell book-author border px-4 py-2">မိုးမိုး(အင်းလျား)</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="45"
+                            data-title="ဘယ်သူလာကူပါ့မယ်"
+                            data-author="မိုးမိုး(အင်းလျား)"
+                            data-isbn="0035"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="45"
+                            data-title="ဘယ်သူလာကူပါ့မယ်"
+                            data-author="မိုးမိုး(အင်းလျား)"
+                            data-isbn="0035"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">46</td>
+                <td class="table-cell book-isbn border px-4 py-2">0036</td>
+                <td class="table-cell book-title border px-4 py-2">ဆူးပန်းခွေ သွယ်ဘယက်နှင့် ပေရွက်လိပ် နားတောင်းဆင်</td>
+                <td class="table-cell book-author border px-4 py-2">ခင်ခင်ထူး</td>
+                <td class="table-cell book-author border px-4 py-2">3</td>
+                <td class="table-cell book-quantity border px-4 py-2">3</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="46"
+                            data-title="ဆူးပန်းခွေ သွယ်ဘယက်နှင့် ပေရွက်လိပ် နားတောင်းဆင်"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0036"
+                            data-quantity="3"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="46"
+                            data-title="ဆူးပန်းခွေ သွယ်ဘယက်နှင့် ပေရွက်လိပ် နားတောင်းဆင်"
+                            data-author="ခင်ခင်ထူး"
+                            data-isbn="0036"
+                            data-quantity="3"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">47</td>
+                <td class="table-cell book-isbn border px-4 py-2">0037</td>
+                <td class="table-cell book-title border px-4 py-2">တောင်များ၏တောင်ဘက်မှပင်လယ်များ၏မြောက်ဘက်သို့</td>
+                <td class="table-cell book-author border px-4 py-2">မြသန်းတင့်</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">2</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="47"
+                            data-title="တောင်များ၏တောင်ဘက်မှပင်လယ်များ၏မြောက်ဘက်သို့"
+                            data-author="မြသန်းတင့်"
+                            data-isbn="0037"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="47"
+                            data-title="တောင်များ၏တောင်ဘက်မှပင်လယ်များ၏မြောက်ဘက်သို့"
+                            data-author="မြသန်းတင့်"
+                            data-isbn="0037"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">48</td>
+                <td class="table-cell book-isbn border px-4 py-2">0038</td>
+                <td class="table-cell book-title border px-4 py-2">ဟစ်တလာလုပ်ခဲ့သမျှ</td>
+                <td class="table-cell book-author border px-4 py-2">ရွှေဥဒေါင်း</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="48"
+                            data-title="ဟစ်တလာလုပ်ခဲ့သမျှ"
+                            data-author="ရွှေဥဒေါင်း"
+                            data-isbn="0038"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="48"
+                            data-title="ဟစ်တလာလုပ်ခဲ့သမျှ"
+                            data-author="ရွှေဥဒေါင်း"
+                            data-isbn="0038"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">49</td>
+                <td class="table-cell book-isbn border px-4 py-2">0039</td>
+                <td class="table-cell book-title border px-4 py-2">ဗီယက်နမ်သမိုင်း</td>
+                <td class="table-cell book-author border px-4 py-2">ကိုကိုလေး</td>
+                <td class="table-cell book-author border px-4 py-2">1</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="49"
+                            data-title="ဗီယက်နမ်သမိုင်း"
+                            data-author="ကိုကိုလေး"
+                            data-isbn="0039"
+                            data-quantity="1"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="49"
+                            data-title="ဗီယက်နမ်သမိုင်း"
+                            data-author="ကိုကိုလေး"
+                            data-isbn="0039"
+                            data-quantity="1"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+                    <tr>
+                <td class="table-cell book-id border px-4 py-2">50</td>
+                <td class="table-cell book-isbn border px-4 py-2">0040</td>
+                <td class="table-cell book-title border px-4 py-2">မီ</td>
+                <td class="table-cell book-author border px-4 py-2">ကြည်အေး</td>
+                <td class="table-cell book-author border px-4 py-2">2</td>
+                <td class="table-cell book-quantity border px-4 py-2">1</td>
+                <td class="table-cell book-status border px-4 py-2">
+                                        <span class="status text-green-600">
+                        Available                    </span>
+                </td>
+                <td class="table-cell border px-4 py-2">
+                    <div class="flex space-x-2">
+                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                            data-id="50"
+                            data-title="မီ"
+                            data-author="ကြည်အေး"
+                            data-isbn="0040"
+                            data-quantity="2"
+                            data-status="Available">
+                            Details
+                        </button>
+                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                            data-id="50"
+                            data-title="မီ"
+                            data-author="ကြည်အေး"
+                            data-isbn="0040"
+                            data-quantity="2"
+                            data-status="Available">
+                            Edit
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+            </table>
+        </div>
+        
+    </div>
+</main>
+</div>
+
+<div id="logoutMessageBox" class="message-box-overlay">
+    <div class="message-box-content">
+        <h4 class="text-2xl font-bold text-gray-800 mb-4">Logged Out Successfully!</h4>
+        <p class="text-gray-600 mb-6">You have been successfully logged out of the admin dashboard.</p>
+        <button id="closeMessageBox" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300">
+            OK
+        </button>
+    </div>
+</div>
+
+<div id="viewDetailsMessageBox" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h2 class="text-xl font-bold mb-4">Book Details</h2>
+        <ul class="space-y-2 text-gray-800">
+            <li><strong>ID:</strong> <span id="viewBookId"></span></li>
+            <li><strong>ISBN:</strong> <span id="viewBookISBN"></span></li>
+            <li><strong>Title:</strong> <span id="viewBookTitle"></span></li>
+            <li><strong>Author:</strong> <span id="viewBookAuthor"></span></li>
+            <li><strong>Quantity:</strong> <span id="viewBookQuantity"></span></li>
+            <li><strong>Status:</strong> <span id="viewBookStatus"></span></li>
+        </ul>
+        <div class="mt-6 text-right">
+            <button id="closeViewDetailsButton" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Close</button>
+        </div>
+    </div>
+</div>
+
+<div id="editModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-[500px] max-w-full">
+        <h2 class="text-xl font-bold mb-4">Edit Book</h2>
+        <form id="editForm" method="POST">
+            <input type="hidden" id="editId" name="id">
+
+                <input type="hidden" name="csrf_token" value="f380fa654e7ae5eff76513a661a1d59a896570cae5bf313f38b5d6df80a8d8f3">
+
+            <div class="mb-4">
+                <label for="editTitle" class="block text-sm font-medium mb-1">Title</label>
+                <input type="text" id="editTitle" name="title" class="w-full border rounded px-3 py-2" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="editAuthor" class="block text-sm font-medium mb-1">Author</label>
+                <input type="text" id="editAuthor" name="author_name" class="w-full border rounded px-3 py-2" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="editISBN" class="block text-sm font-medium mb-1">ISBN</label>
+                <input type="text" id="editISBN" name="isbn" class="w-full border rounded px-3 py-2" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="editQuantity" class="block text-sm font-medium mb-1">Total Quantity</label>
+                <input type="number" id="editQuantity" name="total_quantity" class="w-full border rounded px-3 py-2" required min="1">
+            </div>
+
+            <div class="mb-6">
+                <label for="editStatus" class="block text-sm font-medium mb-1">Status</label>
+                <input type="text" id="editStatus" name="status_description" class="w-full border rounded px-3 py-2" required>
+            </div>
+
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="document.getElementById('editModal').classList.add('hidden')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+                <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Details button logic
+    const detailsButtons = document.querySelectorAll('.view-details-button');
+    const viewDetailsMessageBox = document.getElementById('viewDetailsMessageBox');
+
+    detailsButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            document.getElementById('viewBookId').textContent = button.dataset.id;
+            document.getElementById('viewBookISBN').textContent = button.dataset.isbn;
+            document.getElementById('viewBookTitle').textContent = button.dataset.title;
+            document.getElementById('viewBookAuthor').textContent = button.dataset.author;
+            document.getElementById('viewBookQuantity').textContent = button.dataset.quantity;
+            document.getElementById('viewBookStatus').textContent = button.dataset.status;
+
+            openModal('viewDetailsMessageBox');
+        });
+    });
+
+    document.getElementById('closeViewDetailsButton').addEventListener('click', () => {
+        closeModal('viewDetailsMessageBox');
+    });
+
+    viewDetailsMessageBox.addEventListener('click', (event) => {
+        if (event.target === viewDetailsMessageBox) {
+            closeModal('viewDetailsMessageBox');
+        }
+    });
+
+    // Open and close modal helper functions
+    function openModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.add('hidden');
+    }
+
+    // Edit modal logic
+    const editButtons = document.querySelectorAll('.edit-button');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            document.getElementById('editId').value = button.dataset.id;
+            document.getElementById('editTitle').value = button.dataset.title;
+            document.getElementById('editAuthor').value = button.dataset.author;
+            document.getElementById('editISBN').value = button.dataset.isbn;
+            document.getElementById('editQuantity').value = button.dataset.quantity;
+            document.getElementById('editStatus').value = button.dataset.status;
+
+            openModal('editModal');
+        });
+    });
+
+    document.getElementById('editForm').addEventListener('submit', function(event) {
+        const id = document.getElementById('editId').value;
+        this.action = "http://localhost:8000/book/editBook/" + id;
+    });
+
+    // Close edit modal when clicking outside
+    document.getElementById('editModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal('editModal');
+        }
+    });
+</script>

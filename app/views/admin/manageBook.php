@@ -126,6 +126,8 @@
         <form id="editForm" method="POST">
             <input type="hidden" id="editId" name="id">
 
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
+
             <div class="mb-4">
                 <label for="editTitle" class="block text-sm font-medium mb-1">Title</label>
                 <input type="text" id="editTitle" name="title" class="w-full border rounded px-3 py-2" required>

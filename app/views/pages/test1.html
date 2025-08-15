@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Library</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Link to external CSS file (assuming admin.css handles responsive adjustments for sidebar/main content) -->
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/adminDashboard.css?v=2">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/manageMember.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/manageBook.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/issueBook.css">
+    <link rel="stylesheet" href="http://localhost:8000/librarycss/addnewBook.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3 authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+</head>
+<style>
+.active{
+    background-color: #1D4ED8;
+    border-radius: 8px;
+
+}
+
+</style>
+<body class="bg-gray-100">
+
+    <!-- Main Content Area with Sidebar -->
+    <div class="body-flex-container">
+        <aside class="sidebar-container bg-blue-900 text-white flex flex-col shadow-lg w-70">
+            <div class="p-6 text-2xl font-bold border-b border-blue-800 hidden sm:block">
+                ADMIN DASHBOARD
+            </div>
+            <nav class="flex-1 mt-6 mr-6 w-50">
+                <ul class="space-y-2">
+                    <li class="">
+                        <a href="http://localhost:8000/admin/adminDashboard" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                     <li class="">
+                        <a href="http://localhost:8000/admin/adminlist" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Manage Admin
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="http://localhost:8000/admin/manageMember" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Manage Members
+                        </a>
+                    </li>
+                    <li  class=" ">
+                        <a href="http://localhost:8000/admin/manageBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-book mr-3"></i>
+                            Manage Books
+                        </a>
+                    </li>
+                    <li  class="">
+                        <a href="http://localhost:8000/admin/issueBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-plus-circle mr-3"></i>
+                            Borrow List
+                        </a>
+                    </li>
+                    <li  class="">
+                        <a href="http://localhost:8000/admin/returnBook" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-undo-alt mr-3"></i>
+                            Return
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="http://localhost:8000/admin/reservation" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-clipboard-list mr-3"></i>
+                            Reservations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8000/auth/logout" id="logoutButton" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    Logout
+                </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- <div class="mt-auto p-6 border-t border-blue-800">
+                
+            </div> -->
+        </aside>
+<main class="main-content-area bg-blue-100 shadow-md">
+    <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800">User List</h2>
+        <div class="flex items-center space-x-4">
+
+            <a href="http://localhost:8000/admin/profile"
+                class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
+                <i class="fas fa-user-circle text-2xl"></i>
+                <span class="font-medium">Min Thu</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="table-scroll-container">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="border px-4 py-2">ID</th>
+                        <th class="border px-4 py-2">Name</th>
+                        <th class="border px-4 py-2">Email</th>
+                        <th class="border px-4 py-2">Roll No</th>
+                        <th class="border px-4 py-2">Gender</th>
+                        <th class="border px-4 py-2">Year</th>
+                        <th class="border px-4 py-2">Status</th>
+                        <th class="border px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr>
+                            <td class="border px-4 py-2">8</td>
+                            <td class="border px-4 py-2">Kaung Pyae Thein Tun</td>
+                            <td class="border px-4 py-2">kaungpyaethaintun@gmail.com</td>
+                            <td class="border px-4 py-2">5CS-22</td>
+                            <td class="border px-4 py-2">Female</td>
+                            <td class="border px-4 py-2">Final Year</td>
+                            <td class="border px-4 py-2">
+                                <span class="text-green-600">
+                                    Active                                </span>
+                            </td>
+                            <td class="flex space-x-2">
+                                <button
+                                    class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                                    data-id="8"
+                                    data-name="Kaung Pyae Thein Tun"
+                                    data-email="kaungpyaethaintun@gmail.com"
+                                    data-rollno="5CS-22"
+                                    data-gender="Female"
+                                    data-year="Final Year"
+                                    data-status="Active">
+                                    View
+                                </button>
+
+                                <button
+                                    class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                                    data-id="8"
+                                    data-name="Kaung Pyae Thein Tun"
+                                    data-year="Final Year"
+                                    data-status="Active">
+                                    Edit
+                                </button>
+
+                                <button
+                                    class="delete-button bg-red-500 text-white px-3 py-1 rounded"
+                                    data-id="8">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="border px-4 py-2">11</td>
+                            <td class="border px-4 py-2">Htet Htet Win</td>
+                            <td class="border px-4 py-2">htethtetwin664@gmail.com</td>
+                            <td class="border px-4 py-2">5CS-5</td>
+                            <td class="border px-4 py-2">female</td>
+                            <td class="border px-4 py-2">Final Year</td>
+                            <td class="border px-4 py-2">
+                                <span class="text-green-600">
+                                    Active                                </span>
+                            </td>
+                            <td class="flex space-x-2">
+                                <button
+                                    class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
+                                    data-id="11"
+                                    data-name="Htet Htet Win"
+                                    data-email="htethtetwin664@gmail.com"
+                                    data-rollno="5CS-5"
+                                    data-gender="female"
+                                    data-year="Final Year"
+                                    data-status="Active">
+                                    View
+                                </button>
+
+                                <button
+                                    class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
+                                    data-id="11"
+                                    data-name="Htet Htet Win"
+                                    data-year="Final Year"
+                                    data-status="Active">
+                                    Edit
+                                </button>
+
+                                <button
+                                    class="delete-button bg-red-500 text-white px-3 py-1 rounded"
+                                    data-id="11">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- View Modal -->
+<div id="viewModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="viewModalTitle">
+    <div class="modal-content">
+        <h3 id="viewModalTitle">User Details</h3>
+        <p><strong>ID:</strong> <span id="viewId"></span></p>
+        <p><strong>Name:</strong> <span id="viewName"></span></p>
+        <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+        <p><strong>Roll No:</strong> <span id="viewRoll"></span></p>
+        <p><strong>Gender:</strong> <span id="viewGender"></span></p>
+        <p><strong>Year:</strong> <span id="viewYear"></span></p>
+        <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+        <button onclick="closeModal('viewModal')" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+    </div>
+</div>
+
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="modal-content w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        <h3 id="editModalTitle" class="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
+            <i class="fas fa-user-edit text-yellow-500"></i> Edit Member
+        </h3>
+        <form id="editForm" method="POST" class="space-y-4">
+            <input type="hidden" id="editId" name="id">
+            <input type="hidden" name="csrf_token" value="e4a6658a3f717204505ec189e4b9812b7e966640e5262f7d5970c7188fa41aea">
+            <div>
+                <label for="editName" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="editName" name="name" required
+                    class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-yellow-400" />
+            </div>
+
+            <div>
+                <label for="editYear" class="block text-sm font-medium text-gray-700">Year</label>
+                <input type="text" id="editYear" name="year" required
+                    class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-yellow-400" />
+            </div>
+
+            <div>
+                <label for="editStatus" class="block text-sm font-medium text-gray-700">Status</label>
+                <select id="editStatus" name="status" required
+                    class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-yellow-400">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeModal('editModal')"
+                    class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="modal-content">
+        <!-- Inside your view (e.g., manageMember.php) -->
+<form id="deleteForm" method="POST" action="http://localhost:8000/admin/deleteMemberList">
+    <input type="hidden" id="deleteInputId" name="id">
+    <input type="hidden" name="csrf_token" value="<br />
+<b>Warning</b>:  Undefined variable $csrf_token in <b>/var/www/html/app/views/admin/manageMember.php</b> on line <b>148</b><br />
+<br />
+<b>Deprecated</b>:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in <b>/var/www/html/app/views/admin/manageMember.php</b> on line <b>148</b><br />
+">
+    
+    <h3 id="deleteModalTitle">Confirm Deletion</h3>
+    <p>Are you sure you want to delete this member?</p>
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+    <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+</form>
+
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal.hidden {
+        display: none;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 400px;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
+
+<script>
+    const viewButtons = document.querySelectorAll('.view-details-button');
+    const editButtons = document.querySelectorAll('.edit-button');
+    const deleteButtons = document.querySelectorAll('.delete-button');
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    // View Modal Logic
+    viewButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('viewId').textContent = btn.dataset.id;
+            document.getElementById('viewName').textContent = btn.dataset.name;
+            document.getElementById('viewEmail').textContent = btn.dataset.email;
+            document.getElementById('viewRoll').textContent = btn.dataset.rollno;
+            document.getElementById('viewGender').textContent = btn.dataset.gender;
+            document.getElementById('viewYear').textContent = btn.dataset.year;
+            document.getElementById('viewStatus').textContent = btn.dataset.status;
+            openModal('viewModal');
+        });
+    });
+
+    // Edit Modal Logic
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('editId').value = btn.dataset.id;
+            document.getElementById('editName').value = btn.dataset.name;
+            document.getElementById('editYear').value = btn.dataset.year;
+            document.getElementById('editStatus').value = btn.dataset.status;
+            openModal('editModal');
+        });
+    });
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        const id = document.getElementById('editId').value;
+        this.action = "http://localhost:8000/admin/editMemberList/" + id;
+    });
+
+    // Delete Modal Logic — PHP form submit
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            document.getElementById('deleteForm').action = "http://localhost:8000/admin/deleteMemberList/" + id;
+            openModal('deleteModal');
+        });
+    });
+</script>
