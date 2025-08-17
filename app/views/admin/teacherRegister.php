@@ -9,7 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Registration — MySite</title> <script src="https://cdn.tailwindcss.com"></script>
+    <title>Register — MySite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -202,7 +203,7 @@ if (session_status() === PHP_SESSION_NONE) {
         .form-header {
             text-align: center;
             margin-top: 10px;
-            margin-bottom: 2rem; /* Adjusted margin-bottom for spacing */
+            /* margin-bottom: 2rem; */
         }
 
         .form-logo {
@@ -789,21 +790,19 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body>
-    <a href="<?php echo URLROOT;?>/admin/adminlist" class="back-button" title="Go Back">
+    <a href="<?php echo URLROOT;?>/admin/manageTeacher" class="back-button" title="Go Back">
         <i class="fas fa-arrow-left"></i>
     </a>
 
     <div class="main-container">
         <div class="left-section">
-            <img src="/images/b1.png" class="img" alt="Abstract illustration of admin dashboard"> </div>
+            <h1 class="welcome-title">Create an Account</h1>
 
+            <img src="/images/b1.png" class="img">
+
+        </div>
         <div class="right-section">
-            <div class="form-header">
-                
-                   
-                <h4 class="form-title">Create Admin Account</h4> 
-            
-            <form method="post" action="<?php echo URLROOT; ?>/auth/adminRegister" id="registerForm">
+            <form method="post" action="<?php echo URLROOT; ?>/auth/teacherRegister" id="registerForm">
                 <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
                 <div class="form-group">
@@ -850,7 +849,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    Create My Admin Account
+                    Create My Account
                 </button>
 
                 <div class="login-link">
@@ -880,10 +879,6 @@ if (session_status() === PHP_SESSION_NONE) {
             const genderOptions = document.querySelectorAll('.gender-option');
             genderOptions.forEach(option => {
                 const radio = option.querySelector('input[type="radio"]');
-                // Set initial selected state based on checked radio button
-                if (radio.checked) {
-                    option.classList.add('selected');
-                }
                 radio.addEventListener('change', function() {
                     genderOptions.forEach(opt => opt.classList.remove('selected'));
                     if (this.checked) {
@@ -892,21 +887,16 @@ if (session_status() === PHP_SESSION_NONE) {
                 });
             });
 
-            // NEW: Roll Number radio button styling (if you reintroduce these)
+            // NEW: Roll Number radio button styling
             const rollnoTypeOptions = document.querySelectorAll('.rollno-radio-option');
             rollnoTypeOptions.forEach(option => {
                 const radio = option.querySelector('input[name="rollno_type"]');
-                 if (radio && radio.checked) { // Check if radio exists before accessing checked property
-                    option.classList.add('selected');
-                }
-                if (radio) { // Check if radio exists before adding event listener
-                    radio.addEventListener('change', function() {
-                        rollnoTypeOptions.forEach(opt => opt.classList.remove('selected'));
-                        if (this.checked) {
-                            option.classList.add('selected');
-                        }
-                    });
-                }
+                radio.addEventListener('change', function() {
+                    rollnoTypeOptions.forEach(opt => opt.classList.remove('selected'));
+                    if (this.checked) {
+                        option.classList.add('selected');
+                    }
+                });
             });
 
 
@@ -949,12 +939,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
             // Submit button loading state
             form.addEventListener('submit', function(e) {
-                // Only show loading if form is valid
-                if (form.checkValidity()) {
-                    const submitBtn = form.querySelector('.submit-btn');
-                    submitBtn.classList.add('loading');
-                    submitBtn.textContent = 'Creating Account...';
-                }
+                const submitBtn = form.querySelector('.submit-btn');
+                submitBtn.classList.add('loading');
+                submitBtn.textContent = 'Creating Account...';
             });
         });
 

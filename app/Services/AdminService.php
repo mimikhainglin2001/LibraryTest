@@ -39,6 +39,19 @@ class AdminService implements AdminServiceInterface
         return $members;
     }
 
+    public function getTeachers(): array
+    {
+        $allUsers = $this->userRepo->getAllUsers();
+        $members = [];
+
+        foreach ($allUsers as $user) {
+            if ((int)$user['role_id'] === 3) {
+                $members[] = $this->userRepo->getUserById($user['id']);
+            }
+        }
+        return $members;
+    }
+
     public function getUserProfile(int $id): ?array
     {
         $user = $this->userRepo->getUserById($id);

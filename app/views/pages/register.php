@@ -755,6 +755,9 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body>
+    <a href="<?php echo URLROOT;?>/admin/manageMember" class="back-button" title="Go Back">
+        <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="main-container">
         <div class="left-section">
 
@@ -796,18 +799,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
                 </div>
 
-                <!-- <div class="form-group">
-                    <div class="gender-selection">
-                        <label class="gender-option">
-                            <input type="radio" name="gender" value="male" required />
-                            <span>Male</span>
-                        </label>
-                        <label class="gender-option">
-                            <input type="radio" name="gender" value="female" />
-                            <span>Female</span>
-                        </label>
-                    </div>
-                </div> -->
 
                 <div class="form-group">
                     <select name="year" required class="form-input">
