@@ -60,7 +60,13 @@ $name = $_SESSION['session_loginuser'] ?? 'Admin'; ?>
                     <li class="<?php echo (strpos($currentUrl, '/admin/manageMember') !== false) ? 'active' : ''; ?>">
                         <a href="<?php echo URLROOT;?>/admin/manageMember" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
                             <i class="fas fa-users mr-3"></i>
-                            Manage Members
+                            Manage Students
+                        </a>
+                    </li>
+                    <li class="<?php echo (strpos($currentUrl, '/admin/manageTeacher') !== false) ? 'active' : ''; ?>">
+                        <a href="<?php echo URLROOT;?>/admin/manageTeacher" class="flex items-center p-4 text-blue-100 hover:bg-blue-700 transition duration-300 rounded-lg">
+                            <i class="fas fa-users mr-3"></i>
+                            Manage Teachers
                         </a>
                     </li>
                     <li  class="<?php echo (strpos($currentUrl, '/admin/manageBook') !== false) ? 'active' : ''; ?> ">

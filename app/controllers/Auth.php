@@ -37,13 +37,13 @@ class Auth extends Controller
             // Set login session
             $this->db->setLogin($user['id']);
             $_SESSION['session_loginuser'] = $user;
-
             // Role-based redirect
             switch ($user['role_id']) {
-                case 1: // Admin role id (assuming 1)
+                case 1: // Admin role id
                     redirect('admin/adminDashboard');
                     break;
-                case 2: // User role id assumed as 2
+                case 2: // User role id
+                case 3: // Teacher role id
                     redirect('pages/category');
                     break;
                 default:
@@ -148,7 +148,76 @@ class Auth extends Controller
             redirect('admin/adminlist');
         } catch (Exception $e) {
             setMessage('error', 'Registration error: ' . $e->getMessage());
-            redirect('pages/adminregister');
+            redirect('admin/adminregister');
+        }
+    }
+
+    public function teacherRegister()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
+        }
+
+        try {
+            $email = $_POST['email'] ?? '';
+            // Fail fast if email already exists
+            if ($this->db->columnFilter('users', 'email', $email)) {
+                setMessage('error', 'Email already exists');
+                redirect('admin/teacherRegister');
+                return;
+            }
+
+            $name = $_POST['name'] ?? '';
+            $gender = $_POST['gender'] ?? '';
+            $department = $_POST['department'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirmPassword = $_POST['confirm_password'] ?? '';
+
+            // Fail if passwords do not match
+            if ($password !== $confirmPassword) {
+                setMessage('error', 'Password does not match');
+                redirect('admin/teacherRegister');
+                return;
+            }
+
+            // Fail if password is too short
+            if (strlen($password) < 6) {
+                setMessage('error', 'Password must be at least 6 characters.');
+                redirect('admin/teacherRegister');
+                return;
+            }
+            // Encode password (replace with password_hash in production)
+            $encodedPassword = base64_encode($password);
+
+            $params = [
+                $name,
+                $email,
+                null,
+                $department,
+                $gender,
+                null,
+                $encodedPassword,
+                0,
+                0,
+                0,
+                date('Y-m-d H:i:s'),
+                3, // role_id for teacher
+                null,
+                null
+            ];
+
+            if (!$this->db->storeprocedure('InsertUser', $params)) {
+                setMessage('error', 'Failed to register');
+                redirect('admin/teacherRegister');
+                return;
+            }
+
+            (new Mail())->verifyMail($email, $name);
+            setMessage('success', 'Mail is sent');
+            redirect('admin/manageTeacher');
+        } catch (Exception $e) {
+            setMessage('error', 'Registration error: ' . $e->getMessage());
+            redirect('admin/teacherRegister');
         }
     }
 
@@ -218,7 +287,7 @@ class Auth extends Controller
 
             (new Mail())->verifyMail($email, $name);
             setMessage('success', 'Mail is sent');
-            redirect('pages/login');
+            redirect('admin/manageMember');
         } catch (Exception $e) {
             setMessage('error', 'Registration error: ' . $e->getMessage());
             redirect('pages/register');

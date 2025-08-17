@@ -590,12 +590,12 @@ if (session_status() === PHP_SESSION_NONE) {
                     Sign In to Continue
                 </button>
 
-                <div class="register-link">
+                <!-- <div class="register-link">
                     <p>
                         Don't have an account? 
                         <a href="<?php echo URLROOT; ?>/pages/register">Create one here</a>
                     </p>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>

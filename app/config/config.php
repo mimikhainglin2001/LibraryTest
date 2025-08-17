@@ -15,3 +15,4 @@ define('SITENAME', 'Library');
 
 define('Admin', 1);
 define('user', 2);
+define('teacher', 3);
