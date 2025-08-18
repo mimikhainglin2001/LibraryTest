@@ -24,7 +24,8 @@ class ReservationService implements ReservationServiceInterface
             'user_id' => $userId,
             'book_id' => $bookId,
             'status'  => 'pending',
-            'created_at' => date('Y-m-d H:i:s')
+            'available_quantity' => 0,
+            'reserved_at' => date('Y-m-d H:i:s')
         ]);
     }
 

@@ -68,9 +68,124 @@ class Mail
     }
 }
 
+public function sendPasswordEmail($email, $name, $password)
+{
+    try {
+        $mail = new PHPMailer(true);
+
+        // SMTP configuration from environment variables
+       $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'mimikhainglin70@gmail.com';
+        $mail->Password   = 'kazi rpzl mrod njbc';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom('mimikhainglin70@gmail.com', 'Library');  
+        $mail->addAddress($email, $name);
+
+        // HTML email
+        $mail->isHTML(true);
+        $mail->Subject = 'Your School Library Account is Ready';
+
+        $mail->Body = "
+            <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; }
+                    .btn { display: inline-block; padding: 10px 20px; background: #007BFF; color: #fff; text-decoration: none; border-radius: 5px; }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <h2>Welcome to School Library, {$name}!</h2>
+                    <p>Your account has been created successfully by the admin.</p>
+                    <p><strong>Login Email:</strong> {$email}<br>
+                    <strong>Password:</strong> {$password}</p>
+                    <p>Please log in using the button below and change your password immediately for security.</p>
+                    <p><a class='btn' href='" . URLROOT . "/pages/login'>Login Now</a></p>
+                    <p>Best regards,<br>School Library Admin</p>
+                </div>
+            </body>
+            </html>
+        ";
+
+        $mail->AltBody = "Dear {$name},\n\nYour account has been created for the School Library system.\n\nLogin Email: {$email}\nPassword: {$password}\n\nPlease log in at " . URLROOT . "/pages/login and change your password.\n\nBest regards,\nSchool Library Admin";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        error_log("Mailer Error: " . $mail->ErrorInfo);
+        return false;
+    }
+}
+
+
+public function sendReservation($email, $name, $title)
+{
+    try {
+        $mail = new PHPMailer(true);
+
+        // SMTP configuration
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'mimikhainglin70@gmail.com';
+        $mail->Password   = 'kazi rpzl mrod njbc';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom('mimikhainglin70@gmail.com', 'School Library');  
+        $mail->addAddress($email, $name);
+
+        // HTML email
+        $mail->isHTML(true);
+        $mail->Subject = 'Your Reserved Book is Now Available';
+
+        $mail->Body = "
+            <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+                    .container { max-width: 600px; margin: 30px auto; padding: 20px; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; }
+                    .header { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #2c3e50; }
+                    .content { font-size: 16px; margin-bottom: 20px; }
+                    .btn { display: inline-block; padding: 10px 20px; background: #007BFF; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; }
+                    .footer { font-size: 14px; color: #777; margin-top: 20px; }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>Hello {$name},</div>
+                    <div class='content'>
+                        Good news! The book you reserved is now available for pickup:<br><br>
+                        <strong>Book Title:</strong> {$title}<br><br>
+                        Please visit the library to collect it at your earliest convenience.
+                    </div>
+                    <a class='btn' href='" . URLROOT . "/pages/library'>View Library</a>
+                    <div class='footer'>
+                        Thank you for using our library services.<br>
+                        Best regards,<br>
+                        School Library Team
+                    </div>
+                </div>
+            </body>
+            </html>
+        ";
+
+        $mail->AltBody = "Hello {$name},\n\nGood news! The book you reserved is now available for pickup.\n\nBook Title: {$title}\n\nPlease visit the library to collect it.\n\nThank you,\nSchool Library Team";
+
+        return $mail->send();
+
+    } catch (Exception $e) {
+        error_log("Mailer Error: " . $mail->ErrorInfo);
+        return false;
+    }
 }
 
 
 
-
+}
 ?>

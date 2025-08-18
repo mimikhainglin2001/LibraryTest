@@ -1,4 +1,23 @@
-<?php require_once APPROOT .'/views/inc/sidebar.php'; 
+<?php require_once APPROOT .'/views/inc/sidebar.php';
+// Total books in stock
+$totalbook = 0;
+foreach ($data['book'] as $book) {
+    $totalbook += $book['available_quantity']; // sum all quantities
+}
+
+$user = count($data['user']);
+
+// Count borrowed books
+$borrowedCount = 0;
+$overdueCount = 0;
+
+foreach ($data['borrowbook'] as $borrow) {
+    if ($borrow['status'] === 'borrowed') {
+        $borrowedCount++;
+    } elseif ($borrow['status'] === 'overdue') {
+        $overdueCount++;
+    }
+}
 ?>
 
 
@@ -20,28 +39,28 @@
                 <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between transform transition duration-300 hover:scale-105">
                     <div>
                         <p class="text-gray-500 text-sm">Total Books</p>
-                        <p class="text-3xl font-bold text-blue-800">369</p>
+                        <p class="text-3xl font-bold text-blue-800"><? echo htmlspecialchars($totalbook)?></p>
                     </div>
                     <i class="fas fa-book text-blue-400 text-4xl"></i>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between transform transition duration-300 hover:scale-105">
                     <div>
                         <p class="text-gray-500 text-sm">Borrowed Books</p>
-                        <p class="text-3xl font-bold text-yellow-600">115</p>
+                        <p class="text-3xl font-bold text-yellow-600"><? echo htmlspecialchars($borrowedCount)?></p>
                     </div>
                     <i class="fas fa-clipboard-check text-yellow-400 text-4xl"></i>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between transform transition duration-300 hover:scale-105">
                     <div>
                         <p class="text-gray-500 text-sm">Overdue Returns</p>
-                        <p class="text-3xl font-bold text-red-600">20</p>
+                        <p class="text-3xl font-bold text-red-600"><? echo htmlspecialchars($overdueCount)?></p>
                     </div>
                     <i class="fas fa-exclamation-triangle text-red-400 text-4xl"></i>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between transform transition duration-300 hover:scale-105">
                     <div>
                         <p class="text-gray-500 text-sm">Active Members</p>
-                        <p class="text-3xl font-bold text-green-600">200</p>
+                        <p class="text-3xl font-bold text-green-600"><? echo htmlspecialchars($user)?></p>
                     </div>
                     <i class="fas fa-user-friends text-green-400 text-4xl"></i>
                 </div>

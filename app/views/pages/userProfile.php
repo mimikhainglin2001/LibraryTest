@@ -1,6 +1,117 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 
 <style>
+
+
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-wrapper input {
+        width: 100%;
+        padding-right: 35px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: #888;
+        opacity: 0.5;
+        /* start as disabled look */
+        pointer-events: none;
+        /* disabled initially */
+    }
+
+    .toggle-password.enabled {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .toggle-password:hover {
+        color: #000;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        /* left: 0; top: 0; */
+        min-width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-align: left;
+    }
+
+    .modal h3 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        color: #2d3748;
+    }
+
+    .close {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #718096;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+        color: #4a5568;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #cbd5e0;
+        outline: none;
+    }
+
+    .form-actions {
+        text-align: left;
+    }
+
+    .btn-password {
+        background-color: #f59e0b;
+        color: white;
+        width: 180px;
+        padding: 1rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-password:hover {
+        background-color: #d97706;
+    }
+
     .main-content-area {
         background: linear-gradient(135deg, #ebf8ff 0%, #e0f2fe 100%);
         min-height: 100vh;
@@ -349,7 +460,7 @@
     }
 
     .actions-section {
-        border-top: 1px solid #e2e8f0;
+        /* border-top: 1px solid #e2e8f0; */
         padding-top: 1.5rem;
     }
 
@@ -376,7 +487,7 @@
         font-weight: 600;
         text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     }
 
     @media (min-width: 640px) {
@@ -387,7 +498,7 @@
 
     .action-btn:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); */
     }
 
     .action-btn i {
@@ -395,6 +506,10 @@
     }
 
     .btn-edit {
+        margin-top: 25px;
+        width: 180px;
+        height: 56px;
+        padding: 1rem 1rem;
         background-color: #3b82f6;
         color: #ffffff;
     }
@@ -431,8 +546,11 @@
 <main class="main-content-area">
     <!-- Page Header -->
     <div class="page-header">
-        <h2 class="page-title">User Profile</h2>
-        <p class="page-subtitle">Manage your personal information and account settings</p>
+        <h2 class="page-title">
+            <?php echo ($data['loginuser']['role_id'] == 2) ? 'Student Profile' : 'Teacher Profile'; ?>
+        </h2>
+        <!-- <p class="page-subtitle">Manage your personal information and account settings</p> -->
+        <?php require APPROOT . '/views/components/auth_message.php'; ?>
     </div>
 
     <!-- Profile Card -->
@@ -443,14 +561,18 @@
                 <!-- Avatar -->
                 <div class="avatar-container">
                     <div class="avatar">
-                        <i class="fas fa-user-circle"></i>
+                        <?php if ($data['loginuser']['role_id'] == 2): ?>
+                            <i class="fas fa-user-graduate"></i>
+                        <?php else: ?>
+                            <i class="fas fa-user-tie"></i>
+                        <?php endif; ?>
                     </div>
                 </div>
 
                 <!-- User Details -->
                 <div class="user-details">
                     <h3 class="user-name">
-                        <?php echo htmlspecialchars($data['name'] ?? 'User'); ?>
+                        <?php echo htmlspecialchars($data['loginuser']['name'] ?? 'User'); ?>
                     </h3>
                     <div class="user-badges">
                         <span class="badge">
@@ -458,15 +580,23 @@
                             Member
                         </span>
                         <span class="separator">•</span>
-                        <span class="badge">
-                            <i class="fas fa-graduation-cap"></i>
-                            Student
-                        </span>
-                        <span class="separator">•</span>
-                        <span class="badge">
-                            <i class="fas fa-calendar"></i>
-                            Year <?php echo htmlspecialchars($data['loginuser']['year']); ?>
-                        </span>
+
+                        <?php if ($data['loginuser']['role_id'] == 2): ?>
+                            <span class="badge">
+                                <i class="fas fa-graduation-cap"></i>
+                                Student
+                            </span>
+                            <span class="separator">•</span>
+                            <span class="badge">
+                                <i class="fas fa-calendar"></i>
+                                Year <?php echo htmlspecialchars($data['loginuser']['year']); ?>
+                            </span>
+                        <?php else: ?>
+                            <span class="badge">
+                                <i class="fas fa-building"></i>
+                                Teacher
+                            </span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -474,7 +604,6 @@
 
         <!-- Profile Content -->
         <div class="profile-content">
-            <!-- Contact Information Section -->
             <h4 class="section-title">
                 <i class="fas fa-info-circle"></i>
                 Personal Information
@@ -487,9 +616,7 @@
                         <span class="info-label">Full Name</span>
                         <i class="fas fa-user info-icon name"></i>
                     </div>
-                    <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['name']); ?>
-                    </div>
+                    <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['name']); ?></div>
                 </div>
 
                 <!-- Email Card -->
@@ -498,9 +625,7 @@
                         <span class="info-label">Email Address</span>
                         <i class="fas fa-envelope info-icon email"></i>
                     </div>
-                    <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['email']); ?>
-                    </div>
+                    <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['email']); ?></div>
                 </div>
 
                 <!-- Gender Card -->
@@ -509,41 +634,45 @@
                         <span class="info-label">Gender</span>
                         <i class="fas fa-venus-mars info-icon gender"></i>
                     </div>
-                    <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['gender']); ?>
-                    </div>
+                    <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['gender']); ?></div>
                 </div>
 
-                <!-- Roll Number Card -->
-                <div class="info-card roll">
-                    <div class="info-header">
-                        <span class="info-label">Roll Number</span>
-                        <i class="fas fa-id-card info-icon roll"></i>
+                <?php if ($data['loginuser']['role_id'] == 2): ?>
+                    <!-- Student-only Cards -->
+                    <div class="info-card roll">
+                        <div class="info-header">
+                            <span class="info-label">Roll Number</span>
+                            <i class="fas fa-id-card info-icon roll"></i>
+                        </div>
+                        <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['rollno']); ?></div>
                     </div>
-                    <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['rollno']); ?>
-                    </div>
-                </div>
 
-                <!-- Year Card -->
-                <div class="info-card year">
-                    <div class="info-header">
-                        <span class="info-label">Academic Year</span>
-                        <i class="fas fa-calendar-alt info-icon year"></i>
+                    <div class="info-card year">
+                        <div class="info-header">
+                            <span class="info-label">Academic Year</span>
+                            <i class="fas fa-calendar-alt info-icon year"></i>
+                        </div>
+                        <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['year']); ?></div>
                     </div>
-                    <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['year']); ?>
+                <?php else: ?>
+                    <!-- Teacher-only Card -->
+                    <div class="info-card department">
+                        <div class="info-header">
+                            <span class="info-label">Department</span>
+                            <i class="fas fa-building info-icon role"></i>
+                        </div>
+                        <div class="info-value"><?php echo htmlspecialchars($data['loginuser']['department']); ?></div>
                     </div>
-                </div>
+                <?php endif; ?>
 
-                <!-- Role Card -->
+                <!-- System Role Card -->
                 <div class="info-card role">
                     <div class="info-header">
                         <span class="info-label">System Role</span>
                         <i class="fas fa-user-tag info-icon role"></i>
                     </div>
                     <div class="info-value">
-                        <?php echo htmlspecialchars($data['loginuser']['role_name'] ?? 'N/A'); ?>
+                        <?php echo ($data['loginuser']['role_id'] == 2) ? 'Student' : 'Teacher'; ?>
                     </div>
                 </div>
             </div>
@@ -557,20 +686,159 @@
                 </h4>
 
                 <div class="actions-grid">
-                    <a href="<?php echo URLROOT; ?>/pages/editProfile/<?php echo $data['loginuser']['id']; ?>"
-                        class="action-btn btn-edit">
-                        <i class="fas fa-edit"></i>
-                        Edit Profile
-                    </a>
 
-                    <a href="<?php echo URLROOT; ?>/pages/changeUserPassword/<?php echo $data['loginuser']['id']; ?>"
-                        class="action-btn btn-password">
-                        <i class="fas fa-key"></i>
-                        <span class="hide-mobile">Change Password</span>
-                        <span class="show-mobile">Change Pass</span>
-                    </a>
+                    <button id="editProfileBtn" class="action-btn btn-edit">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+
+                    <div class="actions-section">
+                        <button id="changePasswordBtn" class="action-btn btn-password">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close-edit">&times;</span>
+        <h3>Edit Profile</h3>
+        <form method="POST" action="<?php echo URLROOT; ?>/user/editProfile/<?php echo $data['loginuser']['id']; ?>">
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" value="<?php echo htmlspecialchars($data['loginuser']['name']); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value="<?php echo htmlspecialchars($data['loginuser']['email']); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <select name="gender" required>
+                    <option value="Female" <?= $data['loginuser']['gender'] == 'Female' ? 'selected' : '' ?>>Female</option>
+                    <option value="Male" <?= $data['loginuser']['gender'] == 'Male' ? 'selected' : '' ?>>Male</option>
+                </select>
+            </div>
+
+            <?php if ($data['loginuser']['role_id'] == 2): ?>
+                <div class="form-group">
+                    <label>Roll No</label>
+                    <input type="text" name="rollno" value="<?php echo htmlspecialchars($data['loginuser']['rollno']); ?>">
+                </div>
+                <div class="form-group">
+                    <label>Year</label>
+                    <input type="text" name="year" value="<?php echo htmlspecialchars($data['loginuser']['year']); ?>">
+                </div>
+            <?php else: ?>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" name="department" value="<?php echo htmlspecialchars($data['loginuser']['department']); ?>">
+                </div>
+            <?php endif; ?>
+
+            <div class="form-actions" style="margin-top: 1rem;">
+                <button type="submit" class="btn-edit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Box -->
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Change Password</h3>
+        <form action="<?php echo URLROOT; ?>/user/changeUserPassword/<?php echo $data['loginuser']['id']; ?>" method="POST">
+            <div class="form-group">
+                <label>Current Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="currentPassword" required>
+                    <span class="toggle-password" title="Show/Hide Password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="newPassword" required>
+                    <span class="toggle-password" title="Show/Hide Password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <div class="password-wrapper">
+                    <input type="password" name="confirmPassword" required>
+                    <span class="toggle-password" title="Show/Hide Password">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-password">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    // Enable the toggle only if there is input
+    document.querySelectorAll('.password-wrapper input').forEach(input => {
+        const toggle = input.nextElementSibling;
+
+        input.addEventListener('input', () => {
+            if (input.value.length > 0) {
+                toggle.classList.add('enabled');
+            } else {
+                toggle.classList.remove('enabled');
+                input.type = 'password'; // reset to hidden
+            }
+        });
+
+        toggle.addEventListener('click', () => {
+            if (!toggle.classList.contains('enabled')) return;
+            input.type = input.type === 'password' ? 'text' : 'password';
+        });
+    });
+
+    // ===== Password Modal =====
+    const passwordModal = document.getElementById("passwordModal");
+    const passwordBtn = document.getElementById("changePasswordBtn");
+    const closePassword = document.querySelector("#passwordModal .close");
+
+    passwordBtn.onclick = () => passwordModal.style.display = "flex";
+    closePassword.onclick = () => passwordModal.style.display = "none";
+    window.addEventListener("click", (e) => {
+        if (e.target === passwordModal) passwordModal.style.display = "none";
+    });
+
+    // ===== Edit Profile Modal =====
+    const editModal = document.getElementById("editProfileModal");
+    const editBtn = document.getElementById("editProfileBtn");
+    const closeEdit = document.querySelector("#editProfileModal .close-edit");
+
+    editBtn.onclick = () => editModal.style.display = "flex";
+    closeEdit.onclick = () => editModal.style.display = "none";
+    window.addEventListener("click", (e) => {
+        if (e.target === editModal) editModal.style.display = "none";
+    });
+</script>

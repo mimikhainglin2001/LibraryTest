@@ -13,7 +13,7 @@ class BorrowBook extends Controller
 
     public function __construct(BorrowBookServiceInterface $borrowService)
     {
-        AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
         $this->borrowService = $borrowService;
     }
 

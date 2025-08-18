@@ -27,7 +27,7 @@ class Pages extends Controller
     }
     public function category()
     {
-        AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
 
         $this->view('pages/category');
     }
@@ -52,14 +52,15 @@ class Pages extends Controller
     {
         $this->view('pages/login');
     }
-    
+
     public function changeUserPassword()
     {
         $this->view('pages/changeUserPassword');
     }
+
     public function editProfile()
     {
-        AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
 
         // Get logged-in user ID
         $id = is_array($_SESSION['session_loginuser'])

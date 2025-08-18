@@ -10,7 +10,7 @@ class User extends Controller
 
     public function __construct(UserServiceInterface $userService )
     {
-        AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
         $this->userService = $userService;
         $this->user = $_SESSION['session_loginuser'] ?? null;
     }
@@ -50,7 +50,7 @@ class User extends Controller
     public function history()
     {
         try {
-            AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
             if (!$this->user) {
                 setMessage('error', 'User not found.');
                 redirect('pages/login');
@@ -74,11 +74,10 @@ class User extends Controller
         }
     }
 
-
     public function userProfile()
     {
         try {
-            AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
             $id = $this->user['id'] ?? null;
             $loginuser = $this->userService->getUserProfile($id);
             $this->view('pages/userProfile', ['loginuser' => $loginuser]);
@@ -91,7 +90,7 @@ class User extends Controller
     public function editProfile($id)
     {
         try {
-            AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
             $user = $this->userService->getUserProfile($id);
 
             if (!$user) {
@@ -108,6 +107,7 @@ class User extends Controller
             $name   = trim($_POST['name'] ?? '');
             $email  = trim($_POST['email'] ?? '');
             $gender = trim($_POST['gender'] ?? '');
+            $department = trim($_POST['department'] ?? '');
 
             if ($name === '' || $email === '') {
                 setMessage('error', 'Name and Email are required.');
@@ -119,6 +119,7 @@ class User extends Controller
                 'name'   => $name,
                 'email'  => $email,
                 'gender' => $gender,
+                'department' => $department,
             ];
 
             $updated = $this->userService->updateUserProfile($id, $updatedUser);
@@ -139,7 +140,7 @@ class User extends Controller
     public function changeUserPassword()
     {
         try {
-            AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
 
             if (!$this->user) {
                 setMessage('error', 'User not found.');
@@ -153,7 +154,7 @@ class User extends Controller
 
             if ($currentPassword === '' || $newPassword === '' || $confirmPassword === '') {
                 setMessage('error', 'All fields are required.');
-                redirect('pages/changeUserPassword');
+                redirect('user/userProfile ');
                 return;
             }
 

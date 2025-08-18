@@ -2,7 +2,8 @@
 require_once APPROOT . '/Interfaces/BookServiceInterface.php';
 require_once APPROOT . '/Repository/BookRepository.php';
 
-class BookService implements BookServiceInterface {
+class BookService implements BookServiceInterface
+{
     private $bookRepo;
     private $authorRepo;
     private $categoryRepo;
@@ -17,15 +18,18 @@ class BookService implements BookServiceInterface {
         $this->categoryRepo = $categoryRepo;
     }
 
-    public function registerBook(array $data, array $file): bool {
+    public function registerBook(array $data, array $file): bool
+    {
         // Validate quantity
         if ((int)$data['total_quantity'] <= 0) {
             throw new Exception("Total quantity must be positive.");
         }
+
         // Check duplicate ISBN
         if ($this->bookRepo->findByIsbn($data['isbn'])) {
             throw new Exception("Book already exists.");
         }
+
         // Get category ID
         $category = $this->categoryRepo->findByName($data['category']);
         if (!$category) {
@@ -41,13 +45,34 @@ class BookService implements BookServiceInterface {
         }
         $authorId = $author['id'];
 
-        // Handle image
+        // --- Secure File Upload ---
         $uploadDir = 'public/images/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
-        $imageName = uniqid('book_') . '_' . basename($file['name']);
+
+        // Check for upload errors
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            throw new Exception("File upload error: " . $file['error']);
+        }
+
+        // Validate file type (allow only images)
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/avif'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        if (!in_array($mimeType, $allowedMimeTypes)) {
+            throw new Exception("Invalid file type. Only JPG, PNG, AVIF, and GIF allowed.");
+        }
+
+        // Sanitize file name to prevent directory traversal
+        $originalName = basename($file['name']);
+        $imageName = uniqid('book_', true) . '_' . preg_replace("/[^A-Za-z0-9_\-\.]/", '', $originalName);
+
         $targetPath = $uploadDir . $imageName;
+
+        // Move uploaded file safely
         if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
             throw new Exception("Image upload failed.");
         }
@@ -66,7 +91,9 @@ class BookService implements BookServiceInterface {
         ]);
     }
 
-    public function editBook(int $id, array $data): bool {
+
+    public function editBook(int $id, array $data): bool
+    {
         $book = $this->bookRepo->getById($id);
         if (!$book) {
             throw new Exception("Book not found.");

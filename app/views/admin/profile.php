@@ -1,11 +1,26 @@
 <?php require_once APPROOT . '/views/inc/sidebar.php'; // Your existing sidebar 
 ?>
 
+
 <main class="main-content-area bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 sm:p-6 lg:p-8">
+    <?php if (isset($_SESSION['flash_message'])): ?>
+        <div class="mb-4">
+            <div class="px-4 py-3 rounded-lg shadow-md 
+            <?= $_SESSION['flash_message']['type'] === 'success'
+                ? 'bg-green-100 text-green-800 border border-green-300'
+                : 'bg-red-100 text-red-800 border border-red-300' ?>">
+                <?= htmlspecialchars($_SESSION['flash_message']['text']); ?>
+            </div>
+        </div>
+        <?php unset($_SESSION['flash_message']); ?>
+    <?php endif; ?>
+
     <!-- Page Header -->
     <div class="mb-6 sm:mb-8">
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">Admin Profile</h2>
         <p class="text-gray-600 mt-2 text-sm sm:text-base">Manage your account information and settings</p>
+        <?php require APPROOT . '/views/components/auth_message.php'; ?>
+
     </div>
 
     <!-- Profile Card -->
@@ -132,28 +147,151 @@
                 </h4>
 
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <a href="<?php echo URLROOT; ?>/admin/editAdminProfile/"
-                        class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
+                    <!-- Edit Profile Trigger -->
+                    <button id="editProfileBtn"
+                        class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center transition duration-300">
                         <i class="fas fa-edit mr-2"></i>
                         <span>Edit Profile</span>
-                    </a>
+                    </button>
 
-                    <a href="<?php echo URLROOT; ?>/admin/changeAdminPassword/"
-                        class="flex-1 sm:flex-none bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
+                    <!-- Change Password Trigger -->
+                    <button id="changePasswordBtn"
+                        class="flex-1 sm:flex-none bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center transition duration-300">
                         <i class="fas fa-key mr-2"></i>
                         <span>Change Password</span>
-                    </a>
-
-                    <!-- Additional quick action -->
-                    <!-- <button class="flex-1 sm:flex-none bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
-                        <i class="fas fa-download mr-2"></i>
-                        <span class="hidden sm:inline">Download</span>
-                        <span class="sm:hidden">Export</span>
-                    </button> -->
+                    </button>
                 </div>
             </div>
+
         </div>
     </div>
-
-
 </main>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+        <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700" id="closeEditProfile">&times;</button>
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Edit Profile</h3>
+        <form action="<?php echo URLROOT; ?>/admin/editAdminProfile/<?php echo $data['loginuser']['id'] ?>" method="POST" class="space-y-6">
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">Name</label>
+                <input type="text" name="name" value="<?php echo htmlspecialchars($data['loginuser']['name']); ?>"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400">
+            </div>
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">Email</label>
+                <input type="email" name="email" value="<?php echo htmlspecialchars($data['loginuser']['email']); ?>"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400">
+            </div>
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">Gender</label>
+                <select name="gender" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400">
+                    <option value="Female" <?= $data['loginuser']['gender'] === 'Female' ? 'selected' : '' ?>>Female</option>
+                    <option value="Male" <?= $data['loginuser']['gender'] === 'Male' ? 'selected' : '' ?>>Male</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+        <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700" id="closePassword">&times;</button>
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Change Password</h3>
+        <form action="<?php echo URLROOT; ?>/admin/changePassword/<?php echo $data['loginuser']['id'] ?>" method="POST" class="space-y-6">
+
+            <!-- Current Password -->
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">Current Password</label>
+                <div class="relative">
+                    <input type="password" name="currentPassword" id="currentPassword"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 pr-10" required>
+                    <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500 toggle-password" data-target="currentPassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- New Password -->
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">New Password</label>
+                <div class="relative">
+                    <input type="password" name="newPassword" id="newPassword"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 pr-10" required>
+                    <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500 toggle-password" data-target="newPassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div>
+                <label class="block mb-2 font-semibold text-gray-700">Confirm Password</label>
+                <div class="relative">
+                    <input type="password" name="confirmPassword" id="confirmPassword"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 pr-10" required>
+                    <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500 toggle-password" data-target="confirmPassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit"
+                    class="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    // Edit Profile Modal
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const editProfileModal = document.getElementById('editProfileModal');
+    const closeEditProfile = document.getElementById('closeEditProfile');
+
+    editProfileBtn.onclick = () => editProfileModal.classList.remove('hidden');
+    closeEditProfile.onclick = () => editProfileModal.classList.add('hidden');
+    window.onclick = (e) => {
+        if (e.target === editProfileModal) editProfileModal.classList.add('hidden');
+    }
+
+    // Change Password Modal
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const passwordModal = document.getElementById('passwordModal');
+    const closePassword = document.getElementById('closePassword');
+
+    changePasswordBtn.onclick = () => passwordModal.classList.remove('hidden');
+    closePassword.onclick = () => passwordModal.classList.add('hidden');
+    window.onclick = (e) => {
+        if (e.target === passwordModal) passwordModal.classList.add('hidden');
+    }
+
+    // Toggle show/hide password
+    document.querySelectorAll(".toggle-password").forEach(btn => {
+        btn.addEventListener("click", function() {
+            const target = document.getElementById(this.dataset.target);
+            const icon = this.querySelector("i");
+
+            if (target.type === "password") {
+                target.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                target.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+    });
+</script>

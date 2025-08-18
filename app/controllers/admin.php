@@ -24,11 +24,13 @@ class Admin extends Controller
     {
         $books = $this->adminService->getBookList();
         $borrowbook = $this->adminService->getBorrowedBooks();
-        $allbook = [
+        $user = $this->adminService->getMembers();
+        $data = [
             'book' => $books,
-            'borrowbook' => $borrowbook
+            'borrowbook' => $borrowbook,
+            'user' => $user
         ];
-        $this->view('admin/adminDashboard', $allbook);
+        $this->view('admin/adminDashboard', $data);
     }
 
     public function adminregister()
@@ -223,7 +225,7 @@ class Admin extends Controller
 
     public function changeAdminPassword()
     {
-        $this->view('admin/changeAdminPassword');
+        $this->view('admin/profile');
     }
 
     public function changePassword()
@@ -236,19 +238,19 @@ class Admin extends Controller
 
         if (!$currentPassword || !$newPassword || !$confirmPassword) {
             setMessage('error', 'All fields are required');
-            redirect('admin/changeAdminPassword');
+            redirect('admin/profile');
             return;
         }
 
         if ($newPassword !== $confirmPassword) {
             setMessage('error', 'Passwords must match');
-            redirect('admin/changeAdminPassword');
+            redirect('admin/profile');
             return;
         }
 
         if (strlen($newPassword) < 6) {
             setMessage('error', 'Password length must be more than 6');
-            redirect('admin/changeAdminPassword');
+            redirect('admin/profile');
             return;
         }
 
