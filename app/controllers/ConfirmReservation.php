@@ -33,6 +33,9 @@ class ConfirmReservation extends Controller
                 throw new Exception("No reservation found for this book.");
             }
 
+            $user_email = $this->db->columnFilter('users','id',$user_id);
+            
+            $book_name = $this->db->columnFilter('books','id',$book_id);
 
             $reservation = $reservationRecords;
 
@@ -51,6 +54,9 @@ class ConfirmReservation extends Controller
             $borrow->status = 'borrowed';
 
             $iscreated = $this->db->create('borrowBook', $borrow->toArray());
+
+            $reservation_mail = new Mail();
+            $reservation_mail->sendReservation($user_email['email'],$user_email['name'],$book_name['title']);
 
             $isdelete = $this->db->delete('reservations', $reservation['id']);
 

@@ -796,12 +796,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div class="main-container">
         <div class="left-section">
-            <h1 class="welcome-title">Create an Account</h1>
 
             <img src="/images/b1.png" class="img">
 
         </div>
         <div class="right-section">
+            <h1 style="font-weight: bold;
+            font-size:1.5rem; text-align: center; padding-bottom: 50px;">Create an Account</h1>
+            <p style="text-align: center; padding-bottom: 50px;">Fill Your Info Details</p>
             <form method="post" action="<?php echo URLROOT; ?>/auth/teacherRegister" id="registerForm">
                 <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
@@ -830,7 +832,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     </div>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <div class="password-field">
                         <input type="password" id="password" name="password" placeholder="Create Password" required class="form-input">
                         <span class="password-toggle" onclick="togglePassword('password', 'eyeIcon1')">
@@ -846,7 +848,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <i id="eyeIcon2" class="fas fa-eye"></i>
                         </span>
                     </div>
-                </div>
+                </div> -->
 
                 <button type="submit" class="submit-btn">
                     Create My Account

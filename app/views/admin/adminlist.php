@@ -3,6 +3,8 @@
 <main class="main-content-area bg-blue-100 shadow-md">
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">Admin List</h2>
+        <?php require APPROOT . '/views/components/auth_message.php'; ?>
+
         <div class="flex items-center space-x-4">
 
             <a href="<?php echo URLROOT; ?>/admin/profile"

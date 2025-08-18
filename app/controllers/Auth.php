@@ -37,6 +37,7 @@ class Auth extends Controller
             // Set login session
             $this->db->setLogin($user['id']);
             $_SESSION['session_loginuser'] = $user;
+            // var_dump($user);
             // Role-based redirect
             switch ($user['role_id']) {
                 case 1: // Admin role id
@@ -44,6 +45,8 @@ class Auth extends Controller
                     break;
                 case 2: // User role id
                 case 3: // Teacher role id
+                    // echo "kyaw";
+                    // die();
                     redirect('pages/category');
                     break;
                 default:
@@ -170,24 +173,11 @@ class Auth extends Controller
             $name = $_POST['name'] ?? '';
             $gender = $_POST['gender'] ?? '';
             $department = $_POST['department'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
+            $password = $this->generatePassword(8);
 
-            // Fail if passwords do not match
-            if ($password !== $confirmPassword) {
-                setMessage('error', 'Password does not match');
-                redirect('admin/teacherRegister');
-                return;
-            }
-
-            // Fail if password is too short
-            if (strlen($password) < 6) {
-                setMessage('error', 'Password must be at least 6 characters.');
-                redirect('admin/teacherRegister');
-                return;
-            }
             // Encode password (replace with password_hash in production)
             $encodedPassword = base64_encode($password);
+            // Encode password (replace with password_hash in production)
 
             $params = [
                 $name,
@@ -212,7 +202,7 @@ class Auth extends Controller
                 return;
             }
 
-            (new Mail())->verifyMail($email, $name);
+            (new Mail())->sendPasswordEmail($email, $name, $password);
             setMessage('success', 'Mail is sent');
             redirect('admin/manageTeacher');
         } catch (Exception $e) {
@@ -220,6 +210,29 @@ class Auth extends Controller
             redirect('admin/teacherRegister');
         }
     }
+
+    //generate random password
+    private function generatePassword($length = 8) {
+        $upper   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $lower   = 'abcdefghijklmnopqrstuvwxyz';
+        $numbers = '0123456789';
+        $special = '!@#$%^&*()-_=+[]{}|;:,.<>?';
+
+        // Ensure at least one from each set
+        $password  = $upper[rand(0, strlen($upper) - 1)];
+        $password .= $lower[rand(0, strlen($lower) - 1)];
+        $password .= $numbers[rand(0, strlen($numbers) - 1)];
+        $password .= $special[rand(0, strlen($special) - 1)];
+
+        // Fill remaining length
+        $all = $upper . $lower . $numbers . $special;
+        for ($i = strlen($password); $i < $length; $i++) {
+            $password .= $all[rand(0, strlen($all) - 1)];
+        }
+
+        return str_shuffle($password);
+    }
+
 
     // Register user
     public function register()
@@ -242,22 +255,8 @@ class Auth extends Controller
             $roll = $_POST['rollno'] ?? '';
             $gender = $_POST['gender'] ?? '';
             $year = $_POST['year'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $confirmPassword = $_POST['confirm_password'] ?? '';
 
-            // Fail if passwords do not match
-            if ($password !== $confirmPassword) {
-                setMessage('error', 'Password does not match.');
-                redirect('pages/register');
-                return;
-            }
-
-            // Optional: check password length
-            if (strlen($password) < 6) {
-                setMessage('error', 'Password must be at least 6 characters.');
-                redirect('pages/register');
-                return;
-            }
+            $password = $this->generatePassword(8);
 
             // Encode password (replace with password_hash in production)
             $encodedPassword = base64_encode($password);
@@ -285,7 +284,7 @@ class Auth extends Controller
                 return;
             }
 
-            (new Mail())->verifyMail($email, $name);
+            (new Mail())->sendPasswordEmail($email, $name,$password);
             setMessage('success', 'Mail is sent');
             redirect('admin/manageMember');
         } catch (Exception $e) {

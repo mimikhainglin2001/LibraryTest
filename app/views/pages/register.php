@@ -14,7 +14,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
+     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -203,7 +203,7 @@ if (session_status() === PHP_SESSION_NONE) {
         .form-header {
             text-align: center;
             margin-top: 10px;
-            /* margin-bottom: 2rem; */
+            margin-bottom: 2rem; /* Adjusted margin-bottom for spacing */
         }
 
         .form-logo {
@@ -589,13 +589,11 @@ if (session_status() === PHP_SESSION_NONE) {
             }
 
             .welcome-title {
-                font-size: 1rem;
-                text-align: center;
+                font-size: 2.5rem;
             }
 
             .welcome-subtitle {
                 font-size: 1.1rem;
-                
             }
         }
 
@@ -751,6 +749,43 @@ if (session_status() === PHP_SESSION_NONE) {
                 transform: translateY(-50%) rotate(360deg);
             }
         }
+
+        /* New styles for the back button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #3b82f6;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .back-button {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -811,7 +846,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     </select>
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <div class="password-field">
                         <input type="password" id="password" name="password" placeholder="Create Password" required class="form-input">
                         <span class="password-toggle" onclick="togglePassword('password', 'eyeIcon1')">
@@ -827,7 +862,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <i id="eyeIcon2" class="fas fa-eye"></i>
                         </span>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="terms-section">
                     <div class="terms-header">

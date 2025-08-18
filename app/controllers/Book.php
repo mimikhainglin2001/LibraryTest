@@ -13,11 +13,7 @@ class Book extends Controller
 
     public function __construct(BookServiceInterface $bookService)
     {
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            setMessage('error', 'CSRF Validation Failed');
-            redirect('pages/login');
-            exit; // Stop execution to prevent DB update
-        }
+
         AuthMiddleware::adminOnly();
         $this->bookService = $bookService;
     }
@@ -47,7 +43,11 @@ class Book extends Controller
         }
 
         // CSRF validation
-    
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            setMessage('error', 'CSRF Validation Failed');
+            redirect('pages/login');
+            exit; // Stop execution to prevent DB update
+        }
 
         try {
             $this->bookService->editBook($id, $_POST);

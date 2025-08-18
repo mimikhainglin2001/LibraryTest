@@ -8,7 +8,7 @@ class Reservation extends Controller
 
     public function __construct(ReservationServiceInterface $reservationService)
     {
-        AuthMiddleware::userOnly();
+        AuthMiddleware::userOrTeacherOnly(); 
         $this->reservationService = $reservationService;
     }
 
