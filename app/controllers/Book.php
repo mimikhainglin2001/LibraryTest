@@ -59,4 +59,30 @@ class Book extends Controller
         redirect('admin/manageBook');
         exit; // Ensure nothing else runs after redirect
     }
+
+    public function deleteBook($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            setMessage('error', 'Invalid request.');
+            redirect('admin/manageBook');
+            return;
+        }
+
+        // ✅ CSRF validation
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            setMessage('error', 'CSRF Validation Failed');
+            redirect('pages/login');
+            exit;
+        }
+
+        try {
+            $this->bookService->deleteBook((int)$id);
+            setMessage('success', 'Book deleted successfully.');
+        } catch (Exception $e) {
+            setMessage('error', $e->getMessage());
+        }
+
+        redirect('admin/manageBook');
+        exit;
+    }
 }

@@ -23,21 +23,66 @@ class Auth extends Controller
             return;
         }
 
+        // Initialize attempt tracking if not set
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 0;
+            $_SESSION['last_attempt_time'] = time();
+        }
+
+        // Check if user is locked out
+        if ($_SESSION['login_attempts'] >= 3) {
+            $timeSinceLastAttempt = time() - $_SESSION['last_attempt_time'];
+            if ($timeSinceLastAttempt < 60) {
+                setMessage('error', 'Too many failed attempts. Please wait ' . (60 - $timeSinceLastAttempt) . ' seconds.');
+                redirect('pages/login');
+                return;
+            } else {
+                // Reset attempts after cooldown
+                $_SESSION['login_attempts'] = 0;
+            }
+        }
+
+        // Verify Google reCAPTCHA
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        $secretKey = "6LcgC6srAAAAAGhCpaK0vUxbSQrm6UzEtzecY0hx"; // from Google reCAPTCHA dashboard
+
+        if (!$recaptchaResponse) {
+            setMessage('error', 'Please complete the reCAPTCHA challenge.');
+            redirect('pages/login');
+            return;
+        }
+
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseData = json_decode($verify);
+
+        if (!$responseData->success) {
+            setMessage('error', 'reCAPTCHA verification failed. Please try again.');
+            redirect('pages/login');
+            return;
+        }
+
         try {
             $email = $_POST['email'];
             $password = base64_encode($_POST['password']);
 
             $user = $this->db->loginCheck($email, $password);
             if (!$user) {
-                setMessage('error', 'Invalid email and password');
+                // Increase failed attempts
+                $_SESSION['login_attempts']++;
+                $_SESSION['last_attempt_time'] = time();
+
+                setMessage('error', 'Invalid email and password. Please try again.');
                 redirect('pages/login');
                 return;
             }
 
+            // Reset attempts on successful login
+            $_SESSION['login_attempts'] = 0;
+
             // Set login session
             $this->db->setLogin($user['id']);
             $_SESSION['session_loginuser'] = $user;
-            // var_dump($user);
+
             // Role-based redirect
             switch ($user['role_id']) {
                 case 1: // Admin role id
@@ -45,8 +90,6 @@ class Auth extends Controller
                     break;
                 case 2: // User role id
                 case 3: // Teacher role id
-                    // echo "kyaw";
-                    // die();
                     redirect('pages/category');
                     break;
                 default:
@@ -59,6 +102,7 @@ class Auth extends Controller
             redirect('pages/login');
         }
     }
+
 
     // Form Register email check
     public function formRegister()
@@ -91,13 +135,31 @@ class Auth extends Controller
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
         }
+        // Verify Google reCAPTCHA
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        $secretKey = "6LcgC6srAAAAAGhCpaK0vUxbSQrm6UzEtzecY0hx"; // from Google reCAPTCHA dashboard
+
+        if (!$recaptchaResponse) {
+            setMessage('error', 'Please complete the reCAPTCHA challenge.');
+            redirect('admin/adminregister');
+            return;
+        }
+
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseData = json_decode($verify);
+
+        if (!$responseData->success) {
+            setMessage('error', 'reCAPTCHA verification failed. Please try again.');
+            redirect('admin/adminregister');
+            return;
+        }
 
         try {
             $email = $_POST['email'] ?? '';
             // Fail fast if email already exists
             if ($this->db->columnFilter('users', 'email', $email)) {
                 setMessage('error', 'Email already exists');
-                redirect('pages/adminregister');
+                redirect('admin/adminregister');
                 return;
             }
 
@@ -110,14 +172,14 @@ class Auth extends Controller
             // Fail if passwords do not match
             if ($password !== $confirmPassword) {
                 setMessage('error', 'Password does not match');
-                redirect('pages/adminregister');
+                redirect('admin/adminregister');
                 return;
             }
 
             // Fail if password is too short
             if (strlen($password) < 6) {
                 setMessage('error', 'Password must be at least 6 characters.');
-                redirect('pages/adminregister');
+                redirect('admin/adminregister');
                 return;
             }
             // Encode password (replace with password_hash in production)
@@ -158,6 +220,24 @@ class Auth extends Controller
     public function teacherRegister()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return;
+        }
+        // Verify Google reCAPTCHA
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        $secretKey = "6LcgC6srAAAAAGhCpaK0vUxbSQrm6UzEtzecY0hx"; // from Google reCAPTCHA dashboard
+
+        if (!$recaptchaResponse) {
+            setMessage('error', 'Please complete the reCAPTCHA challenge.');
+            redirect('admin/teacherRegister');
+            return;
+        }
+
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseData = json_decode($verify);
+
+        if (!$responseData->success) {
+            setMessage('error', 'reCAPTCHA verification failed. Please try again.');
+            redirect('admin/teacherRegister');
             return;
         }
 
@@ -212,7 +292,8 @@ class Auth extends Controller
     }
 
     //generate random password
-    private function generatePassword($length = 8) {
+    private function generatePassword($length = 8)
+    {
         $upper   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $lower   = 'abcdefghijklmnopqrstuvwxyz';
         $numbers = '0123456789';
@@ -240,6 +321,26 @@ class Auth extends Controller
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return;
         }
+
+        // Verify Google reCAPTCHA
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        $secretKey = "6LcgC6srAAAAAGhCpaK0vUxbSQrm6UzEtzecY0hx"; // from Google reCAPTCHA dashboard
+
+        if (!$recaptchaResponse) {
+            setMessage('error', 'Please complete the reCAPTCHA challenge.');
+            redirect('pages/register');
+            return;
+        }
+
+        $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaResponse}");
+        $responseData = json_decode($verify);
+
+        if (!$responseData->success) {
+            setMessage('error', 'reCAPTCHA verification failed. Please try again.');
+            redirect('pages/register');
+            return;
+        }
+
 
         try {
             $email = $_POST['email'] ?? '';
@@ -284,7 +385,7 @@ class Auth extends Controller
                 return;
             }
 
-            (new Mail())->sendPasswordEmail($email, $name,$password);
+            (new Mail())->sendPasswordEmail($email, $name, $password);
             setMessage('success', 'Mail is sent');
             redirect('admin/manageMember');
         } catch (Exception $e) {
