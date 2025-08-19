@@ -181,46 +181,97 @@ class Admin extends Controller
 
 
     public function editMemberList($id)
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    $data = [
-        'name' => $_POST['name'],
-        'year' => $_POST['year'],
-        'is_active' => ($_POST['status'] === 'Active') ? 1 : 0
-    ];
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = [
+            'name' => $_POST['name'],
+            'year' => $_POST['year'],
+            'is_active' => ($_POST['status'] === 'Active') ? 1 : 0
+        ];
 
-    $updated = $this->adminService->updateUserProfile((int)$id, $data);
-    if ($updated) {
-        header('Location: ' . URLROOT . '/admin/manageMember');
-        exit;
-    } else {
-        echo "Error updating member.";
+        $updated = $this->adminService->updateUserProfile((int)$id, $data);
+        if ($updated) {
+            setMessage('success', 'Profile updated successfully');
+
+            header('Location: ' . URLROOT . '/admin/manageMember');
+            exit;
+        } else {
+            setMessage('error', 'Error updating member.');
+            header('Location: ' . URLROOT . '/admin/manageMember');
+        }
     }
-}
 
 
 
 
     public function deleteMemberList($id)
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Check token
+
+
+        // Continue if valid
+        $deleted = $this->adminService->deleteUser((int)$id);
+        if ($deleted) {
+            setMessage('success', 'Delete successfully');
+
+            header('Location: ' . URLROOT . '/admin/manageMember');
+            exit;
+        } else {
+            setMessage('error', 'Failed to delete member');
+            header('Location: ' . URLROOT . '/admin/manageMember');
+        }
     }
 
-    // Check token
+    public function editTeacher($id)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $data = [
+            'name' => $_POST['name'],
+            'department' => $_POST['department'],
+            'is_active' => ($_POST['status'] === 'Active') ? 1 : 0
+        ];
 
+        $updated = $this->adminService->updateUserProfile((int)$id, $data);
+        if ($updated) {
+            setMessage('success', 'Updated successfully');
 
-    // Continue if valid
-    $deleted = $this->adminService->deleteUser((int)$id);
-    if ($deleted) {
-        header('Location: ' . URLROOT . '/admin/manageMember');
-        exit;
-    } else {
-        echo "Error deleting member.";
+            header('Location: ' . URLROOT . '/admin/manageTeacher');
+            exit;
+        } else {
+            setMessage('error', 'Failed to update member');
+            header('Location: ' . URLROOT . '/admin/manageTeacher');
+        }
     }
-}
+
+
+
+
+    public function deleteTeacher($id)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Check token
+
+
+        // Continue if valid
+        $deleted = $this->adminService->deleteUser((int)$id);
+        if ($deleted) {
+            header('Location: ' . URLROOT . '/admin/manageTeacher');
+            exit;
+        } else {
+            echo "Error deleting member.";
+        }
+    }
 
 
     public function changeAdminPassword()

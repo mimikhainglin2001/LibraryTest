@@ -1,10 +1,38 @@
-<?php require_once APPROOT . '/views/inc/sidebar.php'; ?>
+<?php require_once APPROOT . '/views/inc/sidebar.php'; 
+?>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .auth-message {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .auth-message.error {
+        background: #fee2e2;
+        /* light red background */
+        color: #dc2626;
+        /* red text */
+        border: 1px solid #fecaca;
+    }
+
+    .auth-message.success {
+        background: #d1fae5;
+        /* light green background */
+        color: #065f46;
+        /* green text */
+        border: 1px solid #a7f3d0;
+    }
+</style>
 <main class="main-content-area bg-blue-100 shadow-md">
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">User List</h2>
-        <div class="flex items-center space-x-4">
+        <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
+        <div class="flex items-center space-x-4">
             <a href="<?php echo URLROOT; ?>/admin/profile"
                 class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
                 <i class="fas fa-user-circle text-2xl"></i>
@@ -14,105 +42,163 @@
     </div>
 
     <div class="bg-white p-6 rounded-lg shadow-md">
-         <!-- Add Admin Button Section -->
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-            <div>
-            </div>
+        <div class="flex justify-end mb-4">
             <a href="<?php echo URLROOT; ?>/pages/register"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">
+                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-300">
                 <i class="fas fa-plus"></i>
                 <span>Add Students</span>
             </a>
         </div>
-        <div class="table-scroll-container">
-            <table class="table-auto w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200 text-gray-700">
-                        <th class="border px-4 py-2">ID</th>
-                        <th class="border px-4 py-2">Name</th>
-                        <th class="border px-4 py-2">Email</th>
-                        <th class="border px-4 py-2">Roll No</th>
-                        <th class="border px-4 py-2">Gender</th>
-                        <th class="border px-4 py-2">Year</th>
-                        <th class="border px-4 py-2">Status</th>
-                        <th class="border px-4 py-2">Actions</th>
+
+        <div class="hidden md:block overflow-y-auto max-h-[calc(100vh-250px)] rounded-lg shadow border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50 sticky top-0 z-10">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll No</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <?php foreach ($data['members'] as $member): ?>
+                    <?php if (!empty($data['members'])): ?>
+                        <?php foreach ($data['members'] as $member): ?>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($member['id']) ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900"><?= htmlspecialchars($member['name']) ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($member['email']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($member['rollno'] ?? '') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($member['gender']) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($member['year'] ?? '') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <?php
+                                    $statusText = $member['is_active'] ? 'Active' : 'Inactive';
+                                    $statusClass = $member['is_active'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                                    ?>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                                        <?= $statusText ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="view-details-button bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= htmlspecialchars($member['id']) ?>"
+                                            data-name="<?= htmlspecialchars($member['name']) ?>"
+                                            data-email="<?= htmlspecialchars($member['email']) ?>"
+                                            data-rollno="<?= htmlspecialchars($member['rollno'] ?? '') ?>"
+                                            data-gender="<?= htmlspecialchars($member['gender']) ?>"
+                                            data-year="<?= htmlspecialchars($member['year'] ?? '') ?>"
+                                            data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
+                                            Details
+                                        </button>
+                                        <button class="edit-button bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= htmlspecialchars($member['id']) ?>"
+                                            data-name="<?= htmlspecialchars($member['name']) ?>"
+                                            data-year="<?= htmlspecialchars($member['year'] ?? '') ?>"
+                                            data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
+                                            Edit
+                                        </button>
+                                        <button class="delete-button bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= htmlspecialchars($member['id']) ?>">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <tr>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['id']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['name']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['email']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['rollno'] ?? '') ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['gender']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($member['year'] ?? '') ?></td>
-                            <td class="border px-4 py-2">
-                                <span class="<?= $member['is_active'] ? 'text-green-600' : 'text-red-600' ?>">
-                                    <?= $member['is_active'] ? 'Active' : 'Inactive' ?>
-                                </span>
-                            </td>
-                            <td class="flex space-x-2">
-                                <button
-                                    class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
-                                    data-id="<?= htmlspecialchars($member['id']) ?>"
-                                    data-name="<?= htmlspecialchars($member['name']) ?>"
-                                    data-email="<?= htmlspecialchars($member['email']) ?>"
-                                    data-rollno="<?= htmlspecialchars($member['rollno']) ?>"
-                                    data-gender="<?= htmlspecialchars($member['gender']) ?>"
-                                    data-year="<?= htmlspecialchars($member['year']) ?>"
-                                    data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
-                                    View
-                                </button>
-
-                                <button
-                                    class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
-                                    data-id="<?= htmlspecialchars($member['id']) ?>"
-                                    data-name="<?= htmlspecialchars($member['name']) ?>"
-                                    data-year="<?= htmlspecialchars($member['year']) ?>"
-                                    data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
-                                    Edit
-                                </button>
-
-                                <button
-                                    class="delete-button bg-red-500 text-white px-3 py-1 rounded"
-                                    data-id="<?= htmlspecialchars($member['id']) ?>">
-                                    Delete
-                                </button>
-                            </td>
+                            <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">No users found.</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+
+        <div class="md:hidden space-y-4 overflow-y-auto max-h-[calc(100vh-250px)]">
+            <?php if (!empty($data['members'])): ?>
+                <?php foreach ($data['members'] as $member): ?>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-bold text-gray-800"><?= htmlspecialchars($member['name']) ?></h3>
+                            <?php
+                            $statusText = $member['is_active'] ? 'Active' : 'Inactive';
+                            $statusClass = $member['is_active'] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusClass ?>">
+                                <?= $statusText ?>
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-1"><strong>ID:</strong> <?= htmlspecialchars($member['id']) ?></p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Email:</strong> <?= htmlspecialchars($member['email']) ?></p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Roll No:</strong> <?= htmlspecialchars($member['rollno'] ?? '') ?></p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Gender:</strong> <?= htmlspecialchars($member['gender']) ?></p>
+                        <p class="text-sm text-gray-700 mb-4"><strong>Year:</strong> <?= htmlspecialchars($member['year'] ?? '') ?></p>
+                        <div class="flex space-x-2">
+                            <button class="view-details-button bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= htmlspecialchars($member['id']) ?>"
+                                data-name="<?= htmlspecialchars($member['name']) ?>"
+                                data-email="<?= htmlspecialchars($member['email']) ?>"
+                                data-rollno="<?= htmlspecialchars($member['rollno'] ?? '') ?>"
+                                data-gender="<?= htmlspecialchars($member['gender']) ?>"
+                                data-year="<?= htmlspecialchars($member['year'] ?? '') ?>"
+                                data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
+                                Details
+                            </button>
+                            <button class="edit-button bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= htmlspecialchars($member['id']) ?>"
+                                data-name="<?= htmlspecialchars($member['name']) ?>"
+                                data-year="<?= htmlspecialchars($member['year'] ?? '') ?>"
+                                data-status="<?= $member['is_active'] ? 'Active' : 'Inactive' ?>">
+                                Edit
+                            </button>
+                            <button class="delete-button bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= htmlspecialchars($member['id']) ?>">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center py-4 text-gray-500">No users found.</p>
+            <?php endif; ?>
         </div>
     </div>
 </main>
 
-<!-- View Modal -->
-<div id="viewModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="viewModalTitle">
-    <div class="modal-content">
-        <h3 id="viewModalTitle">User Details</h3>
-        <p><strong>ID:</strong> <span id="viewId"></span></p>
-        <p><strong>Name:</strong> <span id="viewName"></span></p>
-        <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-        <p><strong>Roll No:</strong> <span id="viewRoll"></span></p>
-        <p><strong>Gender:</strong> <span id="viewGender"></span></p>
-        <p><strong>Year:</strong> <span id="viewYear"></span></p>
-        <p><strong>Status:</strong> <span id="viewStatus"></span></p>
-        <button onclick="closeModal('viewModal')" class="mt-4 bg-gray-500 text-white px-4 py-2 rounded">Close</button>
+<div id="viewModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h2 class="text-xl font-bold mb-4">User Details</h2>
+        <ul class="space-y-2 text-gray-800">
+            <li><strong>ID:</strong> <span id="viewId"></span></li>
+            <li><strong>Name:</strong> <span id="viewName"></span></li>
+            <li><strong>Email:</strong> <span id="viewEmail"></span></li>
+            <li><strong>Roll No:</strong> <span id="viewRoll"></span></li>
+            <li><strong>Gender:</strong> <span id="viewGender"></span></li>
+            <li><strong>Year:</strong> <span id="viewYear"></span></li>
+            <li><strong>Status:</strong> <span id="viewStatus"></span></li>
+        </ul>
+        <div class="mt-6 text-right">
+            <button onclick="closeModal('viewModal')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Close</button>
+        </div>
     </div>
 </div>
 
-
-<!-- Edit Modal -->
-<div id="editModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
-    <div class="modal-content w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <h3 id="editModalTitle" class="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-            <i class="fas fa-user-edit text-yellow-500"></i> Edit Member
-        </h3>
+<div id="editModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-[500px] max-w-full">
+        <h2 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
+            <i class="fas fa-user-edit text-yellow-500"></i> Edit User
+        </h2>
         <form id="editForm" method="POST" class="space-y-4">
             <input type="hidden" id="editId" name="id">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
+            <?php if (isset($data['csrf_token'])): ?>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
+            <?php endif; ?>
+
             <div>
                 <label for="editName" class="block text-sm font-medium text-gray-700">Name</label>
                 <input type="text" id="editName" name="name" required
@@ -148,21 +234,21 @@
     </div>
 </div>
 
-
-<!-- Delete Modal -->
-<div id="deleteModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
-    <div class="modal-content">
-        <!-- Inside your view (e.g., manageMember.php) -->
-<form id="deleteForm" method="POST" action="<?= URLROOT ?>/admin/deleteMemberList">
-    <input type="hidden" id="deleteInputId" name="id">
-    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
-    
-    <h3 id="deleteModalTitle">Confirm Deletion</h3>
-    <p>Are you sure you want to delete this member?</p>
-    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
-    <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-</form>
-
+<div id="deleteModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-[400px] max-w-full">
+        <h2 class="text-xl font-bold mb-4 text-red-600">Confirm Deletion</h2>
+        <p class="mb-4">Are you sure you want to delete this user?</p>
+        <form id="deleteForm" method="POST">
+            <input type="hidden" id="deleteInputId" name="id">
+            <?php if (isset($csrf_token)): // This should probably be $data['csrf_token'] for consistency if it's passed via data array 
+            ?>
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+            <?php endif; ?>
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -189,6 +275,9 @@
         padding: 20px;
         border-radius: 8px;
         width: 400px;
+        /* Default width for content */
+        max-width: 90%;
+        /* Max width for smaller screens */
         animation: fadeIn 0.2s ease-in-out;
     }
 
@@ -232,6 +321,13 @@
         });
     });
 
+    // Close view modal when clicking outside
+    document.getElementById('viewModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal('viewModal');
+        }
+    });
+
     // Edit Modal Logic
     editButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -245,15 +341,32 @@
 
     document.getElementById('editForm').addEventListener('submit', function(e) {
         const id = document.getElementById('editId').value;
-        this.action = "<?php echo URLROOT; ?>/admin/editMemberList/" + id;
+        // Ensure this action URL is correct for editing a member/user
+        this.action = "<?php echo URLROOT; ?>/admin/editMemberList/" + id; // Changed to editUser
     });
 
-    // Delete Modal Logic — PHP form submit
+    // Close edit modal when clicking outside
+    document.getElementById('editModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal('editModal');
+        }
+    });
+
+    // Delete Modal Logic
     deleteButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.dataset.id;
-            document.getElementById('deleteForm').action = "<?php echo URLROOT; ?>/admin/deleteMemberList/" + id;
+            document.getElementById('deleteInputId').value = id;
+            // Ensure this action URL is correct for deleting a member/user
+            document.getElementById('deleteForm').action = "<?php echo URLROOT; ?>/admin/deleteMemberList/" + id; // Changed to deleteUser
             openModal('deleteModal');
         });
+    });
+
+    // Close delete modal when clicking outside
+    document.getElementById('deleteModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            closeModal('deleteModal');
+        }
     });
 </script>

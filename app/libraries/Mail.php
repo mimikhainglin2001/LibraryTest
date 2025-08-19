@@ -3,93 +3,116 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
- require '../vendor/autoload.php';
+
+require '../vendor/autoload.php';
 
 class Mail
 {
 
     public function verifyMail($recipient_mail, $recipient_name)
-{
-   
+    {
 
-    try {
-        $mail = new PHPMailer(true);
 
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'mimikhainglin70@gmail.com';
-        $mail->Password   = 'kazi rpzl mrod njbc';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port       = 587;
+        try {
+            $mail = new PHPMailer(true);
 
-        $mail->setFrom('mimikhainglin70@gmail.com', 'Library');  
-        $mail->addAddress($recipient_mail, $recipient_name);
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'mimikhainglin70@gmail.com';
+            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        $mail->isHTML(true);
-        $mail->Subject = 'Verify Mail';
-        $mail->Body    = "<b><a href='$' target='_blank'>Click here</a></b> to verify your registration.";
-        $mail->AltBody = 'Visit this link to verify your registration: ';
+            $mail->setFrom('mimikhainglin70@gmail.com', 'Library');
+            $mail->addAddress($recipient_mail, $recipient_name);
 
-        return $mail->send(); // ✅ THIS RETURNS TRUE ON SUCCESS
-    } catch (Exception $e) {
-        error_log("Mailer Error: " . $mail->ErrorInfo);
-        return false; // ✅ RETURN FALSE ON FAILURE
+            $mail->isHTML(true);
+            $mail->Subject = 'Verify Mail';
+            $mail->Body    = "<b><a href='$' target='_blank'>Click here</a></b> to verify your registration.";
+            $mail->AltBody = 'Visit this link to verify your registration: ';
+
+            return $mail->send(); // ✅ THIS RETURNS TRUE ON SUCCESS
+        } catch (Exception $e) {
+            error_log("Mailer Error: " . $mail->ErrorInfo);
+            return false; // ✅ RETURN FALSE ON FAILURE
+        }
     }
-}
 
     public function sendotp($email, $otp)
-{
-   
+    {
+        try {
+            $mail = new PHPMailer(true);
 
-    try {
-        $mail = new PHPMailer(true);
+            // SMTP configuration
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'mimikhainglin70@gmail.com';
+            $mail->Password   = 'kazi rpzl mrod njbc'; // Use App Password in production
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'mimikhainglin70@gmail.com';
-        $mail->Password   = 'kazi rpzl mrod njbc';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port       = 587;
+            // Sender & recipient
+            $mail->setFrom('mimikhainglin70@gmail.com', 'Go Library');
+            $mail->addAddress($email);
 
-        $mail->setFrom('mimikhainglin70@gmail.com', 'Library');  
-        $mail->addAddress($email, $otp);
+            // Email subject and body
+            $mail->isHTML(true);
+            $mail->Subject = 'Password Reset OTP';
+            $mail->Body = "
+        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.5;'>
+            <div style='text-align: center; margin-bottom: 20px;'>
+                <img src='https://yourdomain.com/logo.png' alt='Library Logo' style='width:120px;'>
+            </div>
+            <p>Dear User,</p>
+            <p>We received a request to reset your password. Use the OTP below to proceed:</p>
+            <p style='text-align: center; font-size: 1.5em; font-weight: bold; color: #1a73e8;'>
+                " . htmlspecialchars($otp, ENT_QUOTES) . "
+            </p>
+            <p>This OTP is valid for <strong>15 minutes</strong>. Do not share it with anyone.</p>
+            <p>If you did not request a password reset, please ignore this email.</p>
+            <hr style='border:none;border-top:1px solid #eee;margin:20px 0;'>
+            <p style='font-size:0.9em;color:#666;'>Library Management System<br>123 Library St, City, Country<br>&copy; " . date('Y') . " All rights reserved.</p>
+        </div>
+        ";
 
-        $mail->isHTML(true);
-        $mail->Subject = 'Verify Mail';
-        $mail->Body    = "<b>".$otp.'Click here</a></b> to verify your registration.';
-        $mail->AltBody = 'Visit this link to verify your registration: ' . $otp;
+            $mail->AltBody = "Dear User,\n\nWe received a request to reset your password.\n"
+                . "Your OTP is: " . $otp . "\n\n"
+                . "It is valid for 15 minutes. Do not share it with anyone.\n\n"
+                . "If you did not request a password reset, please ignore this email.\n\n"
+                . "Library System\n123 Library St, City, Country\n© " . date('Y');
 
-        return $mail->send(); // ✅ THIS RETURNS TRUE ON SUCCESS
-    } catch (Exception $e) {
-        error_log("Mailer Error: " . $mail->ErrorInfo);
-        return false; // ✅ RETURN FALSE ON FAILURE
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Mailer Error: " . $mail->ErrorInfo);
+            return false;
+        }
     }
-}
 
-public function sendPasswordEmail($email, $name, $password)
-{
-    try {
-        $mail = new PHPMailer(true);
 
-        // SMTP configuration from environment variables
-       $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'mimikhainglin70@gmail.com';
-        $mail->Password   = 'kazi rpzl mrod njbc';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port       = 587;
+    public function sendPasswordEmail($email, $name, $password)
+    {
+        try {
+            $mail = new PHPMailer(true);
 
-        $mail->setFrom('mimikhainglin70@gmail.com', 'Library');  
-        $mail->addAddress($email, $name);
+            // SMTP configuration from environment variables
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'mimikhainglin70@gmail.com';
+            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        // HTML email
-        $mail->isHTML(true);
-        $mail->Subject = 'Your School Library Account is Ready';
+            $mail->setFrom('mimikhainglin70@gmail.com', 'Library');
+            $mail->addAddress($email, $name);
 
-        $mail->Body = "
+            // HTML email
+            $mail->isHTML(true);
+            $mail->Subject = 'Your School Library Account is Ready';
+
+            $mail->Body = "
             <html>
             <head>
                 <style>
@@ -112,39 +135,38 @@ public function sendPasswordEmail($email, $name, $password)
             </html>
         ";
 
-        $mail->AltBody = "Dear {$name},\n\nYour account has been created for the School Library system.\n\nLogin Email: {$email}\nPassword: {$password}\n\nPlease log in at " . URLROOT . "/pages/login and change your password.\n\nBest regards,\nSchool Library Admin";
+            $mail->AltBody = "Dear {$name},\n\nYour account has been created for the School Library system.\n\nLogin Email: {$email}\nPassword: {$password}\n\nPlease log in at " . URLROOT . "/pages/login and change your password.\n\nBest regards,\nSchool Library Admin";
 
-        return $mail->send();
-
-    } catch (Exception $e) {
-        error_log("Mailer Error: " . $mail->ErrorInfo);
-        return false;
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Mailer Error: " . $mail->ErrorInfo);
+            return false;
+        }
     }
-}
 
 
-public function sendReservation($email, $name, $title)
-{
-    try {
-        $mail = new PHPMailer(true);
+    public function sendReservation($email, $name, $title)
+    {
+        try {
+            $mail = new PHPMailer(true);
 
-        // SMTP configuration
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'mimikhainglin70@gmail.com';
-        $mail->Password   = 'kazi rpzl mrod njbc';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port       = 587;
+            // SMTP configuration
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'mimikhainglin70@gmail.com';
+            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port       = 587;
 
-        $mail->setFrom('mimikhainglin70@gmail.com', 'School Library');  
-        $mail->addAddress($email, $name);
+            $mail->setFrom('mimikhainglin70@gmail.com', 'School Library');
+            $mail->addAddress($email, $name);
 
-        // HTML email
-        $mail->isHTML(true);
-        $mail->Subject = 'Your Reserved Book is Now Available';
+            // HTML email
+            $mail->isHTML(true);
+            $mail->Subject = 'Your Reserved Book is Now Available';
 
-        $mail->Body = "
+            $mail->Body = "
             <html>
             <head>
                 <style>
@@ -175,17 +197,12 @@ public function sendReservation($email, $name, $title)
             </html>
         ";
 
-        $mail->AltBody = "Hello {$name},\n\nGood news! The book you reserved is now available for pickup.\n\nBook Title: {$title}\n\nPlease visit the library to collect it.\n\nThank you,\nSchool Library Team";
+            $mail->AltBody = "Hello {$name},\n\nGood news! The book you reserved is now available for pickup.\n\nBook Title: {$title}\n\nPlease visit the library to collect it.\n\nThank you,\nSchool Library Team";
 
-        return $mail->send();
-
-    } catch (Exception $e) {
-        error_log("Mailer Error: " . $mail->ErrorInfo);
-        return false;
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Mailer Error: " . $mail->ErrorInfo);
+            return false;
+        }
     }
 }
-
-
-
-}
-?>

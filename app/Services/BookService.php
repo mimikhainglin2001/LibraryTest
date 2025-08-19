@@ -27,6 +27,10 @@ class BookService implements BookServiceInterface
 
         // Check duplicate ISBN
         if ($this->bookRepo->findByIsbn($data['isbn'])) {
+            throw new Exception("ISBN already exists.");
+        }
+        //  Check duplicate Title
+        if ($this->bookRepo->findByTitle($data['title'])) {
             throw new Exception("Book already exists.");
         }
 
@@ -56,6 +60,12 @@ class BookService implements BookServiceInterface
             throw new Exception("File upload error: " . $file['error']);
         }
 
+        // ✅ Check file size (e.g., max 5MB)
+        $maxFileSize = 5 * 1024 * 1024; // 5 MB
+        if ($file['size'] > $maxFileSize) {
+            throw new Exception("File is too large. Max allowed size is 5MB.");
+        }
+
         // Validate file type (allow only images)
         $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/avif'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -66,9 +76,18 @@ class BookService implements BookServiceInterface
             throw new Exception("Invalid file type. Only JPG, PNG, AVIF, and GIF allowed.");
         }
 
-        // Sanitize file name to prevent directory traversal
-        $originalName = basename($file['name']);
-        $imageName = uniqid('book_', true) . '_' . preg_replace("/[^A-Za-z0-9_\-\.]/", '', $originalName);
+        // ✅ Sanitize and limit file name
+        $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+        // Keep only safe chars in filename
+        $sanitizedBase = preg_replace("/[^A-Za-z0-9_\-]/", '', $originalName);
+
+        // Limit length to avoid filesystem issues
+        $sanitizedBase = substr($sanitizedBase, 0, 50);
+
+        // Generate unique name
+        $imageName = uniqid('book_', true) . '_' . $sanitizedBase . '.' . strtolower($extension);
 
         $targetPath = $uploadDir . $imageName;
 
@@ -112,5 +131,20 @@ class BookService implements BookServiceInterface
             'available_quantity' => $availableQuantity,
             'status_description' => $data['status_description']
         ]);
+    }
+
+    public function deleteBook(int $id): bool
+    {
+        $book = $this->bookRepo->getById($id);
+        if (!$book) {
+            throw new Exception("Book not found.");
+        }
+
+        // ✅ Optional: remove the cover image if exists
+        if (!empty($book['image']) && file_exists($book['image'])) {
+            unlink($book['image']);
+        }
+
+        return $this->bookRepo->delete($id);
     }
 }

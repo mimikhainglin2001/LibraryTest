@@ -1,12 +1,38 @@
-<?php require_once APPROOT . '/views/inc/header.php';?>
+<?php require_once APPROOT . '/views/inc/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Categories - Library</title>
+    <!-- <title>Book Categories - Library</title> -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        .auth-message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .auth-message.error {
+            background: #fee2e2;
+            /* light red background */
+            color: #dc2626;
+            /* red text */
+            border: 1px solid #fecaca;
+        }
+
+        .auth-message.success {
+            background: #d1fae5;
+            /* light green background */
+            color: #065f46;
+            /* green text */
+            border: 1px solid #a7f3d0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -23,13 +49,13 @@
         /* Main Content */
         .main-content {
             min-height: 100vh;
-            
+
         }
 
         /* Hero Section */
         .hero-section {
             position: relative;
-            background: #1e3a8a; 
+            background: #1e3a8a;
             padding: 60px 0;
             overflow: hidden;
         }
@@ -106,7 +132,8 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             background: white;
         }
-/* 
+
+        /* 
         .search-box::after {
             content: '\f002';
             font-family: 'Font Awesome 6 Free';
@@ -243,6 +270,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -340,11 +368,14 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Note: Original header would be included here -->
-    
+
     <!-- Main Content -->
     <main class="main-content">
+        <span> <?php require APPROOT . '/views/components/auth_message.php'; ?></span>
+
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="hero-image">
@@ -416,10 +447,7 @@
             </div>
         </section>
 
-        <!-- Navigation -->
-        <div class="navigation">
-            <a href="/pages/home" class="back-btn">Back</a>
-        </div>
+
     </main>
 
     <script>
@@ -429,7 +457,7 @@
 
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
-            
+
             bookCategories.forEach(category => {
                 const categoryName = category.querySelector('p').textContent.toLowerCase();
                 if (categoryName.includes(searchTerm)) {
@@ -446,7 +474,7 @@
             img.addEventListener('load', function() {
                 this.style.opacity = '1';
             });
-            
+
             img.addEventListener('error', function() {
                 this.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
                 this.style.display = 'flex';
@@ -482,4 +510,5 @@
         });
     </script>
 </body>
+
 </html>

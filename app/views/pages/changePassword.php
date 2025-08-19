@@ -15,6 +15,29 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
     <style>
+        .auth-message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .auth-message.error {
+            background: #fee2e2;
+            /* light red background */
+            color: #dc2626;
+            /* red text */
+            border: 1px solid #fecaca;
+        }
+
+        .auth-message.success {
+            background: #d1fae5;
+            /* light green background */
+            color: #065f46;
+            /* green text */
+            border: 1px solid #a7f3d0;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(to right, rgb(219, 234, 254), rgb(147, 197, 253), rgb(59, 130, 246));
@@ -66,7 +89,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body class="flex items-center justify-center min-h-screen p-4">
     <div class="glass-morphism p-8 md:p-12 rounded-2xl shadow-2xl max-w-md w-full mx-4 relative z-10">
         <div class="flex justify-center mb-6">
-            <div class="icon-container w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl">
+            <div class="w-10 h-10 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 text-white shadow-lg animate-bounce-slow relative">
                 <i class="fas fa-shield-alt"></i>
             </div>
         </div>
@@ -134,7 +157,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Submit Button -->
             <button 
                 type="submit" 
-                class="btn-gradient w-full text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-purple-300"
+                class="btn-gradient w-full text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 bg-gradient-to-r from-emerald-500 to-green-400 text-white"
                 id="submitBtn"
                 disabled
             >

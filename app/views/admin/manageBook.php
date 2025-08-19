@@ -1,12 +1,39 @@
-<?php require_once APPROOT . '/views/inc/sidebar.php'; 
+<?php require_once APPROOT . '/views/inc/sidebar.php';
 // var_dump($data);die();
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR3authorization/lQfrg1Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .auth-message {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
 
+    .auth-message.error {
+        background: #fee2e2;
+        /* light red background */
+        color: #dc2626;
+        /* red text */
+        border: 1px solid #fecaca;
+    }
+
+    .auth-message.success {
+        background: #d1fae5;
+        /* light green background */
+        color: #065f46;
+        /* green text */
+        border: 1px solid #a7f3d0;
+    }
+</style>
 <main class="main-content-area bg-blue-100 shadow-md">
+
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">Book List</h2>
+        <?php require APPROOT . '/views/components/auth_message.php'; ?>
+
         <div class="flex items-center space-x-4">
             <a href="<?php echo URLROOT; ?>/admin/profile" class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
                 <i class="fas fa-user-circle text-2xl"></i>
@@ -17,78 +44,132 @@
 
     <div class="bg-white p-6 rounded-lg shadow-md">
         <div class="flex justify-end mb-4">
-            <a href="<?php echo URLROOT; ?>/admin/addNewBook" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-md transition duration-300">
+
+            <a href="<?php echo URLROOT; ?>/admin/addNewBook" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300">
+                <i class="fas fa-plus"></i>
                 Add New Book 📚
             </a>
         </div>
-        
-        <div class="table-scroll-container">
-            <table class="table-auto w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200 text-gray-700">
-                        <th class="border px-4 py-2">Book ID</th>
-                        <th class="border px-4 py-2">ISBN</th>
-                        <th class="border px-4 py-2">Title</th>
-                        <th class="border px-4 py-2">Author Name</th>
-                        <th class="border px-4 py-2">Total Quantity</th>
-                        <th class="border px-4 py-2">Available Quantity</th>
-                        <th class="border px-4 py-2">Status Description</th>
-                        <th class="border px-4 py-2">Actions</th>
+
+        <div class="hidden md:block overflow-y-auto max-h-[calc(100vh-250px)] rounded-lg shadow border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50 sticky top-0 z-10">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ISBN</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Quantity</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Available Quantity</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status Description</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">  
-    <?php if (!empty($data['booklist'])): ?>
-        <?php foreach ($data['booklist'] as $book): ?>
-            <tr>
-                <td class="table-cell book-id border px-4 py-2"><?= htmlspecialchars($book['id'] ?? '') ?></td>
-                <td class="table-cell book-isbn border px-4 py-2"><?= htmlspecialchars($book['isbn'] ?? '') ?></td>
-                <td class="table-cell book-title border px-4 py-2"><?= htmlspecialchars($book['title'] ?? '') ?></td>
-                <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars($book['author_name'] ?? '') ?></td>
-                <td class="table-cell book-author border px-4 py-2"><?= htmlspecialchars((string)($book['total_quantity'] ?? '')) ?></td>
-                <td class="table-cell book-quantity border px-4 py-2"><?= htmlspecialchars($book['available_quantity'] ?? '') ?></td>
-                <td class="table-cell book-status border px-4 py-2">
-                    <?php
-                    $statusText = isset($book['status_description']) ? trim(strtolower($book['status_description'])) : '';
-                    $statusClass = $statusText === 'available' ? 'text-green-600' : 'text-red-600';
-                    ?>
-                    <span class="status <?= $statusClass ?>">
-                        <?= $statusText ? htmlspecialchars(ucfirst($statusText)) : 'Unknown' ?>
-                    </span>
-                </td>
-                <td class="table-cell border px-4 py-2">
-                    <div class="flex space-x-2">
-                        <button class="view-details-button bg-blue-500 text-white px-3 py-1 rounded"
-                            data-id="<?= $book['id'] ?>"
-                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
-                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
-                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
-                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
-                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
-                            Details
-                        </button>
-                        <button class="edit-button bg-yellow-500 text-white px-3 py-1 rounded"
-                            data-id="<?= $book['id'] ?>"
-                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
-                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
-                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
-                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
-                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
-                            Edit
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="8" class="text-center py-4 text-gray-500">No books found.</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <?php if (!empty($data['booklist'])): ?>
+                        <?php foreach ($data['booklist'] as $book): ?>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($book['id'] ?? '') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($book['isbn'] ?? '') ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-900"><?= htmlspecialchars($book['title'] ?? '') ?></td>
+                                <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($book['author_name'] ?? '') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars((string)($book['total_quantity'] ?? '')) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($book['available_quantity'] ?? '') ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <?php
+                                    $statusText = isset($book['status_description']) ? trim(strtolower($book['status_description'])) : '';
+                                    ?>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-opacity-10 <?= $statusText === 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                                        <?= $statusText ? htmlspecialchars(ucfirst($statusText)) : 'Unknown' ?>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="view-details-button bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= $book['id'] ?>"
+                                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                                            Details
+                                        </button>
+                                        <button class="edit-button bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= $book['id'] ?>"
+                                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                                            data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                                            data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                                            data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                                            data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                                            Edit
+                                        </button>
+                                        <button class="delete-button bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                            data-id="<?= $book['id'] ?>"
+                                            data-title="<?= htmlspecialchars($book['title'] ?? '') ?>">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="8" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">No books found.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
             </table>
         </div>
-        
+
+        <div class="md:hidden space-y-4 overflow-y-auto max-h-[calc(100vh-250px)]">
+            <?php if (!empty($data['booklist'])): ?>
+                <?php foreach ($data['booklist'] as $book): ?>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-lg font-bold text-gray-800"><?= htmlspecialchars($book['title'] ?? '') ?></h3>
+                            <?php
+                            $statusText = isset($book['status_description']) ? trim(strtolower($book['status_description'])) : '';
+                            ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?= $statusText === 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                                <?= $statusText ? htmlspecialchars(ucfirst($statusText)) : 'Unknown' ?>
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Book ID:</strong> <?= htmlspecialchars($book['id'] ?? '') ?></p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>ISBN:</strong> <?= htmlspecialchars($book['isbn'] ?? '') ?></p>
+                        <p class="text-sm text-gray-700 mb-1"><strong>Author:</strong> <?= htmlspecialchars($book['author_name'] ?? '') ?></p>
+                        <p class="text-sm text-gray-700 mb-4"><strong>Total Quantity:</strong> <?= htmlspecialchars((string)($book['total_quantity'] ?? '')) ?></p>
+                        <p class="text-sm text-gray-700 mb-4"><strong>Available Quantity:</strong> <?= htmlspecialchars($book['available_quantity'] ?? '') ?></p>
+                        <div class="flex space-x-2">
+                            <button class="view-details-button bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= $book['id'] ?>"
+                                data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                                data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                                data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                                data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                                data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                                Details
+                            </button>
+                            <button class="edit-button bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= $book['id'] ?>"
+                                data-title="<?= htmlspecialchars($book['title'] ?? '') ?>"
+                                data-author="<?= htmlspecialchars($book['author_name'] ?? '') ?>"
+                                data-isbn="<?= htmlspecialchars($book['isbn'] ?? '') ?>"
+                                data-quantity="<?= htmlspecialchars($book['total_quantity'] ?? '') ?>"
+                                data-status="<?= htmlspecialchars($book['status_description'] ?? '') ?>">
+                                Edit
+                            </button>
+                            <button class="delete-button bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs transition duration-300"
+                                data-id="<?= $book['id'] ?>"
+                                data-title="<?= htmlspecialchars($book['title'] ?? '') ?>">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center py-4 text-gray-500">No books found.</p>
+            <?php endif; ?>
+        </div>
     </div>
 </main>
 </div>
@@ -126,7 +207,7 @@
         <form id="editForm" method="POST">
             <input type="hidden" id="editId" name="id">
 
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
 
             <div class="mb-4">
                 <label for="editTitle" class="block text-sm font-medium mb-1">Title</label>
@@ -160,6 +241,22 @@
         </form>
     </div>
 </div>
+
+<div id="deleteModal" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-[400px] max-w-full">
+        <h2 class="text-xl font-bold mb-4 text-red-600">Delete Book</h2>
+        <p class="mb-4">Are you sure you want to delete <strong id="deleteBookTitle"></strong>?</p>
+        <form id="deleteForm" method="POST">
+            <input type="hidden" id="deleteId" name="id">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($data['csrf_token']); ?>">
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeModal('deleteModal')" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <script>
     // Details button logic
@@ -226,5 +323,20 @@
         if (event.target === this) {
             closeModal('editModal');
         }
+    });
+
+    // Delete modal logic
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            document.getElementById('deleteId').value = button.dataset.id;
+            document.getElementById('deleteBookTitle').textContent = button.dataset.title;
+            openModal('deleteModal');
+        });
+    });
+
+    document.getElementById('deleteForm').addEventListener('submit', function(event) {
+        const id = document.getElementById('deleteId').value;
+        this.action = "<?php echo URLROOT; ?>/book/deleteBook/" + id;
     });
 </script>

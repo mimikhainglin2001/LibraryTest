@@ -4,9 +4,33 @@
 
 <head>
     <link rel="stylesheet" href="/librarycss/history.css?v=2">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <style>
+    .auth-message {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .auth-message.error {
+        background: #fee2e2;
+        /* light red background */
+        color: #dc2626;
+        /* red text */
+        border: 1px solid #fecaca;
+    }
+
+    .auth-message.success {
+        background: #d1fae5;
+        /* light green background */
+        color: #065f46;
+        /* green text */
+        border: 1px solid #a7f3d0;
+    }
+
     .action-btn {
         display: inline-block;
         padding: 8px 14px;

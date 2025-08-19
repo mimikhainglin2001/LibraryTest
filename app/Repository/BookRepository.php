@@ -15,6 +15,11 @@ class BookRepository extends DBConnection implements BookRepositoryInterface
         $result = $this->getDB()->columnFilter('books', 'isbn', $isbn);
         return (is_array($result)) ? $result : null;
     }
+    public function findByTitle(string $title): ?array
+    {
+        $result = $this->getDB()->columnFilter('books', 'title', $title);
+        return (is_array($result)) ? $result : null;
+    }
 
     public function insert(array $params): bool
     {
@@ -27,5 +32,9 @@ class BookRepository extends DBConnection implements BookRepositoryInterface
     public function update(int $id, array $data): bool
     {
         return $this->getDB()->update('books', $id, $data);
+    }
+    public function delete(int $id): bool
+    {
+        return $this->getDB()->delete('books', $id, );
     }
 }

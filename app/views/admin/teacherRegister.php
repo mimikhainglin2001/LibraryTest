@@ -13,8 +13,33 @@ if (session_status() === PHP_SESSION_NONE) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <style>
+        .auth-message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .auth-message.error {
+            background: #fee2e2;
+            /* light red background */
+            color: #dc2626;
+            /* red text */
+            border: 1px solid #fecaca;
+        }
+
+        .auth-message.success {
+            background: #d1fae5;
+            /* light green background */
+            color: #065f46;
+            /* green text */
+            border: 1px solid #a7f3d0;
+        }
+
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -790,7 +815,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body>
-    <a href="<?php echo URLROOT;?>/admin/manageTeacher" class="back-button" title="Go Back">
+    <a href="<?php echo URLROOT; ?>/admin/manageTeacher" class="back-button" title="Go Back">
         <i class="fas fa-arrow-left"></i>
     </a>
 
@@ -801,9 +826,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
         </div>
         <div class="right-section">
-            <h1 style="font-weight: bold;
-            font-size:1.5rem; text-align: center; padding-bottom: 50px;">Create an Account</h1>
-            <p style="text-align: center; padding-bottom: 50px;">Fill Your Info Details</p>
+                        <h1 class="text-2xl font-bold mb-4">Create an Account</h1>
+
             <form method="post" action="<?php echo URLROOT; ?>/auth/teacherRegister" id="registerForm">
                 <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
@@ -831,25 +855,8 @@ if (session_status() === PHP_SESSION_NONE) {
                         </label>
                     </div>
                 </div>
-
-                <!-- <div class="form-group">
-                    <div class="password-field">
-                        <input type="password" id="password" name="password" placeholder="Create Password" required class="form-input">
-                        <span class="password-toggle" onclick="togglePassword('password', 'eyeIcon1')">
-                            <i id="eyeIcon1" class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="password-field">
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required class="form-input">
-                        <span class="password-toggle" onclick="togglePassword('confirm_password', 'eyeIcon2')">
-                            <i id="eyeIcon2" class="fas fa-eye"></i>
-                        </span>
-                    </div>
-                </div> -->
-
+                <!-- Google reCAPTCHA -->
+                <div class="g-recaptcha" data-sitekey="6LcgC6srAAAAALsBkoG1fkh0WkvgKh87AlkDBrDW"></div>
                 <button type="submit" class="submit-btn">
                     Create My Account
                 </button>
