@@ -404,30 +404,35 @@ class Auth extends Controller
         try {
             $email = $_POST['email'] ?? '';
 
+            // Check if user exists
             $userExists = $this->db->columnFilter('users', 'email', $email);
 
             if (!$userExists) {
-                echo "Email not found.";
+                setMessage('error', 'Email Not Found');
+                redirect('pages/forgotPassword');
                 exit;
             }
 
+            // Generate OTP
             $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
             $otp_expiry = date('Y-m-d H:i:s');
 
+            // Store OTP in database
             if (!$this->db->storeotp($email, $otp, $otp_expiry)) {
-                echo "Failed to store OTP.";
+                setMessage('error', 'Failed to store OTP.');
+                redirect('pages/forgotPassword');
                 exit;
             }
 
-            $mail = new Mail();
-
-            if (!$mail->sendotp($email, $otp)) {
-                echo "Failed to send OTP email.";
-                exit;
-            }
-
+            // Save email in session
             $_SESSION['post_email'] = $email;
+
+            // Redirect immediately to OTP page
             redirect('pages/otp');
+
+            // Send OTP email in background
+            $mail = new Mail();
+            $mail->sendotp($email, $otp);
         } catch (Exception $e) {
             echo "Error during forgot password: " . $e->getMessage();
         }
@@ -458,6 +463,34 @@ class Auth extends Controller
             }
         } catch (Exception $e) {
             setMessage('error', 'OTP verification error: ' . $e->getMessage());
+            redirect('pages/otp');
+        }
+    }
+
+    //resend OTP
+    public function resendOtp()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = $_SESSION['post_email'] ?? null;
+
+            $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+            $otp_expiry = date('Y-m-d H:i:s');
+
+            if (!$this->db->storeotp($email, $otp, $otp_expiry)) {
+                setMessage('error', 'Failed to store OTP.');
+                redirect('pages/forgotPassword');
+                exit;
+            }
+
+            $mail = new Mail();
+
+            if (!$mail->sendotp($email, $otp)) {
+                setMessage('error', 'Failed to send OTP email.');
+                redirect('pages/forgotPassword');
+                exit;
+            }
+
+            $_SESSION['post_email'] = $email;
             redirect('pages/otp');
         }
     }

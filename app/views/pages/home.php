@@ -4,9 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Our Library - Discover Books!</title>
+    <title><?php echo SITENAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Navigation */
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding: 30px 20px;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .back-btn,
+    .see-more-btn {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 25px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .back-btn:hover,
+    .see-more-btn:hover {
+        background: linear-gradient(135deg, #5a6268, #495057);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+    }
+
+    .back-btn::before {
+        content: '\f060';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+    }
         * {
             margin: 0;
             padding: 0;
@@ -388,7 +429,7 @@
             </div>
 
             <div class="search-section">
-                <h1>Find The Book You Love</h1>
+                <h1>Gateway To Your Knowledge</h1>
                 <div class="search-container">
                 </div>
             </div>
@@ -459,6 +500,10 @@
                     <p>ပန်းတွေပွင့်ဖို့စောင့်ရချိန်</p>
                 </a>
             </div>
+            <div class="navigation">
+            <a href="<?= URLROOT; ?>/pages/welcome" class="back-btn">Back</a>
+            <!-- <button class="see-more-btn" id="seeMoreBtn">See More Books</button> -->
+        </div>
         </section>
     </main>
 

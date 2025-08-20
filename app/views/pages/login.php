@@ -592,7 +592,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <div class="image-content">
 
-                <img src="/images/b1.png" alt="Library Image" class="w-full h-auto max-w-[250px] mx-auto rounded-lg " />
+                <img src="/images/Login.png" alt="Library Image" class="w-full h-auto max-w-[250px] mx-auto rounded-lg " />
             </div>
         </div>
 

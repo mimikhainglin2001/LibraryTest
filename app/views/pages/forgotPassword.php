@@ -116,6 +116,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                     btn.disabled = true;
                 });
+
             });
         </script>
 

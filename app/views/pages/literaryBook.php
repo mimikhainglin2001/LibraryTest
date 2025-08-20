@@ -1,6 +1,7 @@
 <?php
 require_once APPROOT . '/views/inc/header.php';
 
+
 // Start the session only if it hasn't been started yet
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -24,7 +25,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     }
 
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
         line-height: 1.6;
         color: #333;
         background-color: #f8f9fa;

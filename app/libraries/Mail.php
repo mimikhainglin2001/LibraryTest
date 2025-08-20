@@ -20,7 +20,7 @@ class Mail
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->Password   = 'ngkm xkib nwvl cmkx';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
@@ -41,15 +41,15 @@ class Mail
 
     public function sendotp($email, $otp)
     {
-        try {
-            $mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
+        try {
             // SMTP configuration
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'kazi rpzl mrod njbc'; // Use App Password in production
+            $mail->Password   = 'ngkm xkib nwvl cmkx';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
@@ -57,38 +57,60 @@ class Mail
             $mail->setFrom('mimikhainglin70@gmail.com', 'Go Library');
             $mail->addAddress($email);
 
-            // Email subject and body
+            // Email content
             $mail->isHTML(true);
+            // Set the email subject
             $mail->Subject = 'Password Reset OTP';
-            $mail->Body = "
-        <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.5;'>
-            <div style='text-align: center; margin-bottom: 20px;'>
-                <img src='https://yourdomain.com/logo.png' alt='Library Logo' style='width:120px;'>
-            </div>
-            <p>Dear User,</p>
-            <p>We received a request to reset your password. Use the OTP below to proceed:</p>
-            <p style='text-align: center; font-size: 1.5em; font-weight: bold; color: #1a73e8;'>
-                " . htmlspecialchars($otp, ENT_QUOTES) . "
-            </p>
-            <p>This OTP is valid for <strong>15 minutes</strong>. Do not share it with anyone.</p>
-            <p>If you did not request a password reset, please ignore this email.</p>
-            <hr style='border:none;border-top:1px solid #eee;margin:20px 0;'>
-            <p style='font-size:0.9em;color:#666;'>Library Management System<br>123 Library St, City, Country<br>&copy; " . date('Y') . " All rights reserved.</p>
-        </div>
-        ";
 
-            $mail->AltBody = "Dear User,\n\nWe received a request to reset your password.\n"
-                . "Your OTP is: " . $otp . "\n\n"
-                . "It is valid for 15 minutes. Do not share it with anyone.\n\n"
-                . "If you did not request a password reset, please ignore this email.\n\n"
-                . "Library System\n123 Library St, City, Country\n© " . date('Y');
+            // Create a professional HTML email body
+            $otpLink = "http://localhost:8000/pages/otp?otp=" . urlencode($otp);
 
-            return $mail->send();
+$mail->Body = '
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Password Reset OTP</title>
+</head>
+<body>
+  <p>We received a request to reset your password. Use the OTP below or click the button:</p>
+  <div style="font-size: 24px; font-weight: bold;">' . htmlspecialchars($otp, ENT_QUOTES) . '</div>
+  <p>
+    <a href="http://localhost:8000/pages/otp?otp= '.$otp.'" style="
+       display:inline-block;
+       background-color:#10b981;
+       color:#fff;
+       padding:10px 20px;
+       text-decoration:none;
+       border-radius:8px;
+       font-weight:bold;
+    ">Verify OTP</a>
+  </p>
+</body>
+</html>';
+
+
+            // Plain text fallback for non-HTML email clients
+            $mail->AltBody = "Password Reset Request\n\nYour OTP is: $otp\n\nIf you did not request this, please ignore this email.";
+
+
+
+            // Debug
+            // $mail->SMTPDebug = 2; // 0=off, 2=full debug output
+
+            // Send email
+            $mail->send();
+            return true;
         } catch (Exception $e) {
-            error_log("Mailer Error: " . $mail->ErrorInfo);
+            // Detailed logging
+            error_log("PHPMailer failed: " . $mail->ErrorInfo);
+            error_log("Exception: " . $e->getMessage());
+            // Optional: fallback action here (e.g., save OTP in DB for manual email)
             return false;
         }
     }
+
+
 
 
     public function sendPasswordEmail($email, $name, $password)
