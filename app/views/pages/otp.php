@@ -1,9 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
-    $email = $_SESSION['post_email'] ?? 'your email';
 }
+$email = $_SESSION['post_email'] ?? 'your email';
+$prefillOtp = isset($_GET['otp']) ? preg_replace('/\D/', '', $_GET['otp']) : '';
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +49,6 @@ if (session_status() === PHP_SESSION_NONE) {
             justify-content: center;
             align-items: center;
         }
-
         .otp-container {
             background: rgba(255, 255, 255, 0.95);
             padding: 3rem;
@@ -55,7 +57,6 @@ if (session_status() === PHP_SESSION_NONE) {
             width: 100%;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
         }
-
         .otp-input {
             width: 60px;
             height: 60px;
@@ -65,13 +66,11 @@ if (session_status() === PHP_SESSION_NONE) {
             font-size: 1.5rem;
             font-weight: 700;
         }
-
         .otp-input:focus {
             border-color: #10b981;
             outline: none;
             box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
-
         .submit-btn {
             width: 100%;
             background: #10b981;
@@ -86,7 +85,6 @@ if (session_status() === PHP_SESSION_NONE) {
             justify-content: center;
             gap: 0.5rem;
         }
-
         .email-display {
             display: flex;
             align-items: center;
@@ -96,7 +94,6 @@ if (session_status() === PHP_SESSION_NONE) {
             padding: 0.5rem 1rem;
             border-radius: 12px;
         }
-
         .email-icon {
             background: #10b981;
             color: white;
@@ -106,20 +103,25 @@ if (session_status() === PHP_SESSION_NONE) {
             align-items: center;
             justify-content: center;
         }
-
         .timer-display {
             font-weight: 700;
             color: #10b981;
             text-align: center;
             margin-top: 0.5rem;
         }
-
         .timer-display.expired {
             color: #ef4444;
         }
-
-        .button-group {
+        .resend-link {
+            display: none;
+            text-align: center;
             margin-top: 1rem;
+        }
+        .resend-link a {
+            color: #3b82f6;
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -132,40 +134,71 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <div class="email-display">
             <div class="email-icon"><i class="fas fa-envelope"></i></div>
-            <div><?php echo $_SESSION['post_email'] ?? 'your email'; ?></div>
+            <div><?= htmlspecialchars($email) ?></div>
         </div>
 
-        <form method="post" action="<?php echo URLROOT; ?>/auth/verify_otp" id="otpForm">
+        <form method="post" action="<?= URLROOT; ?>/auth/verify_otp" id="otpForm">
             <div class="flex justify-center gap-3 mb-4">
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
-                <input type="text" maxlength="1" class="otp-input" name="otp[]" required>
+                <?php for ($i = 0; $i < 6; $i++): ?>
+                    <input type="text" name="otp[]" maxlength="1" class="otp-input">
+                <?php endfor; ?>
             </div>
-            <div class="button-group">
-                <button type="submit" class="submit-btn"><i class="fas fa-check-circle"></i> Verify Code</button>
-            </div>
+
+            <button type="submit" class="submit-btn"><i class="fas fa-check-circle"></i> Verify Code</button>
         </form>
 
         <div class="timer-display" id="timer">00:59</div>
+
+        <div class="resend-link" id="resendLink">
+            <form method="post" action="<?= URLROOT; ?>/auth/resendOtp">
+                <button type="submit" class="text-blue-600 font-semibold underline">
+                    <i class="fas fa-redo-alt"></i> Resend OTP
+                </button>
+            </form>
+        </div>
     </div>
 
     <script>
-        // Auto-tab between OTP inputs
         const inputs = document.querySelectorAll('.otp-input');
+
+        // Auto-tab & backspace
         inputs.forEach((input, idx) => {
             input.addEventListener('input', () => {
-                if (input.value.length === 1 && idx < inputs.length - 1) {
-                    inputs[idx + 1].focus();
-                }
+                if (input.value.length > 1) input.value = input.value.slice(-1);
+                if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+            });
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Backspace' && !input.value && idx > 0) inputs[idx - 1].focus();
             });
         });
+
+        // Paste OTP
+        inputs[0].addEventListener('paste', e => {
+            const pasteData = e.clipboardData.getData('text').trim();
+            if (/^\d+$/.test(pasteData)) {
+                pasteData.split('').forEach((char, i) => { if (inputs[i]) inputs[i].value = char; });
+                inputs[Math.min(pasteData.length, inputs.length) - 1].focus();
+                e.preventDefault();
+            }
+        });
+
+        // Prefill OTP smoothly
+      const prefillOtp = <?= json_encode($prefillOtp) ?>;
+        if (prefillOtp.length > 0) {
+            prefillOtp.split('').forEach((char, i) => {
+                if (inputs[i]) {
+                    setTimeout(() => {
+                        inputs[i].value = char;
+                        if (i < inputs.length - 1) inputs[i + 1].focus();
+                    }, i * 150);
+                }
+            });
+        }
 
         // Countdown timer
         let time = 59;
         const timerEl = document.getElementById('timer');
+        const resendLink = document.getElementById('resendLink');
         const countdown = setInterval(() => {
             const minutes = Math.floor(time / 60).toString().padStart(2, '0');
             const seconds = (time % 60).toString().padStart(2, '0');
@@ -174,6 +207,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 clearInterval(countdown);
                 timerEl.textContent = "Expired";
                 timerEl.classList.add('expired');
+                resendLink.style.display = "block";
             }
             time--;
         }, 1000);

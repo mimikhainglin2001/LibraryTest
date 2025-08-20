@@ -40,7 +40,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
             line-height: 1.6;
             color: #333;
             background-color: #f8f9fa;
@@ -49,6 +49,8 @@
         /* Main Content */
         .main-content {
             min-height: 100vh;
+            padding-top: 80px;
+
 
         }
 
@@ -370,7 +372,10 @@
 </head>
 
 <body>
+
     <!-- Note: Original header would be included here -->
+
+
 
     <!-- Main Content -->
     <main class="main-content">

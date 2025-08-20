@@ -194,7 +194,7 @@ class Database
     }
     public function getById($table, $id)
     {
-        $sql = 'SELECT * FROM ' . $table . ' WHERE `id` =:id for update';
+        $sql = 'SELECT * FROM ' . $table . ' WHERE `id` =:id FOR UPDATE';
         // print_r($sql);
         $stm = $this->pdo->prepare($sql);
         $stm->bindValue(':id', $id);

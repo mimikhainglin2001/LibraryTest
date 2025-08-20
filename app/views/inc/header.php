@@ -39,27 +39,29 @@ $currentUrl = $_SERVER['REQUEST_URI'];
 </head>
 
 <body>
-
+   
     <!-- <header class="header"> -->
     <div class="header-content">
-        <div class="logo">
-            <div class="logo-icon">📚</div>
-        </div>
         <nav>
+<a href="<?php echo URLROOT; ?>/index" class="navbar-brand">
+            <i class="fas fa-book-reader"></i> Go Library
+        </a>
             <ul class="nav">
                 <li><a href="<?php echo URLROOT; ?>/pages/category">Home</a></li>
-                <li><a href="<?php echo URLROOT; ?>/pages/contact">Contact</a></li>
+                <!-- <li><a href="<?php echo URLROOT; ?>/pages/contact">Contact</a></li> -->
                 <li><a href="<?php echo URLROOT; ?>/user/history">History</a></li>
-                <li><a href="<?php echo URLROOT; ?>/auth/logout">logout</a></li>
-                <div class="flex items-center space-x-4">
-                    <a href="<?php echo URLROOT; ?>/user/userProfile" class="flex items-center space-x-4 text-gray-700 hover:text-blue-600 transition duration-300">
+                <li><a href="<?php echo URLROOT; ?>/auth/logout">Logout</a></li>
+                <li>
+                    <a href="<?php echo URLROOT; ?>/user/userProfile"
+                        class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition duration-300">
                         <i class="fas fa-user-circle text-2xl"></i>
-                        <span class="font-medium"><?= htmlspecialchars($name['name']) ?></span>
+                        <span class="font-medium">
+                            <?= htmlspecialchars($name['name']) ?>
+                        </span>
                     </a>
-                </div>
-
-
+                </li>
             </ul>
         </nav>
     </div>
+
     <!-- </header>  -->

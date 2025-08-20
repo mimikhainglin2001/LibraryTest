@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Central Library</title>
+    <title><?php echo SITENAME; ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Global Reset & Box-Sizing */
         *,
@@ -17,23 +19,38 @@
 
         /* Root Variables for Modern Design */
         :root {
-            --primary-color: #6a82fb; /* A more vibrant blue */
-            --primary-dark: #5a70e6;
-            --secondary-color: #fc7767; /* A warm, inviting orange-red */
-            --accent-color: #00e0b3; /* A fresh teal */
-            --text-primary: #1e293b; /* Darker for better contrast */
-            --text-secondary: #475569; /* Muted for body text */
-            --text-light: #64748b;
-            --background: #f8fafc; /* Light off-white */
-            --surface: #ffffff; /* Pure white for cards */
-            --border: rgba(226, 232, 240, 0.8);
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #a4508b 100%); /* Blue to deep purple */
-            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #ffbb00 100%); /* Orange to vibrant yellow */
-            --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, #0093e9 100%); /* Teal to sky blue */
+            --primary-color: #4267B2;
+            /* Facebook blue for a classic, trustworthy feel */
+            --primary-dark: #365899;
+            --secondary-color: #E60023;
+            /* Pinterest red - striking accent */
+            --accent-color: #0077B5;
+            /* LinkedIn blue - professional */
+            --text-primary: #212529;
+            /* Deep charcoal for main text */
+            --text-secondary: #495057;
+            /* Muted dark gray for body text */
+            --text-light: #6c757d;
+            /* Lighter gray for less emphasis */
+            --background: #f8f9fa;
+            /* Light greyish white */
+            --surface: #ffffff;
+            /* Pure white for cards */
+            --border: rgba(222, 226, 230, 0.8);
+            /* Light, subtle border */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.12);
+            /* Slightly stronger shadow */
+            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.18);
+            --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.22);
+            --gradient-hero: linear-gradient(135deg, #1f273d 0%, #303f6f 100%);
+            /* Deep blue-grey gradient */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, #5a85cc 100%);
+            /* Primary blue gradient */
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, #ff4b2b 100%);
+            /* Red to orange gradient */
+            --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, #0099e5 100%);
+            /* Teal to sky blue gradient */
         }
 
         /* Body Styles */
@@ -41,16 +58,16 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
-            background:radial-gradient(rgb(29, 78, 216), rgb(30, 64, 175), rgb(17, 24, 39));
+            background: var(--background);
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
         /* Utility Classes */
         .container {
-            max-width: 1280px; /* Slightly wider container */
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 2.5rem; /* Increased padding */
+            padding: 0 2.5rem;
         }
 
         /* --- Hero Section --- */
@@ -60,9 +77,12 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            background: radial-gradient(rgb(29, 78, 216), rgb(30, 64, 175), rgb(17, 24, 39)); /* Use primary gradient */
+            background: rgb(30 58 138);
+            /* Use the new dark hero gradient */
             overflow: hidden;
-            color: white; /* Ensure text is white on dark background */
+            color: white;
+            padding: 4rem 0;
+            /* Add some padding for smaller screens */
         }
 
         .hero-background {
@@ -72,14 +92,22 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            background-size: 200% 200%; /* For animating gradient */
-            animation: gradientShift 20s ease infinite; /* Smooth, slow gradient animation */
+            background-size: 200% 200%;
+            animation: gradientShift 20s ease infinite;
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .hero-background::before {
@@ -89,8 +117,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.6"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.7; /* Subtler grid */
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.7"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.9;
+            /* Slightly more visible grid */
         }
 
         .floating-particles {
@@ -98,26 +127,51 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            pointer-events: none; /* Do not interfere with clicks */
+            pointer-events: none;
         }
 
         .particle {
             position: absolute;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             opacity: 0;
-            animation: float 18s infinite linear; /* Longer duration for slower float */
-            filter: blur(0.5px); /* Soften particles */
+            animation: float 18s infinite linear;
+            filter: blur(0.7px);
+            /* Slightly more blur */
         }
 
-        .particle:nth-child(odd) { background: rgba(var(--secondary-color-rgb), 0.4); }
-        .particle:nth-child(3n) { background: rgba(var(--accent-color-rgb), 0.3); width: 6px; height: 6px; }
+        .particle:nth-child(odd) {
+            background: rgba(var(--secondary-color-rgb), 0.4);
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(var(--accent-color-rgb), 0.3);
+            width: 7px;
+            /* Slightly larger particles */
+            height: 7px;
+        }
 
         @keyframes float {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            5% { opacity: 1; transform: translateY(95vh) scale(0.5); }
-            95% { opacity: 1; transform: translateY(-50px) scale(1); }
-            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 0.8;
+                /* Higher peak opacity */
+                transform: translateY(95vh) scale(0.6);
+            }
+
+            95% {
+                opacity: 0.8;
+                transform: translateY(-50px) scale(1.1);
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1.3);
+                opacity: 0;
+            }
         }
 
         .hero-content {
@@ -130,18 +184,22 @@
 
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 6vw, 5rem); /* Larger and more responsive */
-            font-weight: 700;
+            font-size: clamp(3rem, 6vw, 5.2rem);
+            /* Larger title */
+            font-weight: 400;
             color: white;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.8rem;
+            text-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
             animation: fadeInUp 1s ease-out 0.2s both;
         }
 
         .hero-description {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 3rem;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            /* Larger description */
+            color: rgba(255, 255, 255, 0.95);
+            /* Whiter text */
+            margin-bottom: 3.5rem;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
@@ -150,41 +208,48 @@
 
         .hero-actions {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.8rem;
+            /* Slightly larger gap */
             justify-content: center;
             flex-wrap: wrap;
             animation: fadeInUp 1s ease-out 0.6s both;
         }
 
         .btn {
-            padding: 1.1rem 3rem; /* Slightly larger buttons */
+            padding: 1.2rem 3.2rem;
+            /* Slightly larger buttons */
             border: none;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
+            /* Larger font */
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            display: inline-flex; /* Use flex for potential icon alignment */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-md); /* Add subtle shadow */
-            color: white; /* Default button text color */
+            box-shadow: var(--shadow-md);
+            color: white;
+            /* Default button text color */
         }
 
         .btn-primary {
-            background: rgba(255, 255, 255, 0.25); /* More prominent glass effect */
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            /* Stronger blur for glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            /* Stronger border */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
             background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-3px) scale(1.02); /* More noticeable lift */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px) scale(1.03);
+            /* More pronounced lift */
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
         }
 
         .btn-primary:active {
@@ -200,8 +265,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease-out; /* Slower, smoother shine */
-            z-index: 1; /* Ensure shine is above text */
+            transition: left 0.6s ease-out;
+            z-index: 1;
         }
 
         .btn:hover::before {
@@ -210,91 +275,94 @@
 
         .hero-visual {
             position: absolute;
-            right: 8%; /* Adjusted position */
-            bottom: 10%; /* Place at bottom right */
-            transform: translateY(0); /* Reset transform */
+            right: 8%;
+            bottom: 10%;
             z-index: 2;
             animation: fadeInRight 1s ease-out 0.8s both;
         }
 
         .book-stack {
             position: relative;
-            width: 220px; /* Slightly larger books */
-            height: 270px;
+            width: 250px;
+            /* Even larger books */
+            height: 300px;
             display: flex;
-            align-items: flex-end; /* Stack books from the bottom */
+            align-items: flex-end;
         }
 
         .book {
             position: absolute;
-            width: 160px;
-            height: 220px;
-            border-radius: 10px; /* Softer corners */
+            width: 180px;
+            /* Larger book size */
+            height: 240px;
+            border-radius: 12px;
+            /* Softer corners */
             box-shadow: var(--shadow-xl);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother transitions */
-            transform-origin: bottom center; /* Pivot from bottom */
-            background: linear-gradient(145deg, #e2e8f0, #cbd5e0); /* Default for internal book pages */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: bottom center;
+            background: linear-gradient(145deg, #e2e8f0, #cbd5e0);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
         }
 
+        /* Using placeholder images as per user's original paths */
         .book-1 {
-            background: var(--gradient-accent); /* Unique gradient for each book */
-            transform: rotate(-10deg) translateX(-30px); /* More spread out */
+            background: url('/images/book1.avif') no-repeat center/cover;
+            transform: rotate(-10deg) translateX(-40px);
+            /* More spread out */
             left: 0;
             z-index: 3;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.3);
         }
 
         .book-2 {
-            background: var(--gradient-secondary);
-            transform: rotate(0deg);
+            background: url('/images/book2.avif') no-repeat center/cover;
             left: 50%;
-            transform: translateX(-50%); /* Center the middle book */
+            transform: translateX(-50%);
+            /* Center the middle book */
             z-index: 2;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
         }
 
         .book-3 {
-            background: var(--gradient-primary);
-            transform: rotate(10deg) translateX(30px);
+            background: url('/images/book3.avif') no-repeat center/cover;
+            transform: rotate(10deg) translateX(40px);
+            /* More spread out */
             right: 0;
             z-index: 1;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
         }
 
         .book-stack:hover .book-1 {
-            transform: rotate(-12deg) translateX(-40px) translateY(-15px);
+            transform: rotate(-12deg) translateX(-50px) translateY(-20px);
         }
 
         .book-stack:hover .book-2 {
-            transform: rotate(2deg) translateY(-8px);
+            transform: rotate(2deg) translateY(-10px);
         }
 
         .book-stack:hover .book-3 {
-            transform: rotate(12deg) translateX(40px) translateY(-12px);
+            transform: rotate(12deg) translateX(50px) translateY(-18px);
         }
 
         /* --- Services Section --- */
         .services {
-            padding: 8rem 0; /* More vertical space */
+            padding: 8rem 0;
             background: var(--background);
             position: relative;
-            z-index: 10; /* Ensure it's above hero background if scroll overlap */
+            z-index: 10;
         }
-
-        /*  */
-
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+            font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+            /* Slightly larger title */
             text-align: center;
-            margin-bottom: 5rem; /* More space below title */
+            margin-bottom: 5rem;
             color: var(--text-primary);
             position: relative;
             font-weight: 700;
@@ -303,28 +371,34 @@
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -15px; /* Lower position for underline */
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px; /* Wider underline */
-            height: 5px;
-            background: var(--gradient-accent); /* Use a different gradient for contrast */
+            width: 120px;
+            /* Wider underline */
+            height: 6px;
+            /* Thicker underline */
+            background: var(--gradient-accent);
+            /* Use accent gradient */
             border-radius: 3px;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly smaller min-width for more cards on row */
-            gap: 2.5rem; /* Increased gap */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* Slightly larger min-width */
+            gap: 3rem;
+            /* Increased gap */
         }
 
         .service-card {
             background: var(--surface);
-            padding: 3rem; /* More padding */
+            padding: 3.5rem;
+            /* More padding */
             border-radius: 20px;
             text-align: center;
             box-shadow: var(--shadow-md);
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); /* Smoother spring-like transition */
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
@@ -336,7 +410,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 6px; /* Thicker top border */
+            height: 8px;
+            /* Thicker top border */
             background: var(--gradient-primary);
             transform: scaleX(0);
             transform-origin: left;
@@ -348,45 +423,178 @@
         }
 
         .service-card:hover {
-            transform: translateY(-10px) scale(1.03); /* More pronounced lift and scale */
-            box-shadow: var(--shadow-xl);
-            border-color: rgba(var(--primary-color-rgb), 0.5); /* Highlight border on hover */
+            transform: translateY(-12px) scale(1.04);
+            /* More pronounced lift and scale */
+            box-shadow: var(--shadow-lg);
+            /* Stronger shadow on hover */
+            border-color: rgba(var(--primary-color-rgb), 0.6);
+            /* Highlight border on hover */
         }
 
         .service-icon {
-            font-size: 3.5rem; /* Larger icons */
-            margin-bottom: 1.8rem;
-            color: var(--primary-color); /* Color the icons */
-            transition: transform 0.3s ease;
+            font-size: 4rem;
+            /* Larger icons */
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
         .service-card:hover .service-icon {
-            transform: scale(1.1) rotate(5deg); /* Spin and grow on hover */
-            color: var(--secondary-color); /* Change color on hover */
+            transform: scale(1.15) rotate(7deg);
+            /* More spin and grow on hover */
+            color: var(--secondary-color);
         }
 
         .service-card h3 {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            /* Larger heading */
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             color: var(--text-primary);
         }
 
         .service-card p {
             color: var(--text-secondary);
-            line-height: 1.75;
-            font-size: 1.05rem;
+            line-height: 1.8;
+            /* More readable line height */
+            font-size: 1.1rem;
+            /* Slightly larger text */
         }
+
+        /* --- Footer (New Section) --- */
+        .main-footer {
+            background: rgb(30 58 138);
+            /* Keep hero gradient for consistency */
+            color: rgba(255, 255, 255, 0.85);
+            /* Slightly brighter text */
+            padding: 4rem 0;
+            font-size: 0.98rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            /* Adjusted min-width for columns */
+            gap: 2.5rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            /* Slightly more visible border */
+        }
+
+        .footer-col h4 {
+            font-size: 1.25rem;
+            /* Slightly larger heading */
+            color: white;
+            margin-bottom: 1.6rem;
+            font-weight: 600;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding-left: 0;
+            /* Ensure no default padding */
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.9rem;
+            /* Slightly more space */
+        }
+
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.75);
+            /* Brighter link color */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent-color);
+            /* Change to accent color on hover */
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.8rem;
+            /* Increased gap between icons */
+            margin-top: 1.8rem;
+            /* More space above icons */
+        }
+
+        .social-links a {
+            color: white;
+            /* Default social icon color */
+            font-size: 1.7rem;
+            /* Larger social icons */
+            transition: transform 0.3s ease, color 0.3s ease;
+            display: flex;
+            /* Ensure proper centering if backgrounds are added */
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            /* Define fixed size for circles if needed */
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            /* Subtle background for social icons */
+            box-shadow: var(--shadow-sm);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            /* More pronounced lift and scale */
+            color: var(--secondary-color);
+            /* Change color on hover */
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Specific Social Icon Colors on hover for brand recognition */
+        .social-links a.facebook:hover {
+            color: #3b5998;
+            /* Facebook Blue */
+        }
+
+        .social-links a.twitter:hover {
+            color: #00acee;
+            /* Twitter Blue */
+        }
+
+        .social-links a.instagram:hover {
+            color: #E1306C;
+            /* Instagram Red/Pink */
+        }
+
+        .social-links a.linkedin:hover {
+            color: #0077B5;
+            /* LinkedIn Blue */
+        }
+
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            color: rgba(255, 255, 255, 0.65);
+            /* Slightly brighter copyright text */
+        }
+
 
         /* --- Responsive Design --- */
         @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                /* Stack content and visual */
+                text-align: center;
+            }
+
             .hero-visual {
-                position: relative; /* Revert to relative for smaller screens */
+                position: relative;
                 right: auto;
                 bottom: auto;
                 transform: none;
-                margin-top: 3rem;
-                order: 2; /* Put visual below content */
+                margin-top: 4rem;
+                /* More space between text and books */
+                order: 2;
+                max-width: 100%;
+                /* Allow visual to shrink */
             }
 
             .hero-content {
@@ -394,43 +602,45 @@
             }
 
             .book-stack {
-                width: 180px;
-                height: 230px;
+                width: 200px;
+                height: 250px;
                 margin: 0 auto;
             }
 
             .book {
-                width: 130px;
-                height: 180px;
+                width: 150px;
+                height: 200px;
             }
         }
 
         @media (max-width: 768px) {
             .hero {
-                flex-direction: column;
-                padding: 4rem 1rem;
+                padding: 3rem 1rem;
             }
 
             .hero-title {
-                font-size: clamp(2.2rem, 8vw, 3.5rem);
+                font-size: clamp(2rem, 8vw, 3.8rem);
             }
 
             .hero-description {
-                font-size: clamp(1rem, 3vw, 1.2rem);
+                font-size: clamp(0.95rem, 3vw, 1.25rem);
             }
 
             .hero-actions {
                 flex-direction: column;
                 align-items: center;
+                gap: 1rem;
             }
 
             .btn {
-                width: 100%;
-                max-width: 300px;
+                width: 90%;
+                max-width: 350px;
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
             }
 
             .services {
-                padding: 5rem 0;
+                padding: 6rem 0;
             }
 
             .services-grid {
@@ -441,6 +651,24 @@
             .service-card {
                 padding: 2.5rem;
             }
+
+            .section-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+                margin-bottom: 3.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-col ul {
+                padding-left: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -449,31 +677,55 @@
             }
 
             .hero-content {
-                padding: 0 1.5rem;
+                padding: 0 1rem;
             }
 
             .btn {
-                padding: 1rem 2rem;
-                font-size: 1.05rem;
+                padding: 0.9rem 1.8rem;
+                font-size: 1rem;
+            }
+
+            .book-stack {
+                width: 160px;
+                height: 200px;
+            }
+
+            .book {
+                width: 120px;
+                height: 160px;
             }
         }
 
         /* --- Animations --- */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         /* Intersection Observer Animation Classes */
         .animate-on-scroll {
             opacity: 0;
-            transform: translateY(60px); /* More pronounced initial translateY */
-            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Slower, smoother animation */
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .animate-on-scroll.animate {
@@ -483,16 +735,17 @@
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 10px; /* Wider scrollbar */
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #e2e8f0; /* Lighter track */
+            background: #e9ecef;
+            /* Lighter track */
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--primary-color); /* Match primary color */
+            background: var(--primary-color);
             border-radius: 5px;
             transition: background 0.3s ease;
         }
@@ -508,54 +761,80 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--gradient-primary);
+            background: var(--gradient-hero);
+            /* Match hero background */
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             opacity: 1;
             visibility: visible;
-            transition: opacity 0.6s ease-out, visibility 0.6s ease-out; /* Smooth hide */
+            transition: opacity 0.7s ease-out, visibility 0.7s ease-out;
+            /* Slightly longer hide */
         }
 
         .loading-overlay.hidden {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* Allow interaction after fade */
+            pointer-events: none;
         }
 
         .loader {
-            width: 60px; /* Larger loader */
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.4);
-            border-top: 4px solid white;
+            width: 65px;
+            /* Larger loader */
+            height: 65px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            /* Softer border */
+            border-top: 5px solid white;
             border-radius: 50%;
-            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* Springy spin */
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); /* Glow effect */
+            animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            /* Slightly slower spin */
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+            /* More pronounced glow */
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Click Ripple Animation (Add this to your CSS) */
+        @keyframes clickRipple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2.5);
+                /* Increase ripple size */
+                opacity: 0;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader"></div>
     </div>
-
     <main>
         <section class="hero">
             <div class="hero-background">
                 <div class="floating-particles"></div>
             </div>
             <div class="hero-content">
-                <h1 class="hero-title">Welcome to Our Modern Library</h1>
+
+                <h1 class="hero-title">Welcome to Our UCSMTLA Library</h1>
                 <p class="hero-description">Immerse yourself in a world of knowledge. Explore our extensive collection, utilize cutting-edge digital resources, and find your perfect study sanctuary.</p>
                 <div class="hero-actions">
-                    <a href="<?php echo URLROOT;?>/pages/home" class="btn btn-primary">Discover Books</a>
-                    <a href="<?php echo URLROOT;?>/pages/login" class="btn btn-primary">Login to Your Account</a>
+                    <a href="<?php echo URLROOT; ?>/pages/home" class="btn btn-primary">Discover Books</a>
+                    <a href="<?php echo URLROOT; ?>/pages/login" class="btn btn-primary">Login to Your Account</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -566,10 +845,10 @@
                 </div>
             </div>
         </section>
-
+        
         <section class="services">
             <div class="container">
-                <h2 class="section-title animate-on-scroll">Our Comprehensive Services</h2>
+                <h2 class="section-title animate-on-scroll">Our Core Offerings</h2>
                 <div class="services-grid">
                     <div class="service-card animate-on-scroll">
                         <div class="service-icon">📚</div>
@@ -604,13 +883,52 @@
                 </div>
             </div>
         </section>
+        <footer class="main-footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>About Us</h4>
+                        <ul>
+                            <li><a href="#">Our Mission</a></li>
+                            <li><a href="#">Staff Directory</a></li>
+                            <li><a href="#">Library Policies</a></li>
+                            <li><a href="#">Annual Report</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#">Catalog Search</a></li>
+                            <li><a href="#">Digital Collections</a></li>
+                            <li><a href="#">Research Guides</a></li>
+                            <li><a href="#">Room Reservations</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Connect</h4>
+                        <p>123 University Ave,<br>Tech City, TC 12345</p>
+                        <p>Email: <a href="mailto:info@ucsmtlalibrary.edu">info@ucsmtlalibrary.edu</a></p>
+                        <p>Phone: (123) 456-7890</p>
+                        <div class="social-links">
+                            <a href="https://facebook.com/yourlibrarypage" target="_blank" aria-label="Facebook" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/yourlibraryhandle" target="_blank" aria-label="Twitter" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="https://instagram.com/yourlibrary" target="_blank" aria-label="Instagram" class="instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://linkedin.com/company/yourlibrary" target="_blank" aria-label="LinkedIn" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    &copy; 2025 UCSMTLA Library. All rights reserved.
+                </div>
+            </div>
+        </footer>
     </main>
 
     <script>
         // Store computed values for RGB for gradients for better performance/consistency
-        document.documentElement.style.setProperty('--primary-color-rgb', '106, 130, 251'); /* RGB for #6a82fb */
-        document.documentElement.style.setProperty('--secondary-color-rgb', '252, 119, 103'); /* RGB for #fc7767 */
-        document.documentElement.style.setProperty('--accent-color-rgb', '0, 224, 179'); /* RGB for #00e0b3 */
+        document.documentElement.style.setProperty('--primary-color-rgb', '66, 103, 178'); /* RGB for #4267B2 */
+        document.documentElement.style.setProperty('--secondary-color-rgb', '230, 0, 35'); /* RGB for #E60023 */
+        document.documentElement.style.setProperty('--accent-color-rgb', '0, 119, 181'); /* RGB for #0077B5 */
 
 
         // Loading screen
@@ -624,7 +942,7 @@
         function createParticles() {
             const particlesContainer = document.querySelector('.floating-particles');
             // Clear existing particles to prevent duplicates on resize
-            particlesContainer.innerHTML = ''; 
+            particlesContainer.innerHTML = '';
             const particleCount = window.innerWidth < 768 ? 15 : 30;
 
             for (let i = 0; i < particleCount; i++) {
@@ -655,7 +973,7 @@
                         // CSS `transition-delay` on individual cards is better
                     } else {
                         // Optionally remove 'animate' if you want elements to re-animate on scroll back
-                        // entry.target.classList.remove('animate'); 
+                        // entry.target.classList.remove('animate');
                     }
                 });
             }, observerOptions);
@@ -691,7 +1009,7 @@
                     const circle = document.createElement('span');
                     const diameter = Math.max(this.clientWidth, this.clientHeight);
                     const radius = diameter / 2;
-                    
+
                     circle.style.cssText = `
                         position: absolute;
                         width: ${diameter}px;
@@ -705,93 +1023,26 @@
                         pointer-events: none;
                         z-index: 2; /* Ensure ripple is above text but below shine */
                     `;
-                    
-                    // Only add style if not already present
-                    if (!document.getElementById('clickRippleKeyframes')) {
-                        const style = document.createElement('style');
-                        style.id = 'clickRippleKeyframes';
-                        style.textContent = `
-                            @keyframes clickRipple {
-                                to {
-                                    transform: scale(3); /* Larger ripple */
-                                    opacity: 0;
-                                }
-                            }
-                        `;
-                        document.head.appendChild(style);
-                    }
-                    
+
+                    // Remove any existing ripples to prevent accumulation
+                    this.querySelectorAll('.ripple').forEach(r => r.remove());
+                    circle.classList.add('ripple'); // Add a class to identify ripples
                     this.appendChild(circle);
-                    
-                    // Remove ripple after animation
-                    circle.addEventListener('animationend', () => {
-                        circle.remove();
-                    });
                 });
             });
         }
 
-        // Mouse movement parallax for hero elements
-        function setupMouseParallax() {
-            const heroSection = document.querySelector('.hero');
-            const books = document.querySelectorAll('.book');
-            const heroTitle = document.querySelector('.hero-title');
-            const heroDescription = document.querySelector('.hero-description');
-
-            if (window.innerWidth > 992) { // Apply only on larger screens
-                heroSection.addEventListener('mousemove', (e) => {
-                    const rect = heroSection.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-
-                    const mouseX = e.clientX - centerX;
-                    const mouseY = e.clientY - centerY;
-                    
-                    books.forEach((book, index) => {
-                        const speed = (index + 1) * 0.02; // Slower, more subtle movement
-                        const x = mouseX * speed;
-                        const y = mouseY * speed;
-                        
-                        // Apply movement relative to its initial position
-                        const initialTransform = book.dataset.initialTransform || getComputedStyle(book).transform;
-                        book.dataset.initialTransform = initialTransform; // Store initial transform
-
-                        book.style.transform = `${initialTransform} translate(${x}px, ${y}px)`;
-                    });
-
-                    // Add subtle parallax to text
-                    heroTitle.style.transform = `translate(${-mouseX * 0.01}px, ${-mouseY * 0.01}px)`;
-                    heroDescription.style.transform = `translate(${-mouseX * 0.005}px, ${-mouseY * 0.005}px)`;
-                });
-
-                // Reset on mouse leave for smoother experience
-                heroSection.addEventListener('mouseleave', () => {
-                    books.forEach(book => {
-                        book.style.transform = book.dataset.initialTransform;
-                    });
-                    heroTitle.style.transform = `translate(0,0)`;
-                    heroDescription.style.transform = `translate(0,0)`;
-                });
-            }
-        }
-
-        // Initialize all features when page loads
-        document.addEventListener('DOMContentLoaded', function() {
+        // Initialize functions on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
             createParticles();
             setupScrollAnimations();
             setupParallax();
             setupButtonEffects();
-            setupMouseParallax(); // Only active on larger screens by its internal logic
-            
-            // Re-initialize particles on resize
-            window.addEventListener('resize', () => {
-                createParticles();
-                setupMouseParallax(); // Re-evaluate mouse parallax on resize
-            });
         });
 
-        // Performance optimization: throttle scroll events (already well-implemented)
-        // No changes needed for throttle function itself, it's good.
+        // Recreate particles on window resize for responsiveness
+        window.addEventListener('resize', createParticles);
     </script>
 </body>
+
 </html>
