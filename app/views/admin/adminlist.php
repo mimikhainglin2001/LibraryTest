@@ -53,7 +53,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50 sticky top-0 z-10">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th> -->
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
@@ -66,7 +66,7 @@
                     <?php if (!empty($data['admins'])): ?>
                         <?php foreach ($data['admins'] as $admin): ?>
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($admin['id']) ?></td>
+                                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($admin['id']) ?></td> -->
                                 <td class="px-6 py-4 text-sm text-gray-900"><?= htmlspecialchars($admin['name']) ?></td>
                                 <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($admin['email']) ?></td>
                                 <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($admin['department'] ?? '') ?></td>

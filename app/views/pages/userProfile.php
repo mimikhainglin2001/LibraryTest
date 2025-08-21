@@ -137,7 +137,6 @@
     .main-content-area {
         background: linear-gradient(135deg, #ebf8ff 0%, #e0f2fe 100%);
         min-height: 100vh;
-        padding: 1rem;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -565,7 +564,8 @@
     }
 </style>
 
-<main class="main-content-area">
+<main class="main-content-area" style="padding: 4rem;
+">
     <!-- Page Header -->
     <div class="page-header">
         <h2 class="page-title">

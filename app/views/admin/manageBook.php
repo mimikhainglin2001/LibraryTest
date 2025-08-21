@@ -55,7 +55,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50 sticky top-0 z-10">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book ID</th>
+                        <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book ID</th> -->
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ISBN</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author Name</th>
@@ -69,7 +69,7 @@
                     <?php if (!empty($data['booklist'])): ?>
                         <?php foreach ($data['booklist'] as $book): ?>
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($book['id'] ?? '') ?></td>
+                                <!-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($book['id'] ?? '') ?></td> -->
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($book['isbn'] ?? '') ?></td>
                                 <td class="px-6 py-4 text-sm text-gray-900"><?= htmlspecialchars($book['title'] ?? '') ?></td>
                                 <td class="px-6 py-4 text-sm text-gray-500"><?= htmlspecialchars($book['author_name'] ?? '') ?></td>

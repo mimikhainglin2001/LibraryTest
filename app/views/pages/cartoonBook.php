@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../../helpers/session_manager.php';
+$session = new SessionManager();
 require_once APPROOT . '/views/inc/header.php';
 
 // Start the session only if it hasn't been started yet
@@ -38,7 +41,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     /* Hero Section */
     .hero-section {
         position: relative;
-        background: #1e3a8a;
+        background: #393b41ff;
         padding: 60px 0;
         overflow: hidden;
     }
@@ -50,7 +53,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat;
+        /* background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat; */
         opacity: 0.1;
     }
 
@@ -65,7 +68,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
 
     .hero-image img {
         width: 100%;
-        height: 100%;
+        height: 120%;
         object-fit: cover;
         opacity: 0.3;
     }
@@ -390,7 +393,10 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     /* Modal Styles */
     .modal-overlay {
         position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: rgba(0, 0, 0, 0.6);
         z-index: 9999;
         display: flex;
@@ -487,6 +493,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
             opacity: 0;
             transform: translateY(30px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -537,7 +544,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         .see-more-btn {
             padding: 10px 20px;
             font-size: 0.9rem;
-            
+
         }
     }
 
@@ -581,19 +588,19 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
 <main class="main-content">
     <section class="hero-section">
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Library books">
+            <img src="https://images.unsplash.com/photo-1529148482759-b35b25c5f217?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Library books">
         </div>
         <div class="search-section">
             <h1>Find The Book You Love</h1>
             <div class="search-container">
                 <div class="search-box">
-                <input type="text" placeholder="Search by title, author, or ISBN..." class="search-input" id="searchInput">
+                    <input type="text" placeholder="Search by title, author, or ISBN..." class="search-input" id="searchInput">
                 </div>
             </div>
         </div>
     </section>
 
-    <span><?php require APPROOT.'/views/components/auth_message.php'; ?></span>
+    <span><?php require APPROOT . '/views/components/auth_message.php'; ?></span>
 
     <section class="book-listing">
         <h2>Cartoon Books Listed</h2>
@@ -617,11 +624,11 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
                     }
                     ?>
                     <div class="book-item <?= $index >= 6 ? 'hidden-book' : '' ?>"
-                         data-book-title="<?= htmlspecialchars(strtolower($book['title'])) ?>"
-                         data-book-author="<?= htmlspecialchars(strtolower($book['author_name'])) ?>"
-                         data-book-isbn="<?= htmlspecialchars(strtolower($book['isbn'])) ?>"
-                         data-is-borrowed="<?= $isBorrowedByUser ? 'true' : 'false' ?>">
-                        
+                        data-book-title="<?= htmlspecialchars(strtolower($book['title'])) ?>"
+                        data-book-author="<?= htmlspecialchars(strtolower($book['author_name'])) ?>"
+                        data-book-isbn="<?= htmlspecialchars(strtolower($book['isbn'])) ?>"
+                        data-is-borrowed="<?= $isBorrowedByUser ? 'true' : 'false' ?>">
+
                         <?php
                         $imagePath = $book['image'] ?? '';
                         $imageUrl = '';
@@ -658,13 +665,13 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
                             </div>
 
                             <button class="borrow-btn<?= $buttonClass ?>"
-                                    data-book-id="<?= htmlspecialchars($book['id']) ?>"
-                                    data-book-title="<?= htmlspecialchars($book['title']) ?>"
-                                    data-book-author="<?= htmlspecialchars($book['author_name']) ?>"
-                                    data-borrow-url="<?= URLROOT; ?>/BorrowBook/borrow?id=<?= htmlspecialchars($book['id']) ?>"
-                                    data-reserve-url="<?= URLROOT; ?>/Reservation/reserve?id=<?= htmlspecialchars($book['id']) ?>"
-                                    data-is-borrowed="<?= $isBorrowedByUser ? 'true' : 'false' ?>"
-                                    <?= $buttonDisabled ?>>
+                                data-book-id="<?= htmlspecialchars($book['id']) ?>"
+                                data-book-title="<?= htmlspecialchars($book['title']) ?>"
+                                data-book-author="<?= htmlspecialchars($book['author_name']) ?>"
+                                data-borrow-url="<?= URLROOT; ?>/BorrowBook/borrow?id=<?= htmlspecialchars($book['id']) ?>"
+                                data-reserve-url="<?= URLROOT; ?>/Reservation/reserve?id=<?= htmlspecialchars($book['id']) ?>"
+                                data-is-borrowed="<?= $isBorrowedByUser ? 'true' : 'false' ?>"
+                                <?= $buttonDisabled ?>>
                                 <?= $buttonText ?>
                             </button>
                         </div>
@@ -674,12 +681,12 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
                 <p style="text-align: center; width: 100%; grid-column: 1 / -1;">No romance books are available at the moment. Please check back later!</p>
             <?php endif; ?>
         </div>
-        
+
         <div class="no-results-message" id="noResultsMessage">
             No books found matching your search.
         </div>
-        
-      <div class="navigation">
+
+        <div class="navigation">
             <a href="<?= URLROOT; ?>/pages/category" class="back-btn">Back</a>
             <button class="see-more-btn" id="seeMoreBtn">See More Books</button>
         </div>
@@ -704,165 +711,165 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Elements ---
-    const searchInput = document.getElementById('searchInput');
-    const noResultsMessage = document.getElementById('noResultsMessage');
-    const seeMoreBtn = document.getElementById('seeMoreBtn');
-    const booksGrid = document.getElementById('booksGrid');
-    const bookItems = booksGrid ? booksGrid.querySelectorAll('.book-item') : [];
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DOM Elements ---
+        const searchInput = document.getElementById('searchInput');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+        const seeMoreBtn = document.getElementById('seeMoreBtn');
+        const booksGrid = document.getElementById('booksGrid');
+        const bookItems = booksGrid ? booksGrid.querySelectorAll('.book-item') : [];
 
-    const initialDisplayCount = 6;
-    const loadMoreCount = 6;
-    let currentlyDisplayed = initialDisplayCount;
+        const initialDisplayCount = 6;
+        const loadMoreCount = 6;
+        let currentlyDisplayed = initialDisplayCount;
 
-    // --- Update Book Visibility ---
-    function updateBookVisibility() {
-        bookItems.forEach((item, index) => {
-            if (index < currentlyDisplayed) {
-                item.classList.remove('hidden-book');
-            } else {
-                item.classList.add('hidden-book');
+        // --- Update Book Visibility ---
+        function updateBookVisibility() {
+            bookItems.forEach((item, index) => {
+                if (index < currentlyDisplayed) {
+                    item.classList.remove('hidden-book');
+                } else {
+                    item.classList.add('hidden-book');
+                }
+            });
+
+            if (seeMoreBtn) {
+                seeMoreBtn.style.display = (currentlyDisplayed >= bookItems.length) ? 'none' : 'block';
             }
-        });
-
-        if (seeMoreBtn) {
-            seeMoreBtn.style.display = (currentlyDisplayed >= bookItems.length) ? 'none' : 'block';
-        }
-    }
-
-    // --- Filter Books by Search ---
-    function filterBooks() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        let foundBooksCount = 0;
-
-        bookItems.forEach(item => {
-            const title = item.dataset.bookTitle?.toLowerCase() || '';
-            const author = item.dataset.bookAuthor?.toLowerCase() || '';
-            const isbn = item.dataset.bookIsbn?.toLowerCase() || '';
-
-            const matches = (
-                searchTerm === '' ||
-                title.includes(searchTerm) ||
-                author.includes(searchTerm) ||
-                isbn.includes(searchTerm)
-            );
-
-            item.classList.toggle('hidden-book', !matches);
-
-            if (matches) foundBooksCount++;
-        });
-
-        if (noResultsMessage) {
-            noResultsMessage.style.display = (searchTerm !== '' && foundBooksCount === 0) ? 'block' : 'none';
         }
 
+        // --- Filter Books by Search ---
+        function filterBooks() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            let foundBooksCount = 0;
+
+            bookItems.forEach(item => {
+                const title = item.dataset.bookTitle?.toLowerCase() || '';
+                const author = item.dataset.bookAuthor?.toLowerCase() || '';
+                const isbn = item.dataset.bookIsbn?.toLowerCase() || '';
+
+                const matches = (
+                    searchTerm === '' ||
+                    title.includes(searchTerm) ||
+                    author.includes(searchTerm) ||
+                    isbn.includes(searchTerm)
+                );
+
+                item.classList.toggle('hidden-book', !matches);
+
+                if (matches) foundBooksCount++;
+            });
+
+            if (noResultsMessage) {
+                noResultsMessage.style.display = (searchTerm !== '' && foundBooksCount === 0) ? 'block' : 'none';
+            }
+
+            if (seeMoreBtn) {
+                if (searchTerm !== '') {
+                    seeMoreBtn.style.display = 'none';
+                } else {
+                    currentlyDisplayed = initialDisplayCount;
+                    updateBookVisibility();
+                }
+            }
+        }
+
+        // --- Search Events ---
+        if (searchInput) {
+            searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') filterBooks();
+            });
+            searchInput.addEventListener('input', filterBooks);
+        }
+
+        // --- See More Button ---
         if (seeMoreBtn) {
-            if (searchTerm !== '') {
-                seeMoreBtn.style.display = 'none';
-            } else {
-                currentlyDisplayed = initialDisplayCount;
+            seeMoreBtn.addEventListener('click', () => {
+                currentlyDisplayed += loadMoreCount;
                 updateBookVisibility();
-            }
+            });
         }
-    }
 
-    // --- Search Events ---
-    if (searchInput) {
-        searchInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') filterBooks();
-        });
-        searchInput.addEventListener('input', filterBooks);
-    }
+        // --- Initialize Books on Load ---
+        updateBookVisibility();
 
-    // --- See More Button ---
-    if (seeMoreBtn) {
-        seeMoreBtn.addEventListener('click', () => {
-            currentlyDisplayed += loadMoreCount;
-            updateBookVisibility();
-        });
-    }
+        // --- PHP Passed Alert Modal ---
+        const initialModalType = "<?= $modalType ?>";
+        const initialModalMessage = "<?= htmlspecialchars($modalMessage) ?>";
+        if (initialModalType !== 'none' && initialModalMessage) {
+            showAlert(initialModalType, initialModalMessage);
+        }
 
-    // --- Initialize Books on Load ---
-    updateBookVisibility();
+        // --- Custom Alert Logic ---
+        const customAlert = document.getElementById('customAlert');
+        const customAlertMessage = document.getElementById('customAlertMessage');
 
-    // --- PHP Passed Alert Modal ---
-    const initialModalType = "<?= $modalType ?>";
-    const initialModalMessage = "<?= htmlspecialchars($modalMessage) ?>";
-    if (initialModalType !== 'none' && initialModalMessage) {
-        showAlert(initialModalType, initialModalMessage);
-    }
+        function showAlert(type, message, duration = 5000) {
+            if (!customAlert || !customAlertMessage) return;
 
-    // --- Custom Alert Logic ---
-    const customAlert = document.getElementById('customAlert');
-    const customAlertMessage = document.getElementById('customAlertMessage');
+            customAlert.className = 'custom-alert';
+            customAlert.classList.add(type);
+            customAlertMessage.textContent = message;
 
-    function showAlert(type, message, duration = 5000) {
-        if (!customAlert || !customAlertMessage) return;
+            customAlert.style.display = 'block';
+            customAlert.classList.add('show');
 
-        customAlert.className = 'custom-alert';
-        customAlert.classList.add(type);
-        customAlertMessage.textContent = message;
-
-        customAlert.style.display = 'block';
-        customAlert.classList.add('show');
-
-        setTimeout(() => {
-            customAlert.classList.remove('show');
             setTimeout(() => {
-                customAlert.style.display = 'none';
-            }, 300);
-        }, duration);
-    }
+                customAlert.classList.remove('show');
+                setTimeout(() => {
+                    customAlert.style.display = 'none';
+                }, 300);
+            }, duration);
+        }
 
-    // --- Confirmation Modal Logic ---
-    const confirmModal = document.getElementById('confirmModal');
-    const confirmMessage = document.getElementById('confirmMessage');
-    const confirmYes = document.getElementById('confirmYes');
-    const confirmNo = document.getElementById('confirmNo');
-    let confirmAction = null;
+        // --- Confirmation Modal Logic ---
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmMessage = document.getElementById('confirmMessage');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
+        let confirmAction = null;
 
-    function showConfirm(message, onConfirm) {
-        confirmMessage.textContent = message;
-        confirmModal.style.display = 'flex';
-        confirmAction = onConfirm;
-    }
+        function showConfirm(message, onConfirm) {
+            confirmMessage.textContent = message;
+            confirmModal.style.display = 'flex';
+            confirmAction = onConfirm;
+        }
 
-    function hideConfirm() {
-        confirmModal.style.display = 'none';
-        confirmAction = null;
-    }
+        function hideConfirm() {
+            confirmModal.style.display = 'none';
+            confirmAction = null;
+        }
 
-    confirmYes?.addEventListener('click', () => {
-        if (confirmAction) confirmAction();
-        hideConfirm();
-    });
+        confirmYes?.addEventListener('click', () => {
+            if (confirmAction) confirmAction();
+            hideConfirm();
+        });
 
-    confirmNo?.addEventListener('click', hideConfirm);
+        confirmNo?.addEventListener('click', hideConfirm);
 
-    // --- Borrow / Reserve Buttons ---
-    document.querySelectorAll('.borrow-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const bookTitle = btn.dataset.bookTitle;
-            const bookAuthor = btn.dataset.bookAuthor;
-            const isBorrowed = btn.dataset.isBorrowed === 'true';
+        // --- Borrow / Reserve Buttons ---
+        document.querySelectorAll('.borrow-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const bookTitle = btn.dataset.bookTitle;
+                const bookAuthor = btn.dataset.bookAuthor;
+                const isBorrowed = btn.dataset.isBorrowed === 'true';
 
-            if (isBorrowed || btn.disabled || btn.classList.contains('borrowed-by-user')) {
-                showAlert('warning', `You have already borrowed "${bookTitle}" by ${bookAuthor}.`, 4000);
-                return;
-            }
+                if (isBorrowed || btn.disabled || btn.classList.contains('borrowed-by-user')) {
+                    showAlert('warning', `You have already borrowed "${bookTitle}" by ${bookAuthor}.`, 4000);
+                    return;
+                }
 
-            if (btn.classList.contains('reserve-btn')) {
-                showConfirm(`Do you want to reserve "${bookTitle}" by ${bookAuthor}?`, () => {
-                    window.location.href = btn.dataset.reserveUrl;
-                });
-            } else {
-                showConfirm(`Do you want to borrow "${bookTitle}" by ${bookAuthor}?`, () => {
-                    window.location.href = btn.dataset.borrowUrl;
-                });
-            }
+                if (btn.classList.contains('reserve-btn')) {
+                    showConfirm(`Do you want to reserve "${bookTitle}" by ${bookAuthor}?`, () => {
+                        window.location.href = btn.dataset.reserveUrl;
+                    });
+                } else {
+                    showConfirm(`Do you want to borrow "${bookTitle}" by ${bookAuthor}?`, () => {
+                        window.location.href = btn.dataset.borrowUrl;
+                    });
+                }
+            });
         });
     });
-});
 </script>

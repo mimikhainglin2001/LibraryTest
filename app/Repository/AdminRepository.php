@@ -7,7 +7,7 @@ require_once APPROOT . '/Interfaces/AdminRepositoryInterface.php';
 // repositories/UserRepository.php
 class AdminRepository extends DBconnection implements AdminRepositoryInterface
 {
-   public function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -45,7 +45,4 @@ class AdminRepository extends DBconnection implements AdminRepositoryInterface
     {
         return $this->getDB()->readAll('reservation_view');
     }
-    
-
 }
-

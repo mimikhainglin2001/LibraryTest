@@ -48,11 +48,21 @@ body {
     font-size: 16px;
 }
 
-.nav {
+/* .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(30, 58, 138);
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 5px;
     align-items: center;
+    justify-content: flex-end;
+    margin: 0;
 }
 
 .nav a {
@@ -60,6 +70,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s;
+    padding: 9px;
 }
 
 .nav a:hover {
@@ -76,7 +87,7 @@ body {
     color: white;
     font-weight: 500;
     margin-left: 10px;
-}
+} */
 
 /* Hero section */
 .hero-section {
@@ -98,16 +109,7 @@ body {
     color: white;
 }
 
-/* Main content */
-.main-content {
-    padding: 2rem 0;
-}
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
 
 /* User Summary */
 .user-summary {

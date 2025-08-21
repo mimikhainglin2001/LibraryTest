@@ -1,4 +1,7 @@
-<?php require_once APPROOT . '/views/inc/header.php'; ?>
+<?php 
+require_once __DIR__ . '/../../helpers/session_manager.php';
+$session = new SessionManager();
+require_once APPROOT . '/views/inc/header.php'; ?>
 <div style="max-width: 600px; margin: 40px auto; background: #f9fafb; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
 
     <h2 style="text-align: center; color: #1f2937; margin-bottom: 24px;">Edit Profile</h2>

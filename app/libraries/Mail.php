@@ -19,12 +19,12 @@ class Mail
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'ngkm xkib nwvl cmkx';
+            $mail->Username   = 'golibrary2001@gmail.com';
+            $mail->Password   = 'axtr ypfr obpf ydrb';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
-            $mail->setFrom('mimikhainglin70@gmail.com', 'Library');
+            $mail->setFrom('golibrary2001@gmail.com', 'Library');
             $mail->addAddress($recipient_mail, $recipient_name);
 
             $mail->isHTML(true);
@@ -48,13 +48,13 @@ class Mail
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'ngkm xkib nwvl cmkx';
+            $mail->Username   = 'golibrary2001@gmail.com';
+            $mail->Password   = 'axtr ypfr obpf ydrb';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
             // Sender & recipient
-            $mail->setFrom('mimikhainglin70@gmail.com', 'Go Library');
+            $mail->setFrom('golibrary2001@gmail.com', 'Library');
             $mail->addAddress($email);
 
             // Email content
@@ -122,17 +122,17 @@ $mail->Body = '
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->Username   = 'golibrary2001@gmail.com';
+            $mail->Password   = 'axtr ypfr obpf ydrb';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
-            $mail->setFrom('mimikhainglin70@gmail.com', 'Library');
+            $mail->setFrom('golibrary2001@gmail.com', 'Library');
             $mail->addAddress($email, $name);
 
             // HTML email
             $mail->isHTML(true);
-            $mail->Subject = 'Your School Library Account is Ready';
+            $mail->Subject = 'Your Library Account is Ready';
 
             $mail->Body = "
             <html>
@@ -145,7 +145,7 @@ $mail->Body = '
             </head>
             <body>
                 <div class='container'>
-                    <h2>Welcome to School Library, {$name}!</h2>
+                    <h2>Welcome to Our Library, {$name}!</h2>
                     <p>Your account has been created successfully by the admin.</p>
                     <p><strong>Login Email:</strong> {$email}<br>
                     <strong>Password:</strong> {$password}</p>
@@ -176,12 +176,12 @@ $mail->Body = '
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'mimikhainglin70@gmail.com';
-            $mail->Password   = 'kazi rpzl mrod njbc';
+            $mail->Username   = 'golibrary2001@gmail.com';
+            $mail->Password   = 'axtr ypfr obpf ydrb';
             $mail->SMTPSecure = 'tls';
             $mail->Port       = 587;
 
-            $mail->setFrom('mimikhainglin70@gmail.com', 'School Library');
+            $mail->setFrom('golibrary2001@gmail.com', 'Library');
             $mail->addAddress($email, $name);
 
             // HTML email

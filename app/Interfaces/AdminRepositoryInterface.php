@@ -8,4 +8,5 @@ interface AdminRepositoryInterface
     public function getAllBooks(): array;
     public function getAllBorrowedBooks(): array;
     public function getAllReservations(): array;
+
 }
