@@ -1,4 +1,10 @@
-<?php require_once APPROOT . '/views/inc/header.php'; ?>
+<?php
+require_once __DIR__ . '/../../helpers/session_manager.php';
+$session = new SessionManager();
+require_once APPROOT . '/views/inc/header.php';
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,11 +113,65 @@
         color: red;
         font-weight: bold;
     }
+
+    /* Main content */
+    .main-content {
+        padding: 4rem 0;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgba(30, 58, 138);
+        padding: 5px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        list-style: none;
+        gap: 5px;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 0;
+    }
+
+    .nav a {
+        color: white;
+        text-decoration: none;
+
+        font-weight: 500;
+        transition: opacity 0.3s;
+        padding: 9px;
+    }
+
+    .nav a:hover {
+        opacity: 0.8;
+    }
+
+    .user-icon1 {
+        font-size: 20px;
+        color: white;
+        margin-left: 15px;
+    }
+
+    .user-name {
+        color: white;
+        font-weight: 500;
+        margin-left: 10px;
+    }
 </style>
 
 <body>
     <main class="main-content">
         <span> <?php require APPROOT . '/views/components/auth_message.php'; ?></span>
+
         <div class="container">
 
             <?php

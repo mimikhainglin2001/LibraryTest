@@ -18,6 +18,32 @@ foreach ($data['borrowbook'] as $borrow) {
         $overdueCount++;
     }
 }
+
+$today = date('Y-m-d');
+
+// Count users registered today
+$todayUserCount = 0;
+foreach ($data['user'] as $u) {
+    if (isset($u['date']) && date('Y-m-d', strtotime($u['date'])) === $today) {
+        $todayUserCount++;
+    }
+}
+
+// Count borrowed and overdue books today
+$borrowedTodayCount = 0;
+$overdueTodayCount = 0;
+
+foreach ($data['borrowbook'] as $borrow) {
+    if (isset($borrow['borrow_date']) && date('Y-m-d', strtotime($borrow['borrow_date'])) === $today) {
+        $borrowedTodayCount++;
+    }
+    if (isset($borrow['due_date']) && date('Y-m-d', strtotime($borrow['due_date'])) === $today && $borrow['status'] === 'overdue') {
+        $overdueTodayCount++;
+    }
+}
+
+
+
 ?>
 
 
@@ -101,17 +127,18 @@ foreach ($data['borrowbook'] as $borrow) {
             <ul class="space-y-4 text-gray-700">
                 <li class="flex items-center">
                     <i class="fas fa-user-plus text-green-500 mr-3"></i>
-                    <span><?php echo htmlspecialchars($user) ?> New Members Register</span>
+                    <span><?php echo htmlspecialchars($todayUserCount) ?> New Members Register</span>
                 </li>
                 <li class="flex items-center">
                     <i class="fas fa-book-open text-blue-500 mr-3"></i>
-                    <span><?php echo htmlspecialchars($borrowedCount) ?> Books Borrowed</span>
+                    <span><?php echo htmlspecialchars($borrowedTodayCount) ?> Books Borrowed</span>
                 </li>
                 <li class="flex items-center">
                     <i class="fas fa-bell text-red-500 mr-3"></i>
-                    <span><?php echo htmlspecialchars($overdueCount) ?> Overdue Warnings Sent</span>
+                    <span><?php echo htmlspecialchars($overdueTodayCount) ?> Overdue Warnings Sent</span>
                 </li>
             </ul>
+
         </div>
 
 

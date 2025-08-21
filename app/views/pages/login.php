@@ -3,9 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,17 +25,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
         .auth-message.error {
             background: #fee2e2;
-            /* light red background */
             color: #dc2626;
-            /* red text */
             border: 1px solid #fecaca;
         }
 
         .auth-message.success {
             background: #d1fae5;
-            /* light green background */
             color: #065f46;
-            /* green text */
             border: 1px solid #a7f3d0;
         }
 
@@ -137,11 +130,6 @@ if (session_status() === PHP_SESSION_NONE) {
             position: relative;
             z-index: 2;
         }
-
-        /* Original image-icon and its styles are removed as per user request to replace with checkbox */
-        /* .image-icon { ... } */
-        /* @keyframes float { ... } */
-        /* .image-icon i { ... } */
 
         .image-title {
             font-size: 1.5rem;
@@ -253,28 +241,18 @@ if (session_status() === PHP_SESSION_NONE) {
             border-color: #10b981;
         }
 
-        /* Password field specific styles for the toggle are removed */
-        /* .password-field { position: relative; } */
-        /* .password-toggle { ... } */
-        /* .password-toggle:hover { ... } */
-
-        /* New styles for the checkbox */
         .show-password-checkbox {
             display: flex;
             align-items: center;
             margin-top: 0.5rem;
-            /* Space below password input */
             margin-bottom: 1rem;
-            /* Space before forgot password/button */
         }
 
         .show-password-checkbox input[type="checkbox"] {
             margin-right: 0.5rem;
-            /* Basic styling for checkbox, you can enhance with custom checkbox styling if needed */
             width: 18px;
             height: 18px;
             accent-color: #11998e;
-            /* Changes checkbox color */
         }
 
         .show-password-checkbox label {
@@ -299,6 +277,7 @@ if (session_status() === PHP_SESSION_NONE) {
             box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
             position: relative;
             overflow: hidden;
+            margin-top: 1.5rem; /* Adjusted margin here */
         }
 
         .submit-btn::before {
@@ -380,7 +359,6 @@ if (session_status() === PHP_SESSION_NONE) {
             text-decoration: underline;
         }
 
-        /* Responsive Design */
         @media (max-width: 1024px) {
             .main-container {
                 max-width: 900px;
@@ -418,10 +396,6 @@ if (session_status() === PHP_SESSION_NONE) {
                 padding: 2rem;
                 min-height: 250px;
             }
-
-            /* Original image-icon styles are removed */
-            /* .image-icon { ... } */
-            /* .image-icon i { ... } */
 
             .image-title {
                 font-size: 1.75rem;
@@ -479,7 +453,6 @@ if (session_status() === PHP_SESSION_NONE) {
             }
         }
 
-        /* Animation for form validation */
         .form-input.error {
             border-color: #ef4444;
             animation: shake 0.5s ease-in-out;
@@ -501,7 +474,6 @@ if (session_status() === PHP_SESSION_NONE) {
             }
         }
 
-        /* Loading state for submit button */
         .submit-btn.loading {
             pointer-events: none;
             opacity: 0.7;
@@ -531,7 +503,6 @@ if (session_status() === PHP_SESSION_NONE) {
             }
         }
 
-        /* Decorative elements */
         .floating-elements {
             position: absolute;
             width: 100%;
@@ -592,7 +563,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <div class="image-content">
 
-                <img src="/images/Login.png" alt="Library Image" class="w-full h-auto max-w-[250px] mx-auto rounded-lg " />
+                <img src="/images/download (2).png" alt="Library Image" class="w-full h-auto max-w-[400px] mx-auto rounded-lg " />
             </div>
         </div>
 
@@ -621,8 +592,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="forgot-password">
                     <a href="<?php echo URLROOT; ?>/pages/forgotPassword">Forgot Password?</a>
                 </div>
-                <!-- Google reCAPTCHA -->
-                <div class="g-recaptcha" data-sitekey="6LcgC6srAAAAALsBkoG1fkh0WkvgKh87AlkDBrDW"></div>
+                <div class="g-recaptcha" data-sitekey="6LcgC6srAAAAALsBkoG1fkh0WkvgKh87AlkDBrDW" style="margin-bottom: 1.5rem;"></div>
                 <button type="submit" class="submit-btn">
                     Sign In to Continue
                 </button>
@@ -664,24 +634,6 @@ if (session_status() === PHP_SESSION_NONE) {
                 const submitBtn = form.querySelector('.submit-btn');
                 submitBtn.classList.add('loading');
                 submitBtn.textContent = 'Signing In...';
-                // You might want to add a small delay here for better UX before the actual form submission,
-                // or ensure your server-side response handles the loading state.
-                // For example: setTimeout(() => form.submit(), 500); // And e.preventDefault()
-            });
-
-            // Add focus effects
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    // This was targeting parentElement, but form-input is the actual input
-                    // For transformation, you might want to wrap input in another div or apply to input itself
-                    // For now, let's just use the existing form-input:focus styling.
-                    // If you want a parent element scale effect, consider wrapping each input in its own div.
-                    // For this change, I'll remove the JS for focus/blur transform and rely on CSS :focus.
-                });
-
-                input.addEventListener('blur', function() {
-                    // Same as above, removing redundant JS for focus/blur transform.
-                });
             });
         });
     </script>

@@ -1,11 +1,13 @@
-<?php require_once APPROOT . '/views/inc/header.php'; ?>
+<?php 
+require_once __DIR__ . '/../../helpers/session_manager.php';
+$session = new SessionManager();
+require_once APPROOT . '/views/inc/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <title>Book Categories - Library</title> -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -57,7 +59,7 @@
         /* Hero Section */
         .hero-section {
             position: relative;
-            background: #1e3a8a;
+            background: #393b41ff;
             padding: 60px 0;
             overflow: hidden;
         }
@@ -69,7 +71,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat;
+            /* background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                url('/path/to/your-hero.jpg') center/cover no-repeat; */
             opacity: 0.1;
         }
 
@@ -84,7 +87,7 @@
 
         .hero-image img {
             width: 100%;
-            height: 100%;
+            height: 120%;
             object-fit: cover;
             opacity: 0.3;
         }
@@ -384,7 +387,7 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Library books">
+                <img src="https://images.unsplash.com/photo-1529148482759-b35b25c5f217?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Library books">
             </div>
 
             <div class="search-section">
