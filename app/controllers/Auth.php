@@ -132,7 +132,9 @@ class Auth extends Controller
     // Admin register
     public function adminRegister()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+            setMessage('error', 'Please fill all fields required');
+            redirect('admin/adminregister');
             return;
         }
         // Verify Google reCAPTCHA
@@ -219,7 +221,9 @@ class Auth extends Controller
 
     public function teacherRegister()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+            setMessage('error', 'Please fill all fields required');
+            redirect('admin/teacherRegister');
             return;
         }
         // Verify Google reCAPTCHA
@@ -318,7 +322,9 @@ class Auth extends Controller
     // Register user
     public function register()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+            setMessage('error', 'Please fill all fields required');
+            redirect('pages/register');
             return;
         }
 

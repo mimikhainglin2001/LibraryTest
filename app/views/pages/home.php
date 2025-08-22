@@ -6,48 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo SITENAME; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
     <style>
         /* Navigation */
-    .navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        max-width: 1200px;
-        margin: 40px auto 0;
-        padding: 30px 20px;
-        border-top: 2px solid #e9ecef;
-    }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 30px 20px;
+            border-top: 2px solid #e9ecef;
+        }
 
-    .back-btn,
-    .see-more-btn {
-        background: linear-gradient(135deg, #6c757d, #5a6268);
-        color: white;
-        padding: 12px 25px;
-        border-radius: 25px;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
-    }
+        .back-btn,
+        .see-more-btn {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
 
-    .back-btn:hover,
-    .see-more-btn:hover {
-        background: linear-gradient(135deg, #5a6268, #495057);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
-    }
+        .back-btn:hover,
+        .see-more-btn:hover {
+            background: linear-gradient(135deg, #5a6268, #495057);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+        }
 
-    .back-btn::before {
-        content: '\f060';
-        font-family: 'Font Awesome 6 Free';
-        font-weight: 900;
-    }
+        .back-btn::before {
+            content: '\f060';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -55,7 +58,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             line-height: 1.6;
             color: #333;
             background-color: #f8f9fa;
@@ -69,7 +72,7 @@
         /* Hero Section */
         .hero-section {
             position: relative;
-            background: #1e3a8a;
+            background: #393b41ff;
             padding: 60px 0;
             overflow: hidden;
         }
@@ -81,7 +84,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat;
+            /* background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat; */
             opacity: 0.1;
         }
 
@@ -96,7 +99,7 @@
 
         .hero-image img {
             width: 100%;
-            height: 100%;
+            height: 120%;
             object-fit: cover;
             opacity: 0.3;
         }
@@ -425,7 +428,7 @@
     <main class="main-content">
         <section class="hero-section">
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=cover&w=1000&q=80">
+                <img src="https://images.unsplash.com/photo-1529148482759-b35b25c5f217?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
             </div>
 
             <div class="search-section">
@@ -501,9 +504,9 @@
                 </a>
             </div>
             <div class="navigation">
-            <a href="<?= URLROOT; ?>/pages/welcome" class="back-btn">Back</a>
-            <!-- <button class="see-more-btn" id="seeMoreBtn">See More Books</button> -->
-        </div>
+                <a href="<?= URLROOT; ?>/pages/welcome" class="back-btn">Back</a>
+                <!-- <button class="see-more-btn" id="seeMoreBtn">See More Books</button> -->
+            </div>
         </section>
     </main>
 

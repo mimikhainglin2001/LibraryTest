@@ -61,10 +61,10 @@ require_once APPROOT . '/views/inc/header.php';
         color: black;
     }
 
-    .action-btn.overdue-btn {
+    /* .action-btn.overdue-btn {
         background-color: #dc3545;
         color: #fff;
-    }
+    } */
 
     .action-btn:hover {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
@@ -97,6 +97,7 @@ require_once APPROOT . '/views/inc/header.php';
 
     .status.overdue {
         background-color: #dc3545;
+        color: #fff;
     }
 
     .status.reserved {
@@ -166,9 +167,52 @@ require_once APPROOT . '/views/inc/header.php';
         font-weight: 500;
         margin-left: 10px;
     }
+
+    /* Navigation */
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding: 30px 20px;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .back-btn,
+    .see-more-btn {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 12px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    }
+
+    .back-btn:hover,
+    .see-more-btn:hover {
+        background: linear-gradient(135deg, #5a6268, #495057);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+    }
+
+    .back-btn::before {
+        content: '\f060';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+    }
 </style>
 
-<body>
+<body style="font-family: 'Inter', Helvetica, sans-serif;
+">
     <main class="main-content">
         <span> <?php require APPROOT . '/views/components/auth_message.php'; ?></span>
 
@@ -297,7 +341,7 @@ require_once APPROOT . '/views/inc/header.php';
                                     <td><?= htmlspecialchars($book['renew_count'] ?? '0') ?></td>
                                     <td>
                                         <?php if ($book['status'] === 'overdue'): ?>
-                                            <button class="action-btn overdue-btn">Overdue</button>
+                                            <button class="status overdue">Overdue</button>
                                         <?php elseif ($book['status'] === 'renewed'): ?>
                                             <span class="status renewed">Renewed</span>
                                         <?php else: ?>

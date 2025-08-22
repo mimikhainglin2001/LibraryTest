@@ -47,7 +47,7 @@ foreach ($data['borrowbook'] as $borrow) {
 ?>
 
 
-<main class="main-content-area bg-blue-100 shadow-md">
+<main class="main-content-area bg-blue-100 shadow-md" style="font-family: 'Inter', Helvetica, sans-serif;">
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <div class="flex items-center space-x-4">
 

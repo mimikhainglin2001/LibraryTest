@@ -18,6 +18,8 @@ $modalType = $modalData['type'] ?? 'none';    // 'success' or 'error'
 $modalMessage = $modalData['message'] ?? ''; // The actual message text
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"> -->
+
 
 <style>
     * {
@@ -27,7 +29,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     }
 
     body {
-        /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+        font-family: 'Inter', Helvetica, sans-serif;
         line-height: 1.6;
         color: #333;
         background-color: #f8f9fa;
@@ -357,7 +359,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         background: linear-gradient(135deg, #6c757d, #5a6268);
         color: white;
         padding: 12px 25px;
-        border-radius: 25px;
+        border-radius: 12px;
         text-decoration: none;
         border: none;
         cursor: pointer;

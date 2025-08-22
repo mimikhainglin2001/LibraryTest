@@ -26,7 +26,7 @@
         border: 1px solid #a7f3d0;
     }
 </style>
-<main class="main-content-area bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 sm:p-6 lg:p-8">
+<main class="main-content-area bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 sm:p-6 lg:p-8" style="font-family: 'Inter', Helvetica, sans-serif;">
     <?php if (isset($_SESSION['flash_message'])): ?>
         <div class="mb-4">
             <div class="px-4 py-3 rounded-lg shadow-md 

@@ -55,7 +55,7 @@
 
         /* Body Styles */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--background);
@@ -117,7 +117,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.7"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             opacity: 0.9;
             /* Slightly more visible grid */
         }
@@ -183,7 +182,7 @@
         }
 
         .hero-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             font-size: clamp(3rem, 6vw, 5.2rem);
             /* Larger title */
             font-weight: 400;
@@ -219,7 +218,7 @@
             padding: 1.2rem 3.2rem;
             /* Slightly larger buttons */
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
             font-size: 1.2rem;
             /* Larger font */
@@ -237,7 +236,7 @@
         }
 
         .btn-primary {
-            background: rgba(255, 255, 255, 0.25);
+            background: #27497c;
             backdrop-filter: blur(15px);
             /* Stronger blur for glass effect */
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -246,7 +245,7 @@
         }
 
         .btn-primary:hover {
-            background: rgba(255, 255, 255, 0.4);
+            /* background: #27497c; */
             transform: translateY(-5px) scale(1.03);
             /* More pronounced lift */
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
@@ -264,7 +263,6 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.6s ease-out;
             z-index: 1;
         }
@@ -358,7 +356,7 @@
         }
 
         .section-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             font-size: clamp(2.8rem, 4.5vw, 3.8rem);
             /* Slightly larger title */
             text-align: center;
@@ -845,7 +843,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="services">
             <div class="container">
                 <h2 class="section-title animate-on-scroll">Our Core Offerings</h2>
@@ -855,11 +853,7 @@
                         <h3>Vast Book Collection</h3>
                         <p>Access an expansive physical collection spanning diverse genres and academic disciplines, curated for every reader.</p>
                     </div>
-                    <div class="service-card animate-on-scroll">
-                        <div class="service-icon">💻</div>
-                        <h3>Cutting-Edge Digital Hub</h3>
-                        <p>Dive into our digital realm with e-books, audiobooks, premium databases, and online learning platforms available 24/7.</p>
-                    </div>
+
                     <div class="service-card animate-on-scroll">
                         <div class="service-icon">👥</div>
                         <h3>Inspiring Study Environments</h3>
@@ -870,16 +864,7 @@
                         <h3>Expert Research Assistance</h3>
                         <p>Our experienced librarians are here to guide your research, provide citation support, and help you master information literacy.</p>
                     </div>
-                    <div class="service-card animate-on-scroll">
-                        <div class="service-icon">📅</div>
-                        <h3>Engaging Events & Workshops</h3>
-                        <p>Participate in enriching book clubs, author talks, skill-building workshops, and community events for all ages.</p>
-                    </div>
-                    <div class="service-card animate-on-scroll">
-                        <div class="service-icon">👶</div>
-                        <h3>Vibrant Children's Corner</h3>
-                        <p>A dedicated, imaginative space for our youngest patrons, featuring story times, interactive learning, and delightful books.</p>
-                    </div>
+
                 </div>
             </div>
         </section>
@@ -906,9 +891,9 @@
                     </div>
                     <div class="footer-col">
                         <h4>Connect</h4>
-                        <p>123 University Ave,<br>Tech City, TC 12345</p>
-                        <p>Email: <a href="mailto:info@ucsmtlalibrary.edu">info@ucsmtlalibrary.edu</a></p>
-                        <p>Phone: (123) 456-7890</p>
+                        <p>University Of Computer Studies,<br>Meiktila</p>
+                        <p>Email: <a href="golibrary2001@gmail.com">golibrary2001@gmail.com</a></p>
+                        <p>Phone: (+95)9441 386 934</p>
                         <div class="social-links">
                             <a href="https://facebook.com/yourlibrarypage" target="_blank" aria-label="Facebook" class="facebook"><i class="fab fa-facebook-f"></i></a>
                             <a href="https://twitter.com/yourlibraryhandle" target="_blank" aria-label="Twitter" class="twitter"><i class="fab fa-twitter"></i></a>
