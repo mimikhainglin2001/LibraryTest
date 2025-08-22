@@ -357,7 +357,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         background: linear-gradient(135deg, #6c757d, #5a6268);
         color: white;
         padding: 12px 25px;
-        border-radius: 25px;
+        border-radius: 12px;
         text-decoration: none;
         border: none;
         cursor: pointer;

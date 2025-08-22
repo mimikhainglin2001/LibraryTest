@@ -5,14 +5,15 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Change Password</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
         .auth-message {
@@ -38,8 +39,9 @@ if (session_status() === PHP_SESSION_NONE) {
             /* green text */
             border: 1px solid #a7f3d0;
         }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             background: linear-gradient(to right, rgb(219, 234, 254), rgb(147, 197, 253), rgb(59, 130, 246));
             min-height: 100vh;
         }
@@ -72,8 +74,15 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
         }
 
         .input-focus {
@@ -84,43 +93,58 @@ if (session_status() === PHP_SESSION_NONE) {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
+
+        .submit-btn {
+            width: 100%;
+            background: #27497c;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
     </style>
 </head>
+
 <body class="flex items-center justify-center min-h-screen p-4">
     <div class="glass-morphism p-8 md:p-12 rounded-2xl shadow-2xl max-w-md w-full mx-4 relative z-10">
         <div class="flex justify-center mb-6">
-            <div class="w-10 h-10 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 text-white shadow-lg animate-bounce-slow relative">
+            <div class="w-10 h-10 mx-auto flex items-center justify-center rounded-2xl bg-blue-900 text-white">
                 <i class="fas fa-shield-alt"></i>
             </div>
         </div>
 
+
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Change Password</h2>
+            <h2 class="text-3xl font-bold text-blue-900 mb-2">Change Password</h2>
             <p class="text-gray-600 text-sm">Create a new secure password for your account</p>
         </div>
 
         <form class="space-y-6" method="POST" action="<?php echo URLROOT; ?>/auth/changedPassword" id="passwordForm">
-            <?php require APPROOT.'/views/components/auth_message.php'; ?>
+            <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
             <!-- New Password -->
             <div class="relative">
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
                     <i class="fas fa-lock mr-2 text-gray-400"></i>New Password
                 </label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
                     placeholder="Enter your new password"
                     class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
                     required
-                    minlength="8"
-                />
-                <button 
-                    type="button" 
+                    minlength="8" />
+                <button
+                    type="button"
                     class="absolute right-3 top-11 text-gray-400 hover:text-gray-600"
-                    onclick="togglePassword('password')"
-                >
+                    onclick="togglePassword('password')">
                     <i class="fas fa-eye" id="password-eye"></i>
                 </button>
                 <div class="mt-2">
@@ -134,38 +158,28 @@ if (session_status() === PHP_SESSION_NONE) {
                 <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-2">
                     <i class="fas fa-lock mr-2 text-gray-400"></i>Confirm Password
                 </label>
-                <input 
-                    type="password" 
-                    id="confirm_password" 
-                    name="confirm_password" 
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
                     placeholder="Confirm your new password"
                     class="input-focus w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    required
-                />
-                <button 
-                    type="button" 
+                    required />
+                <button
+                    type="button"
                     class="absolute right-3 top-11 text-gray-400 hover:text-gray-600"
-                    onclick="togglePassword('confirm_password')"
-                >
+                    onclick="togglePassword('confirm_password')">
                     <i class="fas fa-eye" id="confirm_password-eye"></i>
                 </button>
                 <div class="mt-2">
                     <p class="text-xs" id="match-text"></p>
                 </div>
             </div>
-
             <!-- Submit Button -->
-            <button 
-                type="submit" 
-                class="btn-gradient w-full text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 bg-gradient-to-r from-emerald-500 to-green-400 text-white"
-                id="submitBtn"
-                disabled
-            >
-                <i class="fas fa-check mr-2"></i>Update Password
-            </button>
+            <button type="submit" class="submit-btn"><i class="fas fa-check mr-2"></i>Update Password</button>
 
             <div class="text-center mt-6">
-                <a href="<?php echo URLROOT; ?>/auth/login" class="text-gray-500 hover:text-purple-600 text-sm transition duration-300">
+                <a href="<?php echo URLROOT; ?>/pages/login" class="text-gray-500 hover:text-purple-600 text-sm transition duration-300">
                     <i class="fas fa-arrow-left mr-2"></i>Back to Login
                 </a>
             </div>
@@ -268,4 +282,5 @@ if (session_status() === PHP_SESSION_NONE) {
         });
     </script>
 </body>
+
 </html>

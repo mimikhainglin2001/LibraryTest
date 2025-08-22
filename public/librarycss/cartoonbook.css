@@ -142,7 +142,7 @@ body {
   display: flex;
   background: white;
   border: 2px solid #e9ecef;
-  border-radius: 25px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -344,7 +344,7 @@ body {
 }
 
 .borrow-btn {
-  background: #28a745;
+  background: #27497c;
   color: white;
   border: none;
   padding: 8px 20px;
@@ -369,7 +369,7 @@ body {
 }
 
 .back-btn {
-  background: transparent;
+  /* background: transparent; */
   border: none;
   color: #666;
   font-size: 16px;

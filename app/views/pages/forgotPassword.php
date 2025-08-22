@@ -10,13 +10,102 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password — MySite</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* General styles */
+        body {
+            font-family: 'Inter', Helvetica, sans-serif;
+            background: linear-gradient(to right, #bfdbfe, #93c5fd, #3b82f6);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background accents */
+        .background-accent-1,
+        .background-accent-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(3rem);
+            z-index: -10;
+        }
+
+        .background-accent-1 {
+            width: 18rem;
+            height: 18rem;
+            background-color: rgba(192, 132, 252, 0.3);
+            top: 2rem;
+            left: 2rem;
+        }
+
+        .background-accent-2 {
+            width: 24rem;
+            height: 24rem;
+            background-color: rgba(251, 207, 232, 0.3);
+            bottom: 2rem;
+            right: 2rem;
+        }
+
+        /* Card */
+        .forgot-card {
+            width: 100%;
+            max-width: 22rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 1rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            padding: 2.5rem 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Header */
+        .forgot-card .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .forgot-card .header .icon-wrapper {
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            background: #27497c;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .forgot-card .header .icon-wrapper i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .forgot-card .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: navy;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 1rem;
+        }
+
+        .forgot-card .header p {
+            color: #475569;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Flash messages */
         .auth-message {
             padding: 0.75rem 1rem;
-            border-radius: 12px;
+            border-radius: 0.75rem;
             font-weight: 600;
             margin-bottom: 1rem;
             text-align: center;
@@ -24,151 +113,213 @@ if (session_status() === PHP_SESSION_NONE) {
 
         .auth-message.error {
             background: #fee2e2;
-            /* light red background */
             color: #dc2626;
-            /* red text */
             border: 1px solid #fecaca;
         }
 
         .auth-message.success {
             background: #d1fae5;
-            /* light green background */
             color: #065f46;
-            /* green text */
             border: 1px solid #a7f3d0;
+        }
+
+        /* Form */
+        form input[type="email"] {
+            width: 81%;
+            border-radius: 1rem;
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            padding: 0.85rem 1rem 0.85rem 3rem;
+            color: #1e293b;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        form input[type="email"]:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.2);
+        }
+
+        form input[type="email"]::placeholder {
+            color: #94a3b8;
+        }
+
+        form .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: #27497c;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.85rem;
+            border-radius: 1rem;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: 'Inter', Helvetica, sans-serif;
+
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            padding: 0.85rem;
+            border-radius: 1rem;
+            border: 2px solid #e2e8f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .animate-shake {
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Form spacing */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .form-buttons {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
 
-<body class="font-inter bg-gradient-to-r from-blue-100 via-blue-300 to-blue-500 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<body>
+    <div class="background-accent-1"></div>
+    <div class="background-accent-2"></div>
 
-    <!-- Background accents -->
-    <div class="absolute inset-0 -z-10">
-        <div class="absolute w-72 h-72 bg-purple-300/30 rounded-full blur-3xl top-10 left-10"></div>
-        <div class="absolute w-96 h-96 bg-pink-300/30 rounded-full blur-3xl bottom-10 right-10"></div>
-    </div>
-
-    <!-- Forgot Password Card -->
-    <div class="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl p-8 animate-[fadeInUp_0.6s_ease-out]">
+    <div class="forgot-card">
 
         <!-- Header -->
-        <div class="text-center mb-8">
-            <div class="w-10 h-10 mx-auto flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-400 shadow-lg animate-bounce-slow relative">
-                <i class="fas fa-lock text-white text-2xl"></i>
+        <div class="header">
+            <div class="icon-wrapper">
+                <i class="fas fa-lock"></i>
             </div>
-            <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent mt-4">Forgot Password?</h1>
-            <p class="text-slate-600 mt-2">Reset your password with your email</p>
+            <h1>Forgot Password?</h1>
+            <p>Reset your password with your email</p>
         </div>
 
         <!-- Flash messages -->
         <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
         <!-- Form -->
-        <form method="POST" action="<?php echo URLROOT; ?>/auth/forgotPassword" id="forgotForm" class="space-y-6">
+        <form method="POST" action="<?php echo URLROOT; ?>/auth/forgotPassword" id="forgotForm">
 
-            <!-- Email input -->
-            <div class="relative">
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter your email address"
-                    required
-                    class="w-full rounded-xl border-2 border-slate-200 bg-white py-3 pl-12 pr-4 text-slate-800 placeholder-slate-400 text-base focus:border-emerald-500 focus:ring-4 focus:ring-emerald-200 outline-none transition" />
-                <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                <i class="fas fa-envelope input-icon"></i>
             </div>
 
-            <!-- Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-green-400 text-white font-semibold py-3 rounded-xl shadow-md hover:shadow-lg transition hover:-translate-y-1 active:translate-y-0">
+            <div class="form-buttons">
+                <button type="submit" class="btn-primary">
                     <i class="fas fa-paper-plane"></i> Send Reset Link
                 </button>
-                <a href="<?php echo URLROOT; ?>/pages/login" class="flex-1 inline-flex items-center justify-center gap-2 bg-slate-50 text-slate-600 border-2 border-slate-200 font-semibold py-3 rounded-xl hover:bg-slate-100 hover:text-slate-700 transition">
+                <a href="<?php echo URLROOT; ?>/pages/login" class="btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back to Login
                 </a>
             </div>
         </form>
-
-        <!-- Register link -->
-        <!-- <div class="mt-8 pt-6 border-t border-slate-200 text-center relative">
-      <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-3 text-xs font-semibold text-slate-400">OR</span>
-      <p class="text-slate-600">Don't have an account?
-        <a href="<?php echo URLROOT; ?>/pages/register" class="font-bold text-emerald-600 hover:text-emerald-700 underline underline-offset-4">Create New Account</a>
-      </p>
     </div>
-  </div> -->
 
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const form = document.getElementById("forgotForm");
-                const email = document.getElementById("email");
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("forgotForm");
+            const email = document.getElementById("email");
 
-                email.addEventListener("blur", () => {
-                    if (!email.checkValidity()) {
-                        email.classList.add("border-red-500", "animate-shake");
-                    } else {
-                        email.classList.remove("border-red-500", "animate-shake");
-                    }
-                });
-
-                form.addEventListener("submit", () => {
-                    const btn = form.querySelector("button[type=submit]");
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                    btn.disabled = true;
-                });
-
+            email.addEventListener("blur", () => {
+                if (!email.checkValidity()) {
+                    email.classList.add("border-red-500", "animate-shake");
+                } else {
+                    email.classList.remove("border-red-500", "animate-shake");
+                }
             });
-        </script>
 
-        <style>
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .animate-bounce-slow {
-                animation: float 3s ease-in-out infinite;
-            }
-
-            @keyframes float {
-
-                0%,
-                100% {
-                    transform: translateY(0px);
-                }
-
-                50% {
-                    transform: translateY(-8px);
-                }
-            }
-
-            .animate-shake {
-                animation: shake 0.4s;
-            }
-
-            @keyframes shake {
-
-                0%,
-                100% {
-                    transform: translateX(0);
-                }
-
-                25% {
-                    transform: translateX(-5px);
-                }
-
-                75% {
-                    transform: translateX(5px);
-                }
-            }
-        </style>
+            form.addEventListener("submit", () => {
+                const btn = form.querySelector("button[type=submit]");
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                btn.disabled = true;
+            });
+        });
+    </script>
 </body>
 
 </html>

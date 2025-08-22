@@ -26,7 +26,7 @@
         border: 1px solid #a7f3d0;
     }
 </style>
-<main class="main-content-area bg-blue-100 shadow-md">
+<main class="main-content-area bg-blue-100 shadow-md" style="font-family: 'Inter', Helvetica, sans-serif;">
     <div class="flex items-center justify-between pb-6 border-b border-blue-200 mb-8">
         <h2 class="text-2xl font-bold text-gray-800">Reserved Book List</h2>
         <?php require APPROOT . '/views/components/auth_message.php'; ?>
