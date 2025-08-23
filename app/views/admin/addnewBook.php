@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +32,7 @@
             /* green text */
             border: 1px solid #a7f3d0;
         }
+
         /* Basic reset */
         * {
             margin: 0;
@@ -45,29 +45,38 @@
             font-family: Inter, sans-serif;
             font-weight: 16px;
             min-height: 100vh;
-            background: #DBEAFE; /* Light blue background as seen in the image */
-            display: flex; /* Makes direct children (sidebar and main-content-area) arrange horizontally */
+            background: #DBEAFE;
+            /* Light blue background as seen in the image */
+            display: flex;
+            /* Makes direct children (sidebar and main-content-area) arrange horizontally */
             /* Removed padding from body, as the main-content-area will handle its own padding */
         }
 
         /* Adjustments for main content area to sit next to the sidebar and center its content */
         .main-content-area {
-            flex-grow: 1; /* Allows this area to take up all remaining horizontal space */
-            padding: 20px; /* Padding for the content inside the main area */
+            flex-grow: 1;
+            /* Allows this area to take up all remaining horizontal space */
+            padding: 20px;
+            /* Padding for the content inside the main area */
             /* This margin-left is crucial. It creates space for the sidebar.
                Adjust 256px if your sidebar's width (w-64 in Tailwind) is different. */
             margin-left: 256px;
             /* 👇👇👇 NEW FLEXBOX PROPERTIES FOR CENTERING THE FORM 👇👇👇 */
-            display: flex; /* Make this div a flex container */
-            justify-content: center; /* Center horizontally along the main axis */
-            align-items: center; /* Center vertically along the cross axis */
-            min-height: 100vh; /* Ensure it takes full viewport height for vertical centering */
+            display: flex;
+            /* Make this div a flex container */
+            justify-content: center;
+            /* Center horizontally along the main axis */
+            align-items: center;
+            /* Center vertically along the cross axis */
+            min-height: 100vh;
+            /* Ensure it takes full viewport height for vertical centering */
             /* 👆👆👆 END NEW FLEXBOX PROPERTIES 👆👆👆 */
         }
 
         /* Existing styles for the form container and elements */
         .container {
-            max-width: 900px; /* Increased max-width for landscape */
+            max-width: 900px;
+            /* Increased max-width for landscape */
             /* margin: 0 auto; -- Removed this as centering is handled by parent flexbox */
             background: white;
             border-radius: 20px;
@@ -75,7 +84,8 @@
             overflow: hidden;
             animation: slideUp 0.8s ease-out;
             /* Optional: Adjust vertical position slightly if perfect center isn't aesthetically pleasing */
-            margin-top: -50px; /* Moves the form up by 50px from the perfect center */
+            margin-top: -50px;
+            /* Moves the form up by 50px from the perfect center */
         }
 
         @keyframes slideUp {
@@ -83,6 +93,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -129,18 +140,24 @@
         /* Landscape specific styles */
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Default to single column for small screens */
-            gap: 20px; /* Space between grid items */
+            grid-template-columns: 1fr;
+            /* Default to single column for small screens */
+            gap: 20px;
+            /* Space between grid items */
         }
 
-        @media (min-width: 768px) { /* Apply landscape on tablets and desktops */
+        @media (min-width: 768px) {
+
+            /* Apply landscape on tablets and desktops */
             .form-grid {
-                grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+                grid-template-columns: 1fr 1fr;
+                /* Two columns for larger screens */
             }
         }
 
         .form-group {
-            margin-bottom: 0; /* Remove default margin as grid handles spacing */
+            margin-bottom: 0;
+            /* Remove default margin as grid handles spacing */
         }
 
         .form-group label {
@@ -241,10 +258,12 @@
         }
 
         .full-width-buttons {
-            grid-column: 1 / -1; /* Make buttons span all columns in the grid */
+            grid-column: 1 / -1;
+            /* Make buttons span all columns in the grid */
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Space between buttons */
+            gap: 15px;
+            /* Space between buttons */
         }
 
         .submit-btn {
@@ -331,6 +350,7 @@
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
@@ -339,21 +359,31 @@
         /* Responsive adjustments for sidebar */
         @media (max-width: 768px) {
             body {
-                flex-direction: column; /* Stack sidebar and main content vertically on small screens */
+                flex-direction: column;
+                /* Stack sidebar and main content vertically on small screens */
             }
+
             .main-content-area {
-                margin-left: 0; /* Remove left margin when stacked */
-                padding-top: 20px; /* Add some top padding if sidebar becomes a top bar */
-                min-height: auto; /* Allow height to adjust naturally */
-                display: block; /* Revert to block layout to remove centering for small screens */
+                margin-left: 0;
+                /* Remove left margin when stacked */
+                padding-top: 20px;
+                /* Add some top padding if sidebar becomes a top bar */
+                min-height: auto;
+                /* Allow height to adjust naturally */
+                display: block;
+                /* Revert to block layout to remove centering for small screens */
                 justify-content: initial;
                 align-items: initial;
             }
+
             .container {
-                max-width: 100%; /* Allow the form to take full width on smaller screens */
-                margin-left: auto; /* Re-center if it was pushed by a fixed element */
+                max-width: 100%;
+                /* Allow the form to take full width on smaller screens */
+                margin-left: auto;
+                /* Re-center if it was pushed by a fixed element */
                 margin-right: auto;
-                margin-top: 0; /* Remove top margin adjustment on small screens */
+                margin-top: 0;
+                /* Remove top margin adjustment on small screens */
             }
         }
     </style>
@@ -440,8 +470,8 @@
                                 <i class="fas fa-plus-circle"></i> Add Book
                             </button>
 
-                            <button type="button" class="back-btn" onclick="window.location.href='<?php echo URLROOT; ?>/admin/adminDashboard'">
-                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            <button type="button" class="back-btn" onclick="window.location.href='<?php echo URLROOT; ?>/admin/manageBook'">
+                                <i class="fas fa-arrow-left"></i> Back
                             </button>
                         </div>
                     </div>
@@ -531,6 +561,17 @@
             input.addEventListener('blur', function() {
                 this.parentElement.style.transform = 'translateY(0)';
             });
+        });
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
         });
     </script>
 </body>

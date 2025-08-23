@@ -97,6 +97,15 @@
         color: #718096;
     }
 
+    .close-edit {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #718096;
+    }
+
     .form-group {
         margin-bottom: 1rem;
     }
@@ -201,7 +210,7 @@
     }
 
     .profile-header {
-        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        background: #1e3a8a;
         padding: 1.5rem;
     }
 
@@ -533,6 +542,7 @@
         padding: 1rem 1rem;
         background-color: #3b82f6;
         color: #ffffff;
+        cursor: pointer;
     }
 
     .btn-edit:hover {
@@ -568,9 +578,7 @@
 ">
     <!-- Page Header -->
     <div class="page-header">
-        <h2 class="page-title">
-            <?php echo ($data['loginuser']['role_id'] == 2) ? 'Student Profile' : 'Teacher Profile'; ?>
-        </h2>
+
         <!-- <p class="page-subtitle">Manage your personal information and account settings</p> -->
         <?php require APPROOT . '/views/components/auth_message.php'; ?>
     </div>
@@ -626,10 +634,10 @@
 
         <!-- Profile Content -->
         <div class="profile-content">
-            <h4 class="section-title">
+            <!-- <h4 class="section-title">
                 <i class="fas fa-info-circle"></i>
                 Personal Information
-            </h4>
+            </h4> -->
 
             <div class="info-grid">
                 <!-- Name Card -->
@@ -862,5 +870,17 @@
     closeEdit.onclick = () => editModal.style.display = "none";
     window.addEventListener("click", (e) => {
         if (e.target === editModal) editModal.style.display = "none";
+    });
+
+    // ===== Auto-hide auth messages =====
+    document.addEventListener("DOMContentLoaded", () => {
+        const authMessage = document.querySelector(".auth-message");
+        if (authMessage) {
+            setTimeout(() => {
+                authMessage.style.transition = "opacity 0.5s ease";
+                authMessage.style.opacity = "0";
+                setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+            }, 3000); // ⏳ disappear after 3 seconds
+        }
     });
 </script>

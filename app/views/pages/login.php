@@ -185,7 +185,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <div class="main-container flex flex-col md:flex-row">
         <!-- Left Section -->
-        <div class="relative flex-1 flex items-center justify-center bg-indigo-900 text-white p-8">
+        <div class="relative flex-1 flex items-center justify-center bg-[#27497c] text-white p-8">
             <div class="absolute inset-0 bg-1e3a8a from-indigo-900/90 to-indigo-800/80"></div>
 
             <!-- Floating books -->
@@ -196,7 +196,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
             <div class="relative z-10 text-center">
-                <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+                <!-- <h2 class="text-3xl font-bold mb-2">Welcome Back</h2> -->
 
                 <img src="/images/download (2).png" alt="Library" class="mx-auto max-w-[280px] rounded-lg  mb-4" />
                 <p class="text-base opacity-90 max-w-sm mx-auto">Access your personalized dashboard, resources, and tools by signing in.</p>
@@ -263,6 +263,17 @@ if (session_status() === PHP_SESSION_NONE) {
                 submitBtn.disabled = true;
                 submitBtn.classList.add("opacity-70", "cursor-not-allowed");
             });
+        });
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
         });
     </script>
 </body>

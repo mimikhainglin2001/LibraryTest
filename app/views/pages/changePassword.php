@@ -280,6 +280,17 @@ if (session_status() === PHP_SESSION_NONE) {
             document.getElementById('confirm_password').addEventListener('input', updateSubmitButton);
             updateSubmitButton(); // Initialize on load
         });
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
+        });
     </script>
 </body>
 

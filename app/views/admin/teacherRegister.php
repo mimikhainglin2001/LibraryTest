@@ -56,7 +56,7 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', Helvetica, sans-serif;
             background: linear-gradient(to right, rgb(219, 234, 254), rgb(147, 197, 253), rgb(59, 130, 246));
             min-height: 100vh;
             display: flex;
@@ -85,10 +85,10 @@ if (session_status() === PHP_SESSION_NONE) {
         .main-container {
             /* background: var(--glass-bg); */
             /* backdrop-filter: blur(20px); */
-            border-radius: 24px;
+            border-radius: 15px;
             border: 1px solid var(--glass-border);
             box-shadow: var(--shadow-soft);
-            width: 60%;
+            max-width: 600%;
             /* height: 40%; */
             /* max-width: 1200px; */
             max-height: 650px;
@@ -112,20 +112,17 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         .left-section {
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(30, 58, 138, 0.8) 100%);
+            background: #1e3a8a;
             display: flex;
-
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 3rem;
-            color: white;
-            text-align: center;
-            position: relative;
+            justify-content: center;
         }
 
         .left-section img {
-            border-radius: 20px;
+            height: auto;
+            width: 70%;
+            object-fit: cover;
+            border-radius: 12px;
         }
 
         /* .img{
@@ -225,38 +222,16 @@ if (session_status() === PHP_SESSION_NONE) {
             overflow-y: auto;
         }
 
-        .form-header {
-            text-align: center;
-            margin-top: 10px;
-            /* margin-bottom: 2rem; */
-        }
-
-        .form-logo {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: var(--success-gradient);
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 25px rgba(56, 239, 125, 0.3);
-        }
-
-        .form-logo i {
-            font-size: 1.5rem;
-            color: white;
-        }
-
         .form-title {
-            font-size: 2rem;
+            font-size: 1.775rem;
+            /* 3xl */
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: navy;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.025em;
+            margin-bottom: 1rem;
+            text-align: center;
+            padding-top: 0.75rem;
         }
 
         .form-subtitle {
@@ -536,34 +511,19 @@ if (session_status() === PHP_SESSION_NONE) {
 
         .submit-btn {
             width: 100%;
-            background: var(--success-gradient);
+            background: #27497c;
             color: white;
-            font-weight: 600;
+            padding: 0.9rem;
             font-size: 1rem;
-            padding: 0.875rem 1.5rem;
+            font-weight: bold;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            margin-top: 1rem;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.5);
+            opacity: 0.95;
         }
 
         .submit-btn:hover::before {
@@ -822,31 +782,31 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="main-container">
         <div class="left-section">
 
-            <img src="/images/b1.png" class="img">
+            <img src="/images/download (2).png" class="img">
 
         </div>
         <div class="right-section">
-                        <h1 class="text-2xl font-bold mb-4">Create an Account</h1>
+            <h1 class="form-title">Create an Account</h1>
 
             <form method="post" action="<?php echo URLROOT; ?>/auth/teacherRegister" id="registerForm">
                 <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
                 <div class="form-group">
-                    <input type="text" name="name" placeholder="Full Name" required class="form-input" />
+                    <input type="text" name="name" placeholder="Full Name" class="form-input" />
                 </div>
 
                 <div class="form-group">
-                    <input type="email" name="email" placeholder="Email Address" required class="form-input" />
+                    <input type="email" name="email" placeholder="Email Address" class="form-input" />
                 </div>
 
                 <div class="form-group">
-                    <input type="text" name="department" placeholder="Department" required class="form-input" />
+                    <input type="text" name="department" placeholder="Department" class="form-input" />
                 </div>
 
                 <div class="form-group">
                     <div class="gender-selection">
                         <label class="gender-option">
-                            <input type="radio" name="gender" value="male" required />
+                            <input type="radio" name="gender" value="male" />
                             <span>Male</span>
                         </label>
                         <label class="gender-option">
@@ -962,6 +922,18 @@ if (session_status() === PHP_SESSION_NONE) {
         function openPrivacyModal() {
             alert('Privacy Policy modal would open here');
         }
+
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
+        });
     </script>
 </body>
 

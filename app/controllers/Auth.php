@@ -132,7 +132,7 @@ class Auth extends Controller
     // Admin register
     public function adminRegister()
     {
-        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             setMessage('error', 'Please fill all fields required');
             redirect('admin/adminregister');
             return;
@@ -221,7 +221,7 @@ class Auth extends Controller
 
     public function teacherRegister()
     {
-        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             setMessage('error', 'Please fill all fields required');
             redirect('admin/teacherRegister');
             return;
@@ -255,6 +255,7 @@ class Auth extends Controller
             }
 
             $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
             $gender = $_POST['gender'] ?? '';
             $department = $_POST['department'] ?? '';
             $password = $this->generatePassword(8);
@@ -322,7 +323,7 @@ class Auth extends Controller
     // Register user
     public function register()
     {
-        if (!$_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             setMessage('error', 'Please fill all fields required');
             redirect('pages/register');
             return;
@@ -359,6 +360,7 @@ class Auth extends Controller
             }
 
             $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
             $roll = $_POST['rollno'] ?? '';
             $gender = $_POST['gender'] ?? '';
             $year = $_POST['year'] ?? '';

@@ -57,7 +57,7 @@ require_once APPROOT . '/views/inc/header.php';
     }
 
     .action-btn.return {
-        background-color: yellowgreen;
+        background-color: #28a745;
         color: black;
     }
 
@@ -434,6 +434,18 @@ require_once APPROOT . '/views/inc/header.php';
 
         searchInput.addEventListener('input', debounceFilter);
         statusFilter.addEventListener('change', filterRows);
+
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
+        });
     </script>
 </body>
 

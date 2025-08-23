@@ -50,7 +50,7 @@
     <!-- Profile Card -->
     <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6 sm:mb-8">
         <!-- Profile Header -->
-        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8">
+        <div class="bg-blue-900 p-6 sm:p-8">
             <div class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
                 <!-- Profile Avatar -->
                 <div class="flex-shrink-0">
@@ -62,7 +62,7 @@
                 <!-- Profile Info -->
                 <div class="text-center sm:text-left flex-grow">
                     <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-2">
-                        <?php echo htmlspecialchars($data['name'] ?? 'Admin User'); ?>
+                        <?php echo htmlspecialchars($data['name'] ?? 'Admin'); ?>
                     </h3>
                     <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-1 sm:space-y-0">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800">
@@ -89,10 +89,10 @@
         <div class="p-6 sm:p-8">
             <!-- Contact Information Section -->
             <div class="mb-8">
-                <h4 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <!-- <h4 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center">
                     <i class="fas fa-info-circle text-blue-600 mr-2"></i>
                     Contact Information
-                </h4>
+                </h4> -->
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Name Card -->
@@ -317,5 +317,16 @@
                 icon.classList.add("fa-eye");
             }
         });
+    });
+    // ===== Auto-hide auth messages =====
+    document.addEventListener("DOMContentLoaded", () => {
+        const authMessage = document.querySelector(".auth-message");
+        if (authMessage) {
+            setTimeout(() => {
+                authMessage.style.transition = "opacity 0.5s ease";
+                authMessage.style.opacity = "0";
+                setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+            }, 3000); // ⏳ disappear after 3 seconds
+        }
     });
 </script>
