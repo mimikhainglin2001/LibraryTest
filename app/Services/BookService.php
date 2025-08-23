@@ -67,13 +67,13 @@ class BookService implements BookServiceInterface
         }
 
         // Validate file type (allow only images)
-        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/avif'];
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/avif', 'image/webp'];
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
 
         if (!in_array($mimeType, $allowedMimeTypes)) {
-            throw new Exception("Invalid file type. Only JPG, PNG, AVIF, and GIF allowed.");
+            throw new Exception("Invalid file type. Only JPG, PNG, AVIF, WEBP and GIF allowed.");
         }
 
         // ✅ Sanitize and limit file name

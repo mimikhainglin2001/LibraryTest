@@ -231,21 +231,21 @@
 
             <form method="post" action="<?php echo URLROOT; ?>/auth/register">
                 <div class="form-group">
-                    <input type="text" name="name" placeholder="Full Name"  class="form-input" />
+                    <input type="text" name="name" placeholder="Full Name" class="form-input" />
                 </div>
 
                 <div class="form-group">
-                    <input type="email" name="email" placeholder="Email Address"  class="form-input" />
+                    <input type="email" name="email" placeholder="Email Address" class="form-input" />
                 </div>
 
                 <div class="form-group">
-                    <input type="text" name="rollno" placeholder="Roll No"  class="form-input" />
+                    <input type="text" name="rollno" placeholder="Roll No" class="form-input" />
                 </div>
 
                 <div class="form-group">
                     <div class="gender-selection">
                         <label class="gender-option">
-                            <input type="radio" name="gender" value="male"  />
+                            <input type="radio" name="gender" value="male" />
                             <span>Male</span>
                         </label>
                         <label class="gender-option">
@@ -256,7 +256,7 @@
                 </div>
 
                 <div class="form-group">
-                    <select name="year"  class="form-input">
+                    <select name="year" class="form-input">
                         <option value="">Select Academic Year</option>
                         <option value="First Year">First Year</option>
                         <option value="Second Year">Second Year</option>
@@ -280,6 +280,20 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
+        });
+    </script>
 </body>
 
 </html>

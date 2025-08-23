@@ -230,6 +230,18 @@ $prefillOtp = isset($_GET['otp']) ? preg_replace('/\D/', '', $_GET['otp']) : '';
                 }
                 time--;
             }, 1000);
+
+            // ===== Auto-hide auth messages =====
+            document.addEventListener("DOMContentLoaded", () => {
+                const authMessage = document.querySelector(".auth-message");
+                if (authMessage) {
+                    setTimeout(() => {
+                        authMessage.style.transition = "opacity 0.5s ease";
+                        authMessage.style.opacity = "0";
+                        setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                    }, 3000); // ⏳ disappear after 3 seconds
+                }
+            });
         </script>
 </body>
 

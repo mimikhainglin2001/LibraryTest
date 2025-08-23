@@ -170,7 +170,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     }
 
     .book-item {
-        background-color: #fff;
+        background-color: #ffffffff;
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         overflow: hidden;
@@ -191,7 +191,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         height: 200px;
         object-fit: contain;
         display: block;
-        background-color: #f0f0f0;
+        /* background-color: #f0f0f0; */
         padding: 10px;
         box-sizing: border-box;
     }
@@ -247,7 +247,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
         margin-top: auto;
         padding: 12px 25px;
         border: none;
-        border-radius: 5px;
+        border-radius: 12px;
         cursor: pointer;
         font-size: 1rem;
         font-weight: bold;
@@ -278,7 +278,7 @@ $modalMessage = $modalData['message'] ?? ''; // The actual message text
     }
 
     .borrow-btn.reserve-btn {
-        background-color: #007bff;
+        background: #27497c;
     }
 
     .borrow-btn.reserve-btn:hover {

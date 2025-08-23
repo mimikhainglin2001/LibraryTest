@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,50 +11,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register — MySite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --primary-hover-color: #4338ca;
-            --secondary-color: #e0e7ff;
-            --text-color: #1f2937;
-            --placeholder-color: #9ca3af;
-            --border-color: #d1d5db;
-            --background-color: #f9fafb;
-            --card-background: #ffffff;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        /* Error/Success Messages */
+        .auth-message {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .auth-message.error {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .auth-message.success {
+            background: #d1fae5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
+            font-family: 'Inter', Helvetica, sans-serif;
+            background: linear-gradient(to right, #dbeafe, #93c5fd, #3b82f6);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: #1e293b;
+        }
+
+        .main-container {
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            max-width: 950px;
+            width: 100%;
+            height: auto;
+            min-height: 500px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            background: white;
+        }
+
+        .left-section {
+            background: #1e3a8a;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
         }
 
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            background-color: var(--card-background);
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            border: 1px solid var(--border-color);
+        .left-section img {
+            height: auto;
+            width: 80%;
+            max-width: 350px;
+            object-fit: contain;
         }
 
-        .auth-header {
-            text-align: center;
-            margin-bottom: 2rem;
+        .right-section {
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
         }
 
-        .auth-header h1 {
+        .form-title {
             font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-color);
+            font-weight: 800;
+            color: navy;
+            margin-bottom: 1rem;
+            text-align: center;
         }
 
         .form-group {
@@ -59,215 +100,224 @@
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            color: var(--text-color);
-            transition: all 0.2s ease-in-out;
-        }
-
-        .form-input::placeholder {
-            color: var(--placeholder-color);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
         }
 
         .gender-selection {
             display: flex;
-            justify-content: space-between;
             gap: 0.75rem;
-            margin-bottom: 1.5rem;
+            justify-content: center;
         }
 
         .gender-option {
-            flex: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
             cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--text-color);
-            transition: all 0.2s ease-in-out;
-            background-color: #f3f4f6;
-        }
-
-        .gender-option:hover {
-            border-color: var(--primary-color);
         }
 
         .gender-option input[type="radio"] {
-            display: none;
+            margin-right: 0.5rem;
+            width: 18px;
+            height: 18px;
+            accent-color: #11998e;
         }
 
         .gender-option.selected {
-            background-color: var(--secondary-color);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+            border-color: #11998e;
+            background: rgba(17, 153, 142, 0.05);
         }
 
         .submit-btn {
             width: 100%;
-            background-color: var(--primary-color);
+            background: #27497c;
             color: white;
-            padding: 0.85rem;
+            padding: 0.9rem;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: bold;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
         }
 
         .submit-btn:hover {
-            background-color: var(--primary-hover-color);
+            background: #1e3a8a;
         }
 
         .login-link {
             text-align: center;
             margin-top: 1.5rem;
-            font-size: 0.875rem;
-            color: #4b5563;
-        }
-
-        .login-link a {
-            color: var(--primary-color);
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.2s ease-in-out;
-        }
-
-        .login-link a:hover {
-            color: var(--primary-hover-color);
-            text-decoration: underline;
-        }
-
-        .auth-message {
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
             font-size: 0.9rem;
         }
 
-        .auth-message.error {
-            background: #fee2e2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
+        .login-link a {
+            color: #11998e;
+            font-weight: 600;
         }
 
-        .auth-message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-
-        .g-recaptcha {
-            transform: scale(0.9);
-            transform-origin: 0 0;
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
             display: flex;
+            align-items: center;
             justify-content: center;
-            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            color: #3b82f6;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        @media (max-width: 480px) {
-            .auth-container {
+        /* Responsive */
+        @media (max-width: 850px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .left-section {
+                display: none;
+            }
+
+            .right-section {
                 padding: 1.5rem;
-                margin: 0 1rem;
-            }
-
-            .auth-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .form-input, .submit-btn, .gender-option {
-                font-size: 0.9rem;
             }
         }
     </style>
+
 </head>
 
 <body>
-    <div class="auth-container">
-        <div class="auth-header">
-            <h1>Create an Account</h1>
+    <a href="<?php echo URLROOT; ?>/admin/manageTeacher" class="back-button" title="Go Back">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="main-container">
+        <div class="left-section">
+            <img src="/images/download (2).png" class="img">
         </div>
+        <div class="right-section">
+            <h1 class="form-title">Create an Account</h1>
 
-        <?php require APPROOT . '/views/components/auth_message.php'; ?>
+            <form method="post" action="<?php echo URLROOT; ?>/auth/adminRegister" id="registerForm">
+                <?php require APPROOT . '/views/components/auth_message.php'; ?>
 
-        <form method="post" action="<?php echo URLROOT; ?>/auth/adminRegister">
-            <div class="form-group">
-                <input type="text" name="name" placeholder="Full Name" required class="form-input" />
-            </div>
-            <div class="form-group">
-                <input type="email" name="email" placeholder="Email Address" required class="form-input" />
-            </div>
-            <div class="form-group">
-                <input type="text" name="department" placeholder="Department" required class="form-input" />
-            </div>
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Full Name" class="form-input" />
+                </div>
 
-            <div class="gender-selection">
-                <label class="gender-option" id="male-option">
-                    <input type="radio" name="gender" value="male" required />
-                    <span>Male</span>
-                </label>
-                <label class="gender-option" id="female-option">
-                    <input type="radio" name="gender" value="female" />
-                    <span>Female</span>
-                </label>
-            </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email Address" class="form-input" />
+                </div>
 
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Create Password" required class="form-input" />
-            </div>
-            <div class="form-group">
-                <input type="password" name="confirm_password" placeholder="Confirm Password" required class="form-input" />
-            </div>
+                <div class="form-group">
+                    <input type="text" name="department" placeholder="Department" class="form-input" />
+                </div>
 
-            <div class="g-recaptcha" data-sitekey="6LcgC6srAAAAALsBkoG1fkh0WkvgKh87AlkDBrDW"></div>
+                <div class="form-group">
+                    <div class="gender-selection">
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="male" />
+                            <span>Male</span>
+                        </label>
+                        <label class="gender-option">
+                            <input type="radio" name="gender" value="female" />
+                            <span>Female</span>
+                        </label>
+                    </div>
+                </div>
 
-            <button type="submit" class="submit-btn">Create My Account</button>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Create Password" class="form-input" />
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" class="form-input" />
+                </div>
 
-            <div class="login-link">
-                <p>
-                    Already have an account?
-                    <a href="<?php echo URLROOT; ?>/pages/login">Login here</a>
-                </p>
-            </div>
-        </form>
+                <div class="g-recaptcha" data-sitekey="6LcgC6srAAAAALsBkoG1fkh0WkvgKh87AlkDBrDW"></div>
+
+                <button type="submit" class="submit-btn">Create My Account</button>
+
+                <div class="login-link">
+                    <p>
+                        Already have an account?
+                        <a href="<?php echo URLROOT; ?>/pages/login">Login here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gender selection styling
             const genderOptions = document.querySelectorAll('.gender-option');
             genderOptions.forEach(option => {
-                option.addEventListener('click', () => {
+                const radio = option.querySelector('input[type="radio"]');
+                radio.addEventListener('change', function() {
                     genderOptions.forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
+                    if (this.checked) {
+                        option.classList.add('selected');
+                    }
                 });
             });
 
-            const maleInput = document.querySelector('input[value="male"]');
-            const femaleInput = document.querySelector('input[value="female"]');
-            
-            maleInput.addEventListener('change', () => {
-                document.getElementById('male-option').classList.add('selected');
-                document.getElementById('female-option').classList.remove('selected');
+            // Password confirmation validation
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+
+            function validatePasswords() {
+                if (confirmPassword.value && password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Passwords do not match');
+                    confirmPassword.classList.add('error');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                    confirmPassword.classList.remove('error');
+                }
+            }
+
+            password.addEventListener('input', validatePasswords);
+            confirmPassword.addEventListener('input', validatePasswords);
+
+            // Submit button loading state
+            const form = document.getElementById('registerForm');
+            form.addEventListener('submit', function() {
+                const submitBtn = form.querySelector('.submit-btn');
+                submitBtn.textContent = 'Creating Account...';
             });
-            
-            femaleInput.addEventListener('change', () => {
-                document.getElementById('female-option').classList.add('selected');
-                document.getElementById('male-option').classList.remove('selected');
-            });
+        });
+        // ===== Auto-hide auth messages =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const authMessage = document.querySelector(".auth-message");
+            if (authMessage) {
+                setTimeout(() => {
+                    authMessage.style.transition = "opacity 0.5s ease";
+                    authMessage.style.opacity = "0";
+                    setTimeout(() => authMessage.remove(), 500); // remove from DOM after fade
+                }, 3000); // ⏳ disappear after 3 seconds
+            }
         });
     </script>
 </body>
