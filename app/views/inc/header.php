@@ -77,8 +77,8 @@ $currentUrl = $_SERVER['REQUEST_URI'];
 
     /* Hover effects */
     .navbar-brand:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        /* transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); */
     }
 
     .nav a {

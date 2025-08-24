@@ -55,6 +55,8 @@
         }
 
         .left-section {
+            position: relative;
+            /* Ensure absolute positioning works for title */
             background: #1e3a8a;
             display: flex;
             align-items: center;
@@ -215,13 +217,71 @@
             color: #047857;
             border: 1px solid #a7f3d0;
         }
+
+        /* New styles for the back button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #3b82f6;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .back-button {
+                top: 10px;
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        .image-title {
+            position: absolute;
+            top: 40px;
+            /* distance from top */
+            left: 190px;
+            /* distance from left */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
+    <a href="<?php echo URLROOT; ?>/admin/manageMember" class="back-button" title="Go Back">
+        <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="main-container">
+
         <div class="left-section">
-            <img src="/images/download (2).png" alt="Register Illustration">
+            <img src="/images/library.png" alt="Register Illustration">
+            <div class="image-title">Library</div>
         </div>
         <div class="right-section">
             <h1 class="form-title">Create an Account</h1>

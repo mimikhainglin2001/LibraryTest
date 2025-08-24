@@ -11,12 +11,12 @@ class Pages extends Controller
 
     public function index()
     {
-        $this->view('pages/welcome');
-    }
-    public function home()
-    {
         $this->view('pages/home');
     }
+    // public function home()
+    // {
+    //     $this->view('pages/home');
+    // }
     public function login()
     {
         $this->view('pages/login');

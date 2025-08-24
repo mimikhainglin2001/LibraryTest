@@ -176,6 +176,34 @@ if (session_status() === PHP_SESSION_NONE) {
             margin-top: 1.5rem;
         }
 
+        .left-section {
+            position: relative;
+            /* Ensure absolute positioning works for title */
+            background: #1e3a8a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-title {
+            position: absolute;
+            top: -70px;
+            /* place title near bottom of image */
+            left: 50%;
+            /* center horizontally */
+            transform: translateX(-50%);
+            /* adjust for centering */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+
         /* .submit-btn:hover {
             transform: translateY(-2px);
         } */
@@ -185,7 +213,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <div class="main-container flex flex-col md:flex-row">
         <!-- Left Section -->
-        <div class="relative flex-1 flex items-center justify-center bg-[#27497c] text-white p-8">
+        <div class="relative flex-1 flex items-center justify-center bg-blue-900 text-white p-8">
             <div class="absolute inset-0 bg-1e3a8a from-indigo-900/90 to-indigo-800/80"></div>
 
             <!-- Floating books -->
@@ -198,8 +226,9 @@ if (session_status() === PHP_SESSION_NONE) {
             <div class="relative z-10 text-center">
                 <!-- <h2 class="text-3xl font-bold mb-2">Welcome Back</h2> -->
 
-                <img src="/images/download (2).png" alt="Library" class="mx-auto max-w-[280px] rounded-lg  mb-4" />
-                <p class="text-base opacity-90 max-w-sm mx-auto">Access your personalized dashboard, resources, and tools by signing in.</p>
+                <img src="/images/library.png" alt="Library" class="mx-auto max-w-[280px] rounded-lg  mb-4" />
+                <div class="image-title">Library</div>
+
             </div>
         </div>
 

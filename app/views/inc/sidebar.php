@@ -29,6 +29,11 @@ $currentUrl = $_SERVER['REQUEST_URI'];
 
 </head>
 <style>
+    body {
+        font-family: 'Inter', Helvetica, sans-serif;
+
+    }
+
     .active {
         background-color: #1D4ED8;
         border-radius: 8px;
