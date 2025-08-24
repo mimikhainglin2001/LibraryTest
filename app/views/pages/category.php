@@ -207,7 +207,7 @@ require_once APPROOT . '/views/inc/header.php'; ?>
             width: 180px;
             height: 240px;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             display: block;

@@ -4,612 +4,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo SITENAME; ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Library Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for social icons -->
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" xintegrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/librarycss/cartoonbook.css?v=<?= time(); ?>">
 
-    <style>
-        /* Navigation */
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding: 30px 20px;
-            border-top: 2px solid #e9ecef;
-        }
 
-        .back-btn,
-        .see-more-btn {
-            background: linear-gradient(135deg, #6c757d, #5a6268);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 12px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
-        }
 
-        .back-btn:hover,
-        .see-more-btn:hover {
-            background: linear-gradient(135deg, #5a6268, #495057);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
-        }
-
-        .back-btn::before {
-            content: '\f060';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f8f9fa;
-        }
-
-        /* Main Content */
-        .main-content {
-            min-height: 100vh;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            position: relative;
-            background: #393b41ff;
-            padding: 60px 0;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            /* background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="books" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="none"/><path d="M2 2h16v16H2z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23books)"/></svg>') repeat; */
-            opacity: 0.1;
-        }
-
-        .hero-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: 120%;
-            object-fit: cover;
-            opacity: 0.3;
-        }
-
-        .search-section {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .search-section h1 {
-            color: white;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .search-container {
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        .search-box {
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px 50px 15px 20px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            background: white;
-        }
-
-        /* Common Section Styling for Categories and Popular Books */
-        .section-heading {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-heading::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            justify-items: center;
-            margin-top: 40px;
-            padding: 0 20px;
-        }
-
-        .book-item {
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: fadeInUp 0.8s ease-out;
-            width: 100%;
-            max-width: 200px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .book-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .book-item img {
-            width: 180px;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 0 auto 15px;
-            opacity: 0;
-        }
-
-        .book-item img:hover {
-            transform: scale(1.05);
-        }
-
-        .book-item p {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #333;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .book-item:hover p {
-            color: #667eea;
-        }
-
-        /* Specific Section Styling */
-        .categories-section,
-        .popular-books-section {
-            padding: 80px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 100;
-            /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Black w/ opacity */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            position: relative;
-            animation: zoomIn 0.3s ease-out;
-        }
-
-        .modal-content h3 {
-            margin-bottom: 20px;
-            color: #333;
-            font-size: 1.8rem;
-        }
-
-        .modal-content p {
-            margin-bottom: 25px;
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .modal-button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal-button:hover {
-            background-color: #0056b3;
-        }
-
-        .modal-close {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .modal-close:hover,
-        .modal-close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .books-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 40px 0;
-            }
-
-            .search-section h1 {
-                font-size: 2.2rem;
-                margin-bottom: 20px;
-            }
-
-            .categories-section,
-            .popular-books-section {
-                padding: 60px 15px;
-            }
-
-            .section-heading {
-                font-size: 2rem;
-                margin-bottom: 30px;
-            }
-
-            .books-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .book-item img {
-                width: 140px;
-                height: 200px;
-            }
-
-            .book-item p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .search-section h1 {
-                font-size: 1.8rem;
-            }
-
-            .search-input {
-                padding: 12px 40px 12px 15px;
-                font-size: 1rem;
-            }
-
-            .section-heading {
-                font-size: 1.6rem;
-            }
-
-            .books-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-
-            .book-item img {
-                width: 180px;
-                height: 240px;
-            }
-
-            .book-item p {
-                font-size: 1.1rem;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 20px;
-            }
-        }
-    </style>
 </head>
+<style>
+    /* Navbar brand */
+    .nav a {
+        color: white;
+        text-decoration: none;
+        font-family: 'Inter', Helvetica, sans-serif;
+        /* font-size: 16px; */
+        font-weight: 500;
+        transition: opacity 0.3s;
+        padding: 9px;
+    }
 
-<body>
-    <main class="main-content">
-        <section class="hero-section">
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1529148482759-b35b25c5f217?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
-            </div>
+    body {
+        font-family: 'Inter', Helvetica, sans-serif;
 
-            <div class="search-section">
-                <h1>Gateway To Your Knowledge</h1>
-                <div class="search-container">
-                </div>
-            </div>
-        </section>
+    }
 
-        <section class="popular-books-section">
-            <h2 class="section-heading">Most Popular Books 🌟</h2>
+    .navbar-brand {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        /* background: linear-gradient(135deg, #4e94d1ff, #22176dff); gradient badge */
+        border-radius: 12px;
+        font-family: Inter, Helvetica, sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #fff;
+        /* white text */
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        text-decoration: none;
+        /* box-shadow: 0 4px 12px rgba(0,0,0,0.15); */
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
 
-            <div class="books-grid" id="popularBooksGrid">
-                <a href="/books/the-midnight-library" class="book-item">
-                    <img src="/images/Latkyan-Layoung.png" alt="The Midnight Library Cover">
-                    <p>လက်ကျန်လရောင်</p>
-                </a>
+    /* Icon inside brand */
+    .navbar-brand i {
+        margin-right: 8px;
+        font-size: 1.4rem;
+    }
 
-                <a href="/books/lessons-in-chemistry" class="book-item">
-                    <img src="/images/Akyin-Thu-Thi.png" alt="Lessons in Chemistry Cover">
-                    <p>အကြင်သူသည်</p>
-                </a>
+    /* Hover effects */
+    .navbar-brand:hover {
+        /* transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); */
+    }
 
-                <a href="/books/fourth-wing" class="book-item">
-                    <img src="/images/Amhat-Taya.png" alt="Fourth Wing Cover">
-                    <p>အမှတ်တရ</p>
-                </a>
+    .nav a {
+        font-family: Inter, Helvetica, sans-serif;
 
-                <a href="/books/atomic-habits" class="book-item">
-                    <img src="/images/Achitsonethuyeahtotepati.png" alt="Atomic Habits Cover">
-                    <p>အချစ်ဆုံးသူရဲ့အတ္ထုပ္ပတ္တိ</p>
-                </a>
+    }
+</style>
 
-                <a href="/books/where-the-crawdads-sing" class="book-item">
-                    <img src="/images/nout-sone-nat-khat-300x300.png" alt="Where the Crawdads Sing Cover">
-                    <p>နောက်ဆုံးနက္ခတ်</p>
-                </a>
+<body class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-full">
+    <div class="header-content">
+        <nav>
+            <ul class="nav">
+                <li style="margin-right: 65%;">
+                    <a href="<?php echo URLROOT; ?>/index" class="navbar-brand">
+                        <i class="fas fa-book-reader"></i> Library
+                    </a>
+                </li>
+                <li><a href="<?php echo URLROOT; ?>/pages/category">Category</a></li>
+                <li><a href="<?php echo URLROOT; ?>/user/history">History</a></li>
+                <li><a href="<?php echo URLROOT; ?>/pages/login">Login</a></li>
 
-                <a href="/books/project-hail-mary" class="book-item">
-                    <img src="/images/MgYinMgMaMeMa.jpg" alt="Project Hail Mary Cover">
-                    <p>မောင်ရင်မောင် မမယ်မ</p>
-                </a>
-            </div>
-            <div class="books-grid" id="popularBooksGrid">
-                <a href="/books/the-midnight-library" class="book-item">
-                    <img src="/images/daung-yin-pyan.png" alt="The Midnight Library Cover">
-                    <p>ဒေါင်းယာဉ်ပျံဘုံနံဘေးမှာ စာရေးလို့ထားချင်တယ်</p>
-                </a>
-
-                <a href="/books/lessons-in-chemistry" class="book-item">
-                    <img src="/images/MaEainKan.png" alt="Lessons in Chemistry Cover">
-                    <p>မအိမ်ကံ</p>
-                </a>
-
-                <a href="/books/fourth-wing" class="book-item">
-                    <img src="/images/Juu.png" alt="Fourth Wing Cover">
-                    <p>မိန်းမတစ်ယောက်ရဲ့ဖွင့်ဟဝန်ခံချက်</p>
-                </a>
-
-                <a href="/books/atomic-habits" class="book-item">
-                    <img src="/images/Linkardipa-Chit-Thu.png" alt="Atomic Habits Cover">
-                    <p>လင်္ကာဒီပချစ်သူ</p>
-                </a>
-
-                <a href="/books/where-the-crawdads-sing" class="book-item">
-                    <img src="/images/she.png" alt="Where the Crawdads Sing Cover">
-                    <p>သူ့လိုမိန်းမ</p>
-                </a>
-
-                <a href="/books/project-hail-mary" class="book-item">
-                    <img src="/images/Pann-Tway-Pwint-Phoe.png" alt="Project Hail Mary Cover">
-                    <p>ပန်းတွေပွင့်ဖို့စောင့်ရချိန်</p>
-                </a>
-            </div>
-            <div class="navigation">
-                <a href="<?= URLROOT; ?>/pages/welcome" class="back-btn">Back</a>
-                <!-- <button class="see-more-btn" id="seeMoreBtn">See More Books</button> -->
-            </div>
-        </section>
-    </main>
-
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3>Login Required</h3>
-            <p>You need to be logged in to access this content.</p>
-            <div class="modal-buttons">
-                <button class="modal-button" id="modalLoginBtn">Login</button>
-                <button class="modal-button" id="modalCancelBtn">Cancel</button>
-            </div>
-        </div>
+                <!-- <li><a href="<?php echo URLROOT; ?>/auth/logout">Logout</a></li> -->
+            </ul>
+        </nav>
     </div>
 
-    <script>
-        // Get the modal element
-        const loginModal = document.getElementById('loginModal');
-        // Get the close button
-        const closeButton = document.querySelector('.modal-close');
-        // Get the Login and Cancel buttons inside the modal
-        const modalLoginBtn = document.getElementById('modalLoginBtn');
-        const modalCancelBtn = document.getElementById('modalCancelBtn');
+    <!-- Main Section -->
+    <!-- Main Section -->
+    <section class="flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-16 bg-white">
+        <!-- Left Content -->
+        <div class="max-w-lg">
+            <h1 class="text-4xl font-bold text-blue-900 mt-2">LIBRARY</h1>
+            <p class="text-gray-600 mt-4">
+                Empowering students and researchers with access to books, journals, and digital resources to inspire learning, discovery, and innovation.
+            </p>
+            <button onclick="window.location.href='<?php echo URLROOT; ?>/pages/login';"
+                class="mt-6 px-6 py-3 bg-blue-700 text-white font-semibold rounded-2xl shadow hover:bg-blue-800 transition">
+                Get More
+            </button>
 
-        // Select all book item links (the <a> tags)
-        const allBookItems = document.querySelectorAll('.book-item');
+        </div>
 
-        // Function to show the modal
-        function showModal() {
-            loginModal.style.display = 'flex'; // Use flex to center the modal content
-        }
+        <!-- Right Image Section -->
+        <div class="mt-12 md:mt-0 md:ml-16">
+            <img src="/images/home.png" alt="Library Illustration" class="w-full max-w-md">
+        </div>
+    </section>
 
-        // Function to hide the modal
-        function hideModal() {
-            loginModal.style.display = 'none';
-        }
+    <!-- Services Section -->
+    <section class="px-8 md:px-20 py-16 bg-white mt-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-blue-900">Our Services</h2>
+            <p class="text-gray-600 mt-2">Explore what our library offers to students and researchers</p>
+        </div>
 
-        // Add a click event listener to each book item
-        allBookItems.forEach(item => {
-            item.addEventListener('click', function(event) {
-                // Prevent the default action of the link
-                event.preventDefault();
-                // Show the custom modal instead of an alert
-                showModal();
-            });
-        });
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Service Card 1 -->
+            <div class="bg-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fas fa-book text-3xl text-blue-700 mb-4"></i>
+                <h3 class="text-xl font-semibold text-blue-900 mb-2">Book List</h3>
+                <p class="text-gray-600">Browse thousands of books across various categories, authors, and genres.</p>
+            </div>
 
-        // Event listeners for the modal buttons
-        closeButton.addEventListener('click', hideModal);
-        modalCancelBtn.addEventListener('click', hideModal);
+            <!-- Service Card 2 -->
+            <div class="bg-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fas fa-laptop text-3xl text-blue-700 mb-4"></i>
+                <h3 class="text-xl font-semibold text-blue-900 mb-2">Digital Library</h3>
+                <p class="text-gray-600">Access e-books, research papers, and online study materials anywhere, anytime.</p>
+            </div>
 
-        modalLoginBtn.addEventListener('click', function() {
-            hideModal();
-            // Replace '/pages/login' with the actual relative path to your login page
-            window.location.href = '/pages/login';
-        });
+            <!-- Service Card 3 -->
+            <div class="bg-blue-50 p-6 rounded-2xl shadow hover:shadow-lg transition">
+                <i class="fas fa-user-friends text-3xl text-blue-700 mb-4"></i>
+                <h3 class="text-xl font-semibold text-blue-900 mb-2">Reading Rooms</h3>
+                <p class="text-gray-600">Reserve quiet study spaces and collaborative rooms for group projects.</p>
+            </div>
+        </div>
+    </section>
 
-        // Close the modal if the user clicks outside of it
-        window.addEventListener('click', function(event) {
-            if (event.target == loginModal) {
-                hideModal();
-            }
-        });
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-10 mt-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-        // --- Existing image loading/error and Intersection Observer logic ---
-        document.querySelectorAll('.book-item img').forEach(img => {
-            img.addEventListener('load', function() {
-                this.style.opacity = '1';
-            });
+                <!-- About Us -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">About Us</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-gray-300">Our Mission</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Library Policies</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Annual Report</a></li>
+                    </ul>
+                </div>
 
-            img.addEventListener('error', function() {
-                this.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
-                this.style.display = 'flex';
-                this.style.alignItems = 'center';
-                this.style.justifyContent = 'center';
-                this.style.color = 'white';
-                this.style.fontSize = '1.2rem';
-                this.innerHTML = '<i class="fas fa-book"></i>';
-            });
-        });
+                <!-- Terms & Conditions -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Terms & Conditions</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-gray-300">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-gray-300">User Agreement</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Borrowing Rules</a></li>
+                    </ul>
+                </div>
 
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+                <!-- Connect -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <p class="mb-2">University Of Computer Studies,<br>Meiktila</p>
+                    <p class="mb-2">Email:
+                        <a href="mailto:golibrary2001@gmail.com" class="hover:text-gray-300">golibrary2001@gmail.com</a>
+                    </p>
+                    <p class="mb-4">Phone: (+95)9441 386 934</p>
+                    <div class="flex space-x-4">
+                        <a href="https://facebook.com/yourlibrarypage" target="_blank" class="hover:text-gray-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/yourlibraryhandle" target="_blank" class="hover:text-gray-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com/yourlibrary" target="_blank" class="hover:text-gray-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com/company/yourlibrary" target="_blank" class="hover:text-gray-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+            </div>
 
-        allBookItems.forEach(item => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(30px)';
-            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(item);
-        });
-    </script>
+            <!-- Bottom -->
+            <div class="border-t border-gray-600 mt-8 pt-4 text-center text-sm">
+                &copy; 2025 UCSMTLA Library. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+
 </body>
 
 </html>

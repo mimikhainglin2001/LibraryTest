@@ -111,11 +111,33 @@ if (session_status() === PHP_SESSION_NONE) {
             }
         }
 
+
         .left-section {
+            position: relative;
+            /* Ensure absolute positioning works for title */
             background: #1e3a8a;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .image-title {
+            position: absolute;
+            top: 60px;
+            /* distance from top */
+            left: 180px;
+            /* distance from left */
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+            align-items: center;
+            text-transform: uppercase;
+            /* Make text uppercase */
+            letter-spacing: 3px;
+            /* spacing between letters */
+            text-align: center;
         }
 
         .left-section img {
@@ -270,7 +292,7 @@ if (session_status() === PHP_SESSION_NONE) {
         }
 
         .form-input:valid {
-            border-color: #10b981;
+            /* border-color: #10b981; */
         }
 
         .password-field {
@@ -782,8 +804,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="main-container">
         <div class="left-section">
 
-            <img src="/images/download (2).png" class="img">
-
+            <img src="/images/library.png" alt="Register Illustration">
+            <div class="image-title">Library</div>
         </div>
         <div class="right-section">
             <h1 class="form-title">Create an Account</h1>

@@ -108,7 +108,7 @@ foreach ($data['borrowbook'] as $borrow) {
                     <i class="fas fa-book-reader text-blue-600 text-2xl mb-2"></i>
                     <span class="text-blue-800 font-medium text-center">Add Admin </span>
                 </button>
-                <button class="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg shadow-sm transition duration-300" onclick="window.location.href='<?php echo URLROOT; ?>/admin/adminlist">
+                <button class="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg shadow-sm transition duration-300" onclick="window.location.href='<?php echo URLROOT; ?>/admin/adminlist'">
                     <i class="fas fa-undo text-blue-600 text-2xl mb-2"></i>
                     <span class="text-blue-800 font-medium text-center">View Admin List</span>
                 </button>
