@@ -8,9 +8,9 @@ class User extends Controller
     private UserServiceInterface $userService;
     private $user;
 
-    public function __construct(UserServiceInterface $userService )
+    public function __construct(UserServiceInterface $userService)
     {
-        AuthMiddleware::userOrTeacherOnly(); 
+        AuthMiddleware::userOrTeacherOnly();
         $this->userService = $userService;
         $this->user = $_SESSION['session_loginuser'] ?? null;
     }
@@ -50,7 +50,7 @@ class User extends Controller
     public function history()
     {
         try {
-        AuthMiddleware::userOrTeacherOnly(); 
+            AuthMiddleware::userOrTeacherOnly();
             if (!$this->user) {
                 setMessage('error', 'User not found.');
                 redirect('pages/login');
@@ -77,7 +77,7 @@ class User extends Controller
     public function userProfile()
     {
         try {
-        AuthMiddleware::userOrTeacherOnly(); 
+            AuthMiddleware::userOrTeacherOnly();
             $id = $this->user['id'] ?? null;
             $loginuser = $this->userService->getUserProfile($id);
             $this->view('pages/userProfile', ['loginuser' => $loginuser]);
@@ -90,7 +90,7 @@ class User extends Controller
     public function editProfile($id)
     {
         try {
-        AuthMiddleware::userOrTeacherOnly(); 
+            AuthMiddleware::userOrTeacherOnly();
             $user = $this->userService->getUserProfile($id);
 
             if (!$user) {
@@ -100,32 +100,46 @@ class User extends Controller
             }
 
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                $this->view('pages/editProfile', ['user' => $user]);
+                $this->view('pages/userProfile', ['loginuser' => $user]);
                 return;
             }
 
-            $name   = trim($_POST['name'] ?? '');
-            $email  = trim($_POST['email'] ?? '');
-            $gender = trim($_POST['gender'] ?? '');
+            $name       = trim($_POST['name'] ?? '');
+            $email      = trim($_POST['email'] ?? '');
+            $gender     = trim($_POST['gender'] ?? '');
             $department = trim($_POST['department'] ?? '');
+            $rollno     = trim($_POST['rollno'] ?? '');
+            $year       = trim($_POST['year'] ?? '');
 
-            if ($name === '' || $email === '') {
-                setMessage('error', 'Name and Email are required.');
-                redirect('pages/editProfile');
+            if ($name === '' ) {
+                setMessage('error', 'Name is required.');
+                redirect('user/editProfile/' . $id);
                 return;
             }
 
             $updatedUser = [
-                'name'   => $name,
-                'email'  => $email,
-                'gender' => $gender,
+                'name'       => $name,
+                // 'email'      => $email,
+                'gender'     => $gender,
                 'department' => $department,
+                'rollno'     => $rollno,
+                'year'       => $year,
             ];
 
             $updated = $this->userService->updateUserProfile($id, $updatedUser);
 
             if ($updated) {
-                setMessage('success', 'User updated successfully.');
+                // ✅ Update session immediately
+                if (is_array($_SESSION['session_loginuser'])) {
+                    $_SESSION['session_loginuser']['name']       = $name;
+                    $_SESSION['session_loginuser']['email']      = $email;
+                    $_SESSION['session_loginuser']['gender']     = $gender;
+                    $_SESSION['session_loginuser']['department'] = $department;
+                    $_SESSION['session_loginuser']['rollno']     = $rollno;
+                    $_SESSION['session_loginuser']['year']       = $year;
+                }
+
+                setMessage('success', 'Profile updated successfully.');
             } else {
                 setMessage('error', 'User update failed.');
             }
@@ -137,10 +151,11 @@ class User extends Controller
         }
     }
 
+
     public function changeUserPassword()
     {
         try {
-        AuthMiddleware::userOrTeacherOnly(); 
+            AuthMiddleware::userOrTeacherOnly();
 
             if (!$this->user) {
                 setMessage('error', 'User not found.');

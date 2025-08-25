@@ -12,4 +12,6 @@ interface AdminServiceInterface
     public function getBookList(): array;
     public function getBorrowedBooks(): array;
     public function getReservedBooks(): array;
+    public function returnBookByAdmin(int $id): bool;
+    
 }

@@ -363,9 +363,9 @@ require_once APPROOT . '/views/inc/header.php';
                                                 </button>
                                             <?php endif; ?>
 
-                                            <button class="action-btn return" title="Return this book.">
+                                            <!-- <button class="action-btn return" title="Return this book.">
                                                 <a href="/borrowBook/returnBook?id=<?= $book['id'] ?>&book_id=<?= $book['book_id'] ?>" style="text-decoration: none; color: inherit;">Return</a>
-                                            </button>
+                                            </button> -->
                                         <?php endif; ?>
                                     </td>
                                 </tr>

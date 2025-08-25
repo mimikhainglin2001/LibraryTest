@@ -744,10 +744,10 @@
                 <input type="text" name="name" value="<?php echo htmlspecialchars($data['loginuser']['name']); ?>" required>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label>Email</label>
                 <input type="email" name="email" value="<?php echo htmlspecialchars($data['loginuser']['email']); ?>" required>
-            </div>
+            </div> -->
 
             <div class="form-group">
                 <label>Gender</label>
@@ -758,10 +758,10 @@
             </div>
 
             <?php if ($data['loginuser']['role_id'] == 2): ?>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Roll No</label>
                     <input type="text" name="rollno" value="<?php echo htmlspecialchars($data['loginuser']['rollno']); ?>">
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label>Year</label>
                     <input type="text" name="year" value="<?php echo htmlspecialchars($data['loginuser']['year']); ?>">

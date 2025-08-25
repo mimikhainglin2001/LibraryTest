@@ -187,9 +187,9 @@ body {
 
 /* Books Grid */
 .books-grid {
-  display: grid;
+  display: flex;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  /* gap: 30px; */
   margin-bottom: 40px;
 }
 
