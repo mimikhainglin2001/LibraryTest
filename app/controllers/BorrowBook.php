@@ -13,7 +13,7 @@ class BorrowBook extends Controller
 
     public function __construct(BorrowBookServiceInterface $borrowService)
     {
-        AuthMiddleware::userOrTeacherOnly(); 
+        AuthMiddleware::userOrTeacherOnly();
         $this->borrowService = $borrowService;
     }
 
@@ -39,19 +39,24 @@ class BorrowBook extends Controller
     public function returnBook()
     {
         try {
-
+            // Only admin can return books
+            AuthMiddleware::adminOnly();
 
             $borrowId = isset($_GET['id']) ? (int)$_GET['id'] : null;
+            var_dump($borrowId);
+            die();
             if (!$borrowId) {
-                return $this->failRedirect('Invalid request', 'user/history');
+                return $this->failRedirect('Invalid request', 'admin/issueBook');
             }
 
             $this->borrowService->returnBook($borrowId);
-            return $this->successRedirect('Book returned successfully', 'user/history');
+            return $this->successRedirect('Book returned successfully', 'admin/issueBook');
         } catch (Exception $e) {
-            return $this->failRedirect($e->getMessage(), 'user/history');
+            return $this->failRedirect($e->getMessage(), 'admin/issueBook');
         }
     }
+
+
 
     // Renew Book
     public function renew()

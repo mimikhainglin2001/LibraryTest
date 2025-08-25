@@ -8,5 +8,9 @@ interface AdminRepositoryInterface
     public function getAllBooks(): array;
     public function getAllBorrowedBooks(): array;
     public function getAllReservations(): array;
-
-}
+    public function getBorrowedBookById(int $borrowId): ?array;
+    public function updateBorrowedBook(int $id, array $data): bool;
+    public function getBookById(int $bookId): ?array;
+     public function incrementBookAvailability(int $bookId): bool;
+public function incrementReservationQuantity(int $bookId): void;
+    }

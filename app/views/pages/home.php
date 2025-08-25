@@ -77,6 +77,8 @@
                         <i class="fas fa-book-reader"></i> Library
                     </a>
                 </li>
+                <!-- <li><a href="<?php echo URLROOT; ?>/pages/home">Home</a></li> -->
+
                 <li><a href="<?php echo URLROOT; ?>/pages/category">Category</a></li>
                 <li><a href="<?php echo URLROOT; ?>/user/history">History</a></li>
                 <li><a href="<?php echo URLROOT; ?>/pages/login">Login</a></li>

@@ -125,6 +125,36 @@ class Admin extends Controller
 
         $this->view('admin/returnBook', ['returnBookList' => $returnBookList]);
     }
+    public function returnBookByAdmin()
+    {
+        try {
+            // Only admin can return books
+            AuthMiddleware::adminOnly();
+
+            // Get borrow book id from POST (preferred for forms)
+            $borrowId = isset($_POST['book_id']) ? (int)$_POST['book_id'] : null;
+
+            if (!$borrowId) {
+                setMessage('error', 'Invalid request');
+                redirect('admin/issueBook');
+                return;
+            }
+
+            // Call the service method
+            if ($this->adminService->returnBookByAdmin($borrowId)) {
+                setMessage('success', 'Book returned successfully');
+            } else {
+                setMessage('error', 'Failed to return book');
+            }
+
+            redirect('admin/issueBook');
+        } catch (Exception $e) {
+            setMessage('error', $e->getMessage());
+            redirect('admin/issueBook');
+        }
+    }
+
+
 
     public function reservation()
     {
@@ -149,7 +179,10 @@ class Admin extends Controller
 
     public function editAdminProfile()
     {
-        $id = is_array($_SESSION['session_loginuser']) ? $_SESSION['session_loginuser']['id'] : $_SESSION['session_loginuser'];
+        $id = is_array($_SESSION['session_loginuser'])
+            ? $_SESSION['session_loginuser']['id']
+            : $_SESSION['session_loginuser'];
+
         $user = $this->adminService->getUserProfile($id);
 
         if (!$user) {
@@ -161,22 +194,30 @@ class Admin extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updatedData = [
                 'name'   => $_POST['name'] ?? $user['name'],
-                'email'  => $_POST['email'] ?? $user['email'],
+                // 'email'  => $_POST['email'] ?? $user['email'],
                 'gender' => $_POST['gender'] ?? $user['gender'],
             ];
 
             if (!$this->adminService->updateUserProfile($id, $updatedData)) {
                 setMessage('error', 'Failed to update profile');
-                $this->view('admin/editAdminProfile', ['loginuser' => $user]);
+                $this->view('admin/profile', ['loginuser' => $user]);
                 return;
+            }
+
+            // ✅ Update the session with new data
+            if (is_array($_SESSION['session_loginuser'])) {
+                $_SESSION['session_loginuser']['name']   = $updatedData['name'];
+                // $_SESSION['session_loginuser']['email']  = $updatedData['email'];
+                $_SESSION['session_loginuser']['gender'] = $updatedData['gender'];
             }
 
             setMessage('success', 'Profile updated successfully');
             redirect('admin/profile');
         } else {
-            $this->view('admin/editAdminProfile', ['loginuser' => $user]);
+            $this->view('admin/profile', ['loginuser' => $user]);
         }
     }
+
 
 
 

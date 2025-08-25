@@ -94,4 +94,47 @@ class AdminService implements AdminServiceInterface
     {
         return $this->userRepo->getAllReservations();
     }
+
+    // AdminService.php
+    // services/AdminService.php (inside AdminService class)
+    public function returnBookByAdmin(int $borrowId): bool
+    {
+        // 1) fetch borrow record
+        $borrowedBook = $this->userRepo->getBorrowedBookById($borrowId);
+
+        if (!$borrowedBook) {
+            throw new Exception("Borrow record not found for id {$borrowId}.");
+        }
+
+        // 2) get the book id from the borrow row (support common field names)
+        $bookId = $borrowedBook['book_id'] ?? $borrowedBook['bookId'] ?? $borrowedBook['bookid'] ?? null;
+        if (!$bookId) {
+            throw new Exception("Borrow record doesn't contain book_id for borrow id {$borrowId}.");
+        }
+
+        // 3) ensure it hasn't already been returned
+        if (!empty($borrowedBook['return_date'])) {
+            throw new Exception("Book already returned.");
+        }
+
+        // 4) update borrow record (set return_date and status)
+        $updated = $this->userRepo->updateBorrowedBook($borrowId, [
+            'return_date' => date('Y-m-d H:i:s'),
+            'status'      => 'returned'
+        ]);
+
+        if (!$updated) {
+            throw new Exception("Failed to update borrow record (id {$borrowId}).");
+        }
+
+        // 5) increment the book availability; check result
+        $incOk = $this->userRepo->incrementReservationQuantity($borrowedBook['book_id']);
+        $incOk = $this->userRepo->incrementBookAvailability((int)$bookId);
+        if (!$incOk) {
+            // log or throw — prefer to throw so issues are visible
+            throw new Exception("Failed to increment available_quantity for book id {$bookId}.");
+        }
+
+        return true;
+    }
 }

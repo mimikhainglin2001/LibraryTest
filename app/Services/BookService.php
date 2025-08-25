@@ -18,6 +18,36 @@ class BookService implements BookServiceInterface
         $this->categoryRepo = $categoryRepo;
     }
 
+    public function validateBook(array $data, ?array $file = null): array
+    {
+        $errors = [];
+
+        if (empty(trim($data['title'] ?? ''))) {
+            $errors['title'] = "Title is required.";
+        } elseif ($this->bookRepo->findByTitle($data['title'])) {
+            $errors['title'] = "This title already exists.";
+        }
+
+        if (empty(trim($data['isbn'] ?? ''))) {
+            $errors['isbn'] = "ISBN is required.";
+        } elseif ($this->bookRepo->findByIsbn($data['isbn'])) {
+            $errors['isbn'] = "This ISBN already exists.";
+        }
+
+        if (empty($data['total_quantity']) || !is_numeric($data['total_quantity'])) {
+            $errors['total_quantity'] = "Quantity must be a number.";
+        }
+
+        if (empty(trim($data['author'] ?? ''))) {
+            $errors['author'] = "Author is required.";
+        }
+
+        if (empty(trim($data['category'] ?? ''))) {
+            $errors['category'] = "Category is required.";
+        }
+
+        return $errors;
+    }
     public function registerBook(array $data, array $file): bool
     {
         // Validate quantity
